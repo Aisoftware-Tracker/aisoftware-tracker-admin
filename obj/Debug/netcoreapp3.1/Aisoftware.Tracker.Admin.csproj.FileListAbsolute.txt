@@ -19,6 +19,7 @@
 /home/igor/projects/aisoftware/new/Aisoftware.Tracker.Admin/obj/Debug/netcoreapp3.1/Aisoftware.Tracker.Admin.TagHelpers.input.cache
 /home/igor/projects/aisoftware/new/Aisoftware.Tracker.Admin/obj/Debug/netcoreapp3.1/Aisoftware.Tracker.Admin.TagHelpers.output.cache
 /home/igor/projects/aisoftware/new/Aisoftware.Tracker.Admin/obj/Debug/netcoreapp3.1/Aisoftware.Tracker.Admin.RazorCoreGenerate.cache
+/home/igor/projects/aisoftware/new/Aisoftware.Tracker.Admin/obj/Debug/netcoreapp3.1/Razor/Views/Account/Login.cshtml.g.cs
 /home/igor/projects/aisoftware/new/Aisoftware.Tracker.Admin/obj/Debug/netcoreapp3.1/Razor/Views/Home/Index.cshtml.g.cs
 /home/igor/projects/aisoftware/new/Aisoftware.Tracker.Admin/obj/Debug/netcoreapp3.1/Razor/Views/Home/Privacy.cshtml.g.cs
 /home/igor/projects/aisoftware/new/Aisoftware.Tracker.Admin/obj/Debug/netcoreapp3.1/Razor/Views/Shared/Error.cshtml.g.cs
