@@ -1,37 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Aisoftware.Tracker.Admin.Models;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
+        //private MyDbContext db = new MyDbContext();
         public IActionResult Index()
         {
-            return View();
-        }
+            DashboardViewModel dashboard = new DashboardViewModel();
+            
+            dashboard.doctors_count = 10;//db.Doctors.Count();
+            dashboard.nurses_count = 10;//db.Nurses.Count();
+            dashboard.patients_count = 5;//db.Patients.Count();
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(dashboard);
         }
     }
 }
