@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Aisoftware.Tracker.Admin.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
@@ -27,6 +28,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 if(_admin.Password == admin.Password)
                 {
+                    HttpContext.Session.SetString("email", _admin.Email);
                     return Json(new { status = true, message = "Login Successfull!"});
                 }
                 else

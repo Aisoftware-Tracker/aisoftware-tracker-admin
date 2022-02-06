@@ -78,6 +78,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
             };
 
             return View(dr);
+            //return View(db.Doctors.Where(s => s.Id == id).First());
         }
 
         [HttpPost]
