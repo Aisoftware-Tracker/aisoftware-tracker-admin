@@ -4,25 +4,21 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Aisoftware.Tracker.Admin.Models;
 using System.Collections.Generic;
+using Aisoftware.Tracker.Admin.Domain.Doctor.UseCases;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
     public class DoctorsController : Controller
     {
+        private readonly IDoctorsUseCase _useCase;
+
+        public DoctorsController(IDoctorsUseCase useCase){
+            _useCase = useCase;
+        }
+
         public ActionResult Index()
         {
-
-            Doctors dr = new Doctors
-            {
-                Id = 1,
-                Name = "Dr. Nome",
-                Email = "dr@email.com",
-                Specialist = "O Cara",
-                Gender = 2
-            };
-
-            var doctors = new List<Doctors>();
-            doctors.Add(dr);
+            List<Doctors> doctors = _useCase.Index();
 
             return View(doctors);
         }
@@ -68,16 +64,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public ActionResult Update(int id)
         {
-            Doctors dr = new Doctors
-            {
-                Id = 1,
-                Name = "Dr. Nome",
-                Email = "dr@email.com",
-                Specialist = "O Cara",
-                Gender = 2
-            };
+            Doctors doctor = _useCase.Find(id); 
 
-            return View(dr);
+            return View(doctor);
             //return View(db.Doctors.Where(s => s.Id == id).First());
         }
 

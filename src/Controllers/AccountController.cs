@@ -41,6 +41,12 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 return Json(new { status = false, message = "Invalid Email!"});
             }
         }
+
+        public ActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Account");
+        }
     }
 
 }
