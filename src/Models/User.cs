@@ -3,9 +3,9 @@ using System;
 namespace Aisoftware.Tracker.Admin.Models
 {
     ///<summary>
-    ///Gerenciamento de sessão de usuário
+    ///Usuários
     ///</summary>
-    public class Session
+    public class User
     {
         private int _id;
         private string _name;

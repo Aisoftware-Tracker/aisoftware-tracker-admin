@@ -1,0 +1,97 @@
+@model IEnumerable<Aisoftware.Tracker.Admin.Models.User>
+
+<section class="content-header">
+    <h1>
+        Usuários
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Usuários</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Gerenciar Usuários</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Telefone</th>
+                                <th>Somente Leitura</th>
+                                <th>Administrador</th>
+                                <th>Desabilitado</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Readonly)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Administrator)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Disabled)</td>
+                                    <td><a href="Users/Update/@item.Id">Atualizar</a> | <a href=""
+                                        onclick="Delete('@item.Id')">Excluir</a></td>
+                                </tr>
+                            }
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
+<!-- DataTables -->
+<script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
+<!-- page script -->
+<script>
+    $(function () {
+        $('#example1').DataTable();
+    });
+    function Delete(id) {
+        var txt;
+        var r = confirm("Você tem certeza que deseja excluir este usuário?");
+        if (r == true) {
+
+            $.ajax(
+                {
+                    type: "POST",
+                    url: '@Url.Action("Delete", "Users")',
+                    data: {
+                        id: id
+                    },
+                    error: function (result) {
+                        alert("error");
+                    },
+                    success: function (result) {
+                        if (result == true) {
+                            var baseUrl = "/Users";
+                            window.location.reload();
+                        }
+                        else {
+                            alert("Houve um problema inesperado, Tente novamente mais tarde!");
+                        }
+                    }
+                });
+        }
+    }
+</script>

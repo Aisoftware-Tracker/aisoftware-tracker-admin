@@ -22,7 +22,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
         public SessionRepository(IAppConfiguration config)
         {
             _config = config;
-            _url = $"{_config.BaseUrl}/api/{Endpoint.SESSION}";
+            _url = $"{_config.BaseUrl}/api/{Endpoints.SESSION}";
             _uri = new Uri(_url);
         }
 

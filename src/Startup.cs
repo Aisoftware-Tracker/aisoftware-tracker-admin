@@ -13,6 +13,8 @@ using Aisoftware.Tracker.Admin.Domain.Doctor.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Doctor.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Sessions.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Sessions.Repositories;
+using Aisoftware.Tracker.Admin.Domain.Users.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Users.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
 
 namespace Aisoftware.Tracker.Admin
@@ -42,6 +44,8 @@ namespace Aisoftware.Tracker.Admin
             services.AddScoped<IDoctorsRepository, DoctorsRepository>();
             services.AddScoped<ISessionUseCase, SessionUseCase>();
             services.AddScoped<ISessionRepository, SessionRepository>();
+            services.AddScoped<IUserUseCase, UserUseCase>();
+            services.AddScoped<IUserRepository, UserRepository>();
             
             services.AddScoped<IAppConfiguration, AppConfiguration>();
             #endregion

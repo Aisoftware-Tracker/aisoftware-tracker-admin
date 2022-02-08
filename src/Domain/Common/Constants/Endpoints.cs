@@ -2,7 +2,7 @@ using System;
 
 namespace Aisoftware.Tracker.Admin.Domain.Common.Constants
 {
-    public static class Endpoint
+    public static class Endpoints
     {
         public const string SESSION = "session";
         public const string DEVICES = "devices";
