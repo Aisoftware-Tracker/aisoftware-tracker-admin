@@ -5,6 +5,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
@@ -24,7 +25,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("email") == null)
+            if (HttpContext.Session.GetString(CookieName.JSESSIONID) == null)
             {
                 return Redirect("/Account/Login");
             }

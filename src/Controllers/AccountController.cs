@@ -1,45 +1,51 @@
+using System;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Threading.Tasks;
 using Aisoftware.Tracker.Admin.Models;
 using Microsoft.AspNetCore.Http;
+using Aisoftware.Tracker.Admin.Domain.Sessions.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
     public class AccountController : Controller
     {
-        
+        private readonly ISessionUseCase _useCase;
+
+        public AccountController(ISessionUseCase useCase)
+        {
+            _useCase = useCase;
+        }
+
         public IActionResult Login()
         {
             return View();
         }
 
-        public ActionResult Validate(Admins admin)
+        public async Task<ActionResult> Validate(Login login)
         {
-            
-            var _admin = new Admins()
+            try
             {
-                Email = "teste@teste.com",
-                Password = "123"
-            };
+                var response = await _useCase.Create(login);
+                
+                string cookieValue = _useCase.GetCookieValue();
 
-            if(_admin.Email == admin.Email)
-            {
-                if(_admin.Password == admin.Password)
-                {
-                    HttpContext.Session.SetString("email", _admin.Email);
-                    return Json(new { status = true, message = "Login Successfull!"});
-                }
-                else
-                {
-                    return Json(new { status = false, message = "Invalid Password!"});
-                }
+                HttpContext.Session.SetString(CookieName.JSESSIONID, cookieValue);
+                
+                return Json(new { status = true, message = "Login Realizado com Sucesso!" });
+
             }
-            else
+            catch (Exception e)
             {
-                return Json(new { status = false, message = "Invalid Email!"});
+                string message = e.Message == "Unauthorized" ?
+                "Login ou senha inválido" :
+                "Erro inesperado!\n Tente novamente em instantes";
+                return Json(new { status = false, message = message });
             }
+
         }
 
         public ActionResult Logout()
