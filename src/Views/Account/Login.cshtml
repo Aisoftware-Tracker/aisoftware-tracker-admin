@@ -6,7 +6,7 @@
 <html lang="en">
 
 <head>
-    <title>Login V12</title>
+    <title>Aisoftware Tracker</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -40,7 +40,7 @@
                     </div>
 
                     <span class="login100-form-title p-t-20 p-b-45">
-                        John Doe
+                        Aisoftware Tracker
                     </span>
 
                     <div class="wrap-input100 validate-input m-b-10" data-validate="Email is required">
@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="container-login100-form-btn p-t-10">
-                        <input type="button" value="Login" class="login100-form-btn" onclick="Validate()">
+                        <input id="btn-login" type="button" value="Login" class="login100-form-btn" onclick="Validate()">
                     </div>
 
                     <div class="text-center w-full p-t-25 p-b-80">
@@ -112,6 +112,17 @@
 
                 });
         }
+
+        var input = $('#email').val();
+
+        input.addEventListener("keyup", function (event) {
+            let enterKeyboard = 13;
+
+            if (event.keyCode === enterKeyboard) {
+                event.preventDefault();
+                document.getElementById("btn-login").click();
+            }
+        });
 
     </script>
 
