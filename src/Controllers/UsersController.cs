@@ -42,7 +42,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
             }
             catch (Exception e)
             {
-               // ver como retornar msg de erro return Json(new { status = false, message = "Erro ao tentar salvar o novo usuário" });
+                //TODO ver como retornar msg de erro return Json(new { status = false, message = "Erro ao tentar salvar o novo usuário" });
+                return RedirectToAction("Index", "Users");
+               
             }
 
         }
