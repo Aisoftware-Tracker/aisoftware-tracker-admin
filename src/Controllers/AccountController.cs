@@ -30,11 +30,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
             try
             {
                 var response = await _useCase.Create(login);
-                
-                string cookieValue = _useCase.GetCookieValue();
 
-                HttpContext.Session.SetString(CookieName.JSESSIONID, cookieValue);
-                
+                SetSessions(response);
+
                 return Json(new { status = true, message = "Login Realizado com Sucesso!" });
 
             }
@@ -52,6 +50,15 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Login", "Account");
+        }
+
+        private void SetSessions(Session session)
+        {
+            string cookieValue = _useCase.GetCookieValue();
+
+            HttpContext.Session.SetString(CookieName.JSESSIONID, cookieValue);
+            HttpContext.Session.SetString("userName", session.Name);
+            HttpContext.Session.SetString("userEmail", session.Email);
         }
     }
 
