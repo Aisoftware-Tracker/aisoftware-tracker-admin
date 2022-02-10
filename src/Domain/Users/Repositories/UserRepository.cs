@@ -9,38 +9,58 @@ using Aisoftware.Tracker.Admin.Domain.Users.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Aisoftware.Tracker.Admin.Domain.Users.Repositories
 {
     public class UserRepository : IUserRepository
     {
         private readonly IAppConfiguration _config;
-        private readonly IHttpContextAccessor HttpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public static Cookie _cookie;
         private readonly string _url;
-        private readonly Uri _uri;
-        private string cookieValue;
+        private string _cookieValue;
 
         public UserRepository(IAppConfiguration config, IHttpContextAccessor httpContextAccessor)
         {
             _config = config;
             _url = $"{_config.BaseUrl}/api/{Endpoints.USERS}";
-            _uri = new Uri(_url);
-            HttpContextAccessor = httpContextAccessor;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new System.NotImplementedException();
+            Uri uri = new Uri($"{_url}/{id}");
+
+            var handler = new HttpClientHandler
+            {
+                CookieContainer = GetCookieContainer(_cookieValue)
+            };
+
+            using (var httpClient = new HttpClient(handler))
+            {
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Delete,
+                    RequestUri = uri
+                };
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(ContentType.JSON));
+                request.Headers.Host = uri.Host;
+
+                var response = await httpClient.SendAsync(request);
+            }
         }
 
         public async Task<IEnumerable<User>> FindAll()
         {
-            string cookieValue = HttpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
+            string _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
+            
+            Uri uri = new Uri(_url);
 
             var handler = new HttpClientHandler
             {
-                CookieContainer = GetCookieContainer(cookieValue)
+                CookieContainer = GetCookieContainer(_cookieValue)
             };
 
             IEnumerable<User> users = new List<User>();
@@ -49,10 +69,10 @@ namespace Aisoftware.Tracker.Admin.Domain.Users.Repositories
             {
                 var request = new HttpRequestMessage
                 {
-                    RequestUri = _uri
+                    RequestUri = uri
                 };
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(ContentType.JSON));
-                request.Headers.Host = _uri.Host;
+                request.Headers.Host = uri.Host;
 
                 var response = await httpClient.SendAsync(request);
 
@@ -66,19 +86,99 @@ namespace Aisoftware.Tracker.Admin.Domain.Users.Repositories
 
         }
 
-        public Task<User> FindById(int userId)
+        public async Task<User> FindById(int userId)
         {
-            throw new System.NotImplementedException();
+            Uri uri = new Uri($"{_url}/{userId}");
+
+            string _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
+
+            var handler = new HttpClientHandler
+            {
+                CookieContainer = GetCookieContainer(_cookieValue)
+            };
+
+            User user = new User();
+
+            using (var httpClient = new HttpClient(handler))
+            {
+                var request = new HttpRequestMessage
+                {
+                    RequestUri = uri
+                };
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(ContentType.JSON));
+                request.Headers.Host = uri.Host;
+
+                var response = await httpClient.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    user = await response.Content.ReadAsAsync<User>();
+                }
+
+                return user;
+            }
+
         }
 
-        public Task<User> Save(User request)
+        public async Task<User> Save(User content)
         {
-            throw new System.NotImplementedException();
+            Uri uri = new Uri(_url);
+
+            var handler = new HttpClientHandler
+            {
+                CookieContainer = GetCookieContainer(_cookieValue)
+            };
+
+            using (var httpClient = new HttpClient(handler))
+            {
+                var json = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, ContentType.JSON);
+
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Post,
+                    RequestUri = uri, 
+                    Content = json
+                };
+
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(ContentType.JSON));
+                request.Headers.Host = uri.Host;
+
+                var response = await httpClient.SendAsync(request);
+
+                return await response.Content.ReadAsAsync<User>();
+
+            }
         }
 
-        public Task<User> Update(User request)
+
+        public async Task<User> Update(User content)
         {
-            throw new System.NotImplementedException();
+            Uri uri = new Uri(_url);
+
+            var handler = new HttpClientHandler
+            {
+                CookieContainer = GetCookieContainer(_cookieValue)
+            };
+
+            using (var httpClient = new HttpClient(handler))
+            {
+                var json = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, ContentType.JSON);
+
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Put,
+                    RequestUri = uri, 
+                    Content = json
+                };
+
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(ContentType.JSON));
+                request.Headers.Host = uri.Host;
+
+                var response = await httpClient.SendAsync(request);
+
+                return await response.Content.ReadAsAsync<User>();
+
+            }
         }
 
         private CookieContainer GetCookieContainer(string cookie)
