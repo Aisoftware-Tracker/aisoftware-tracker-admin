@@ -15,6 +15,8 @@ using Aisoftware.Tracker.Admin.Domain.Sessions.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Sessions.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Users.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Users.Repositories;
+using Aisoftware.Tracker.Admin.Domain.Drivers.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Drivers.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
@@ -49,6 +51,8 @@ namespace Aisoftware.Tracker.Admin
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<IUserUseCase, UserUseCase>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IDriverUseCase, DriverUseCase>();
+            services.AddScoped<IDriverRepository, DriverRepository>();
             
             services.AddScoped<IAppConfiguration, AppConfiguration>();
             #endregion
