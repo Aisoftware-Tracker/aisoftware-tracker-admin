@@ -16,6 +16,9 @@ using Aisoftware.Tracker.Admin.Domain.Sessions.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Users.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Users.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
+using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
+using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
+using Aisoftware.Tracker.Admin.Models;
 
 namespace Aisoftware.Tracker.Admin
 {

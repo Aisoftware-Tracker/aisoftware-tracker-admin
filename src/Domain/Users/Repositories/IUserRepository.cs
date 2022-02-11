@@ -2,35 +2,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Aisoftware.Tracker.Admin.Models;
 using System.Net;
+using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
 
 namespace Aisoftware.Tracker.Admin.Domain.Users.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository : IBaseRepository<User>
     {
-        /// <summary>
-        /// @Get
-        /// </summary>        
-        Task<IEnumerable<User>> FindAll();
 
-        /// <summary>
-        /// @Get
-        /// <para/>Can only be used by admin or manager users
-        /// </summary>
-        Task<User> FindById(int userId);
-
-        /// <summary>
-        /// @Post
-        /// </summary>
-        Task<User> Save(User request);
-
-        /// <summary>
-        /// @Put
-        /// </summary>
-        Task<User> Update(User request);
-
-        /// <summary>
-        /// @Delete
-        /// </summary>
-        Task Delete(int id);
     }
 }

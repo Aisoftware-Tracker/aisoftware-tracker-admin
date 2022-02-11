@@ -8,31 +8,31 @@ namespace Aisoftware.Tracker.Admin.Models
     public class User
     {
         private int _id;
-        private string _name = null;
-        private string _email = null;
-        private string _phone = null;
-        private bool _readonly = false;
-        private bool _administrator = false;
-        private string _map = null;
-        private decimal _latitude = 0;
-        private decimal _longitude = 0;
-        private decimal _zoom = 0;
-        private string _password = null;
-        private bool _twelveHourFormat = false;
-        private string _coordinateFormat = null;
-        private bool _disabled = false;
+        private string _name;
+        private string _email;
+        private string _phone;
+        private bool _readonly;
+        private bool _administrator;
+        private string _map;
+        private decimal _latitude;
+        private decimal _longitude;
+        private decimal _zoom;
+        private string _password;
+        private bool _twelveHourFormat;
+        private string _coordinateFormat;
+        private bool _disabled;
         private DateTime? _expirationTime;
-        private int _deviceLimit = 0;
-        private int _userLimit = 0;
-        private bool _deviceReadonly = false;
-        private bool _limitCommands = false;
-        private string _poiLayer = null;
-        private string _token = null;
-        private string _photo = null;
-        private string _whatsapp = null;
-        private string _telegram = null;
-        private int _sms = 0;
-        private object _attributes = false;
+        private int _deviceLimit;
+        private int _userLimit;
+        private bool _deviceReadonly;
+        private bool _limitCommands;
+        private string _poiLayer;
+        private string _token;
+        private string _photo;
+        private string _whatsapp;
+        private string _telegram;
+        private int _sms;
+        private object _attributes;
 
         public int Id { get => _id; set => _id = value; }
         public string Name { get => _name; set => _name = value; }

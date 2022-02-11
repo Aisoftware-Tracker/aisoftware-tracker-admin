@@ -7,6 +7,7 @@ using Aisoftware.Tracker.Admin.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Aisoftware.Tracker.Admin.Domain.Users.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
@@ -38,13 +39,13 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 var response = await _useCase.Save(user);
 
-                return RedirectToAction("Index", "Users");
+                return RedirectToAction(ActionName.INDEX, RouteValues.USERS);
             }
             catch (Exception e)
             {
                 //TODO ver como retornar msg de erro return Json(new { status = false, message = "Erro ao tentar salvar o novo usuário" });
-                return RedirectToAction("Index", "Users");
-               
+                return RedirectToAction(ActionName.INDEX, RouteValues.USERS);
+
             }
 
         }
@@ -79,9 +80,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public ActionResult UpdateUser(User user)
         {
+            _useCase.Update(user);
 
-
-            return RedirectToAction("Index", "User");
+            return RedirectToAction(ActionName.INDEX, RouteValues.USERS);
         }
     }
 }
