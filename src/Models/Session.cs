@@ -28,6 +28,7 @@ namespace Aisoftware.Tracker.Admin.Models
         private bool _limitCommands;
         private string _poiLayer;
         private string _token;
+        private string _photo;
         private object _attributes;
 
         public int Id { get => _id; set => _id = value; }
@@ -51,6 +52,7 @@ namespace Aisoftware.Tracker.Admin.Models
         public bool LimitCommands { get => _limitCommands; set => _limitCommands = value; }
         public string PoiLayer { get => _poiLayer; set => _poiLayer = value; }
         public string Token { get => _token; set => _token = value; }
+        public string Photo { get => _photo; set => _photo = value; }
         public object Attributes { get => _attributes; set => _attributes = value; }
     }
 }
