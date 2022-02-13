@@ -37,6 +37,8 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
 
         public async Task Delete(int id, string endpoint)
         {
+            _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
+
             Uri uri = new Uri($"{_url}/{endpoint}/{id}");
 
             var handler = new HttpClientHandler
@@ -60,8 +62,8 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
 
         public async Task<IEnumerable<T>> FindAll(string endpoint)
         {
-            string _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
-            
+            _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
+
             Uri uri = new Uri($"{_url}/{endpoint}");
 
             var handler = new HttpClientHandler
@@ -94,9 +96,9 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
 
         public async Task<T> FindById(int id, string endpoint)
         {
-            Uri uri = new Uri($"{_url}/{endpoint}/{id}");
+            _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
 
-            string _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
+            Uri uri = new Uri($"{_url}/{endpoint}/{id}");
 
             var handler = new HttpClientHandler
             {
@@ -126,6 +128,8 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
 
         public async Task<T> Save(T content, string endpoint)
         {
+            _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
+
             Uri uri = new Uri($"{_url}/{endpoint}");
 
             var handler = new HttpClientHandler
@@ -140,7 +144,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Post,
-                    RequestUri = uri, 
+                    RequestUri = uri,
                     Content = json
                 };
 
@@ -156,6 +160,8 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
 
         public async Task<T> Update(T content, string endpoint)
         {
+            _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
+
             Uri uri = new Uri($"{_url}/{endpoint}");
 
             var handler = new HttpClientHandler
@@ -170,7 +176,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Put,
-                    RequestUri = uri, 
+                    RequestUri = uri,
                     Content = json
                 };
 

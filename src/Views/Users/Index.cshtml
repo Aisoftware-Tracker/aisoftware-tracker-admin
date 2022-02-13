@@ -19,7 +19,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table id="example1" class="table table-bordered table-striped">
+                    <table id="data-table" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Id</th>
@@ -43,8 +43,10 @@
                                     <td>@Html.DisplayFor(modelItem => item.Readonly)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Administrator)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Disabled)</td>
-                                    <td><a href="Users/Update/@item.Id">Editar</a> | <a href=""
-                                        onclick="Delete('@item.Id')">Excluir</a></td>
+                                    <td>
+                                        <a href="@ViewBag.ControllerName/Update/@item.Id" class="btn btn-block btn-primary">Editar</a>
+                                        <a href="" class="btn btn-block btn-danger" onclick="Delete('@item.Id')">Excluir</a>
+                                    </td>
                                 </tr>
                             }
                     </table>
@@ -65,7 +67,7 @@
 <!-- page script -->
 <script>
     $(function () {
-        $('#example1').DataTable();
+        $('#data-table').DataTable();
     });
     function Delete(id) {
         var txt;

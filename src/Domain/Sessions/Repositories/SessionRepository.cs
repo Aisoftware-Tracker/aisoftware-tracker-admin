@@ -8,6 +8,7 @@ using Aisoftware.Tracker.Admin.Models;
 using Aisoftware.Tracker.Admin.Domain.Sessions.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
+using Microsoft.AspNetCore.Http;
 
 namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
 {
@@ -17,13 +18,15 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
         public static Cookie _cookie;
         private readonly string _url;
         private readonly Uri _uri;
-        private string cookieValue;
+        private string _cookieValue;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SessionRepository(IAppConfiguration config)
+        public SessionRepository(IAppConfiguration config, IHttpContextAccessor httpContextAccessor)
         {
             _config = config;
             _url = $"{_config.BaseUrl}/{Endpoints.SESSION}";
             _uri = new Uri(_url);
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public Cookie GetCookie()
@@ -33,9 +36,11 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
 
         public async Task<Session> Find()
         {
+            _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
+            
             var handler = new HttpClientHandler
             {
-                CookieContainer = GetCookieContainer(cookieValue)
+                CookieContainer = GetCookieContainer(_cookieValue)
             };
 
             var session = new Session();
@@ -101,9 +106,11 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
 
         public async Task Delete()
         {
+            _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
+
             var handler = new HttpClientHandler
             {
-                CookieContainer = GetCookieContainer(cookieValue)
+                CookieContainer = GetCookieContainer(_cookieValue)
             };
 
             using (var httpClient = new HttpClient(handler))

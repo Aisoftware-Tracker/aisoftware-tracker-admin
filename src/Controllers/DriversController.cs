@@ -14,6 +14,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
     public class DriversController : Controller
     {
         private readonly IDriverUseCase _useCase;
+        private string _controllerName;
 
         public DriversController(IDriverUseCase useCase)
         {
@@ -24,6 +25,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             IEnumerable<Driver> response = await _useCase.FindAll();
 
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+            
             return View(response);
         }
 
@@ -35,16 +38,18 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateDriver(Driver request)
         {
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+
             try
             {
                 var response = await _useCase.Save(request);
 
-                return RedirectToAction(ActionName.INDEX, RouteValues.DRIVERS);
+                return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
             }
             catch (Exception e)
             {
                 //TODO ver como retornar msg de erro return Json(new { status = false, message = "Erro ao tentar salvar o novo usuário" });
-                return RedirectToAction(ActionName.INDEX, RouteValues.DRIVERS);
+                return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
 
             }
 
@@ -73,6 +78,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             Driver response = await _useCase.FindById(id);
 
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+            
             return View(response);
         }
 
@@ -81,7 +88,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             _useCase.Update(request);
 
-            return RedirectToAction(ActionName.INDEX, RouteValues.DRIVERS);
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+
+            return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
         }
     }
 }

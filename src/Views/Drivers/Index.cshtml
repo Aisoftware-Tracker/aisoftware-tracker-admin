@@ -19,14 +19,14 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table id="example1" class="table table-bordered table-striped">
+                    <table id="data-table" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Id</th>
                                 <th>Nome</th>
-                                <th>Atributos</th>
+                                @* <th>Atributos</th> *@
                                 <th>Identificador</th>
-                                <th>Foto</th>
+                                <th>Imagem</th>
                                 <th>Documento</th>
                                 <th>Validade do Documento</th>
 
@@ -38,13 +38,15 @@
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => item.Id)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Attributes)</td>
+                                    @* <td>@Html.DisplayFor(modelItem => item.Attributes)</td> *@
                                     <td>@Html.DisplayFor(modelItem => item.UniqueId)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Photo)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Document)</td>
                                     <td>@Html.DisplayFor(modelItem => item.DocumentValidAt)</td>
-                                    <td><a href="Drivers/Update/@item.Id">Editar</a> | <a href=""
-                                        onclick="Delete('@item.Id')">Excluir</a></td>
+                                    <td>
+                                        <a href="@ViewBag.ControllerName/Update/@item.Id" class="btn btn-block btn-primary">Editar</a>
+                                        <a href="" class="btn btn-block btn-danger" onclick="Delete('@item.Id')">Excluir</a>
+                                    </td>
                                 </tr>
                             }
                     </table>
@@ -65,7 +67,7 @@
 <!-- page script -->
 <script>
     $(function () {
-        $('#example1').DataTable();
+        $('#data-table').DataTable();
     });
     function Delete(id) {
         var txt;
@@ -75,7 +77,7 @@
             $.ajax(
                 {
                     type: "POST",
-                    url: '@Url.Action("Delete", "Drivers")',
+                    url: '@Url.Action("Delete", "@ViewBag.ControllerName")',
                     data: {
                         id: id
                     },
@@ -84,7 +86,7 @@
                     },
                     success: function (result) {
                         if (result == true) {
-                            var baseUrl = "/Drivers";
+                            var baseUrl = "/@ViewBag.ControllerName";
                             window.location.reload();
                         }
                         else {

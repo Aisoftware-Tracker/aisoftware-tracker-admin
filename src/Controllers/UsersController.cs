@@ -23,7 +23,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
         public async Task<ActionResult> Index()
         {
             IEnumerable<User> users = await _useCase.FindAll();
-
+            
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+            
             return View(users);
         }
 
@@ -35,16 +37,18 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateUser(User user)
         {
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+            
             try
             {
                 var response = await _useCase.Save(user);
 
-                return RedirectToAction(ActionName.INDEX, RouteValues.USERS);
+                return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
             }
             catch (Exception e)
             {
                 //TODO ver como retornar msg de erro return Json(new { status = false, message = "Erro ao tentar salvar o novo usuário" });
-                return RedirectToAction(ActionName.INDEX, RouteValues.USERS);
+                return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
 
             }
 
@@ -82,7 +86,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             _useCase.Update(user);
 
-            return RedirectToAction(ActionName.INDEX, RouteValues.USERS);
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+
+            return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
         }
     }
 }
