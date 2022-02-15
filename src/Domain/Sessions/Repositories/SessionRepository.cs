@@ -9,35 +9,40 @@ using Aisoftware.Tracker.Admin.Domain.Sessions.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
 using Microsoft.AspNetCore.Http;
+using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
 
 namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
 {
-    public class SessionRepository : ISessionRepository
+
+    public class SessionRepository : BaseRepository<Session>, ISessionRepository
     {
         private readonly IAppConfiguration _config;
         public static Cookie _cookie;
         private readonly string _url;
-        private readonly Uri _uri;
+        private Uri uri;
         private string _cookieValue;
         private readonly IHttpContextAccessor _httpContextAccessor;
-
+        
         public SessionRepository(IAppConfiguration config, IHttpContextAccessor httpContextAccessor)
+        : base(config, httpContextAccessor)
         {
             _config = config;
-            _url = $"{_config.BaseUrl}/{Endpoints.SESSION}";
-            _uri = new Uri(_url);
+            _url = $"{_config.BaseUrl}";
             _httpContextAccessor = httpContextAccessor;
         }
 
+        
         public Cookie GetCookie()
         {
             return _cookie;
         }
 
-        public async Task<Session> Find()
+        public async Task<Session> Find(string endpoint)
         {
             _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
-            
+
+            Uri uri = new Uri($"{_url}/{endpoint}");
+
             var handler = new HttpClientHandler
             {
                 CookieContainer = GetCookieContainer(_cookieValue)
@@ -49,10 +54,10 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
             {
                 var request = new HttpRequestMessage
                 {
-                    RequestUri = _uri
+                    RequestUri = uri
                 };
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(ContentType.JSON));
-                request.Headers.Host = _uri.Host;
+                request.Headers.Host = uri.Host;
 
                 var response = await httpClient.SendAsync(request);
 
@@ -65,14 +70,18 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
             }
         }
 
-        public async Task<Session> Create(Dictionary<string, string> request)
+        public async Task<Session> Create(Dictionary<string, string> request, string endpoint)
         {
-            return await PostFormUrlEncoded<Session>(_url, request);
+            return await PostFormUrlEncoded<Session>(request, endpoint);
         }
 
         //TODO Criar interfaces e Classes genericas paras os verbos http e suas implementacoes
-        private async Task<TResult> PostFormUrlEncoded<TResult>(string url, IEnumerable<KeyValuePair<string, string>> postData)
+        private async Task<TResult> PostFormUrlEncoded<TResult>(IEnumerable<KeyValuePair<string, string>> postData, string endpoint)
         {
+            string url = $"{_url}/{endpoint}";
+
+            Uri uri = new Uri(url);
+
             var cookies = new CookieContainer();
             var handler = new HttpClientHandler
             {
@@ -88,7 +97,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
 
                     var response = await httpClient.PostAsync(url, content);
 
-                    var cookieList = cookies.GetCookies(_uri);
+                    var cookieList = cookies.GetCookies(uri);
 
                     _cookie = cookieList[0];
 
@@ -104,8 +113,10 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
             }
         }
 
-        public async Task Delete()
+        public async Task Delete(string endpoint)
         {
+            Uri uri = new Uri($"{_url}/{endpoint}");
+            
             _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
 
             var handler = new HttpClientHandler
@@ -118,10 +129,10 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Delete,
-                    RequestUri = _uri
+                    RequestUri = uri
                 };
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(ContentType.JSON));
-                request.Headers.Host = _uri.Host;
+                request.Headers.Host = uri.Host;
 
                 var response = await httpClient.SendAsync(request);
 

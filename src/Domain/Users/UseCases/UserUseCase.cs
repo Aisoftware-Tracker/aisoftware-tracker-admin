@@ -69,7 +69,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Users.UseCases
                 Attributes = user.Attributes ?? response.Attributes
             };
 
-            return await _repository.Update(request, Endpoints.USERS);
+            return await _repository.Update(request.Id, request, Endpoints.USERS);
 
         }
 

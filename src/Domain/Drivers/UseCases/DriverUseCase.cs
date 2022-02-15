@@ -50,7 +50,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
                 DocumentValidAt = driver.DocumentValidAt ?? response.DocumentValidAt
             };
 
-            return await _repository.Update(request, Endpoints.DRIVERS);
+            return await _repository.Update(request.Id, request, Endpoints.DRIVERS);
 
         }
 

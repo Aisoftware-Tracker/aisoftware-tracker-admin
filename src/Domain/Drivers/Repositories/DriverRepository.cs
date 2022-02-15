@@ -6,7 +6,6 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using Aisoftware.Tracker.Admin.Models;
 using Aisoftware.Tracker.Admin.Domain.Drivers.Repositories;
-using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;

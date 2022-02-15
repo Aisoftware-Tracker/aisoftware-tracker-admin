@@ -9,7 +9,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
         Task<IEnumerable<T>> FindAll(string endpoint);
         Task<T> FindById(int id, string endpoint);
         Task<T> Save(T request, string endpoint);
-        Task<T> Update(T request, string endpoint);
+        Task<T> Update(int id, T request, string endpoint);
         Task Delete(int id, string endpoint);
     }
 

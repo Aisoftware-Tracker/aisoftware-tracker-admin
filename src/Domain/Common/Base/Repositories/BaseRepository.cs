@@ -158,11 +158,9 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
             }
         }
 
-        public async Task<T> Update(T content, string endpoint)
+        public async Task<T> Update(int id, T content, string endpoint)
         {
-            _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
-
-            Uri uri = new Uri($"{_url}/{endpoint}");
+            Uri uri = new Uri($"{_url}/{endpoint}/{id}");
 
             var handler = new HttpClientHandler
             {
