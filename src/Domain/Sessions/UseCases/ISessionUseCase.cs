@@ -10,5 +10,6 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.UseCases
         Task<Session> Find();
         Task<Session> Create(Login login);
         string GetCookieValue();
+        Task Delete();
     }
 }

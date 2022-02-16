@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
+using System;
 
 namespace Aisoftware.Tracker.Admin.Domain.Sessions.UseCases
 {
@@ -24,6 +25,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.UseCases
 
         public async Task<Session> Find()
         {
+
             return await _repository.Find(Endpoints.SESSION);
         }
 
@@ -40,6 +42,8 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.UseCases
 
         public async Task Delete()
         {
+            var _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
+            
             await _repository.Delete(Endpoints.SESSION);
         }
 
@@ -50,7 +54,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.UseCases
 
         public async Task<IEnumerable<Session>> FindAll()
         {
-            throw await new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public async Task<Session> FindById(int id)
