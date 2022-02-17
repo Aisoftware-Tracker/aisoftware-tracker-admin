@@ -14,12 +14,12 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.UseCases
             _repository = repository;
         }
 
-        public async Task<Session> Find()
+        public async Task<Session> Find(string cookieValue)
         {
-            return await _repository.Find();
+            return await _repository.Find(cookieValue);
         }
 
-        public async Task<Session> Create(Login login)
+        public async Task<Session> Create(Login login, string cookieValue)
         {
             var request = new Dictionary<string, string>
             {
@@ -27,12 +27,12 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.UseCases
                 {"password", login.Password}
             };
 
-            return await _repository.Create(request);
+            return await _repository.Create(request, cookieValue);
         }
 
-        public async Task Delete()
+        public async Task Delete(string cookieValue)
         {
-            await _repository.Delete();
+            await _repository.Delete(cookieValue);
         }
 
         public string GetCookieValue()

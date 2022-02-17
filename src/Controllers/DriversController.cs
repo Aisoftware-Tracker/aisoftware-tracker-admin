@@ -26,7 +26,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
             IEnumerable<Driver> response = await _useCase.FindAll();
 
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
-            
+
             return View(response);
         }
 
@@ -71,7 +71,6 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 return false;
             }
-
         }
 
         public async Task<ActionResult> Update(int id)
@@ -79,14 +78,14 @@ namespace Aisoftware.Tracker.Admin.Controllers
             Driver response = await _useCase.FindById(id);
 
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
-            
+
             return View(response);
         }
 
         [HttpPost]
-        public ActionResult UpdateDriver(Driver request)
+        public async Task<ActionResult> UpdateDriver(Driver request)
         {
-            _useCase.Update(request);
+            await _useCase.Update(request);
 
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
 

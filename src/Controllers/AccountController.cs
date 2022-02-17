@@ -1,8 +1,5 @@
 using System;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
 using Aisoftware.Tracker.Admin.Models;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +11,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
     public class AccountController : Controller
     {
         private readonly ISessionUseCase _useCase;
+        private string _cookieValue;
 
         public AccountController(ISessionUseCase useCase)
         {
@@ -29,7 +27,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             try
             {
-                var response = await _useCase.Create(login);
+                var response = await _useCase.Create(login, _cookieValue);
 
                 this.SetSessions(response);
 
@@ -48,20 +46,22 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public ActionResult Logout()
         {
+            _cookieValue = HttpContext.Session.GetString(CookieName.JSESSIONID);
+
             HttpContext.Session.Clear();
-            _useCase.Delete();
+            _useCase.Delete(_cookieValue);
             return RedirectToAction("Login", "Account");
         }
 
         private void SetSessions(Session session)
         {
-            string cookieValue = _useCase.GetCookieValue();
+            _cookieValue = _useCase.GetCookieValue();
 
-            HttpContext.Session.SetString(CookieName.JSESSIONID, cookieValue);
+            HttpContext.Session.SetString(CookieName.JSESSIONID, _cookieValue);
             HttpContext.Session.SetString(SessionKey.USER_NAME, session.Name);
             HttpContext.Session.SetString(SessionKey.USER_EMAIL, session.Email);
-            HttpContext.Session.SetString(SessionKey.USER_PHOTO, 
-                string.IsNullOrEmpty(session.Photo) ? 
+            HttpContext.Session.SetString(SessionKey.USER_PHOTO,
+                string.IsNullOrEmpty(session.Photo) ?
                 "/dist/img/user-default.png" : session.Photo
             );
         }

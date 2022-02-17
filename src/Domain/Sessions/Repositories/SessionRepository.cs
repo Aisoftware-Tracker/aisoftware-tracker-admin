@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http;
 using Aisoftware.Tracker.Admin.Models;
-using Aisoftware.Tracker.Admin.Domain.Sessions.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +17,6 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
         public static Cookie _cookie;
         private readonly string _url;
         private readonly Uri _uri;
-        private string _cookieValue;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public SessionRepository(IAppConfiguration config, IHttpContextAccessor httpContextAccessor)
@@ -34,13 +32,13 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
             return _cookie;
         }
 
-        public async Task<Session> Find()
+        public async Task<Session> Find(string cookieValue)
         {
-            _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
-            
+            cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
+
             var handler = new HttpClientHandler
             {
-                CookieContainer = GetCookieContainer(_cookieValue)
+                CookieContainer = GetCookieContainer(cookieValue)
             };
 
             var session = new Session();
@@ -65,13 +63,12 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
             }
         }
 
-        public async Task<Session> Create(Dictionary<string, string> request)
+        public async Task<Session> Create(Dictionary<string, string> request, string cookieValue)
         {
-            return await PostFormUrlEncoded<Session>(_url, request);
+            return await PostFormUrlEncoded<Session>(_url, request, cookieValue);
         }
 
-        //TODO Criar interfaces e Classes genericas paras os verbos http e suas implementacoes
-        private async Task<TResult> PostFormUrlEncoded<TResult>(string url, IEnumerable<KeyValuePair<string, string>> postData)
+        private async Task<TResult> PostFormUrlEncoded<TResult>(string url, IEnumerable<KeyValuePair<string, string>> postData, string cookieValue)
         {
             var cookies = new CookieContainer();
             var handler = new HttpClientHandler
@@ -104,13 +101,11 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
             }
         }
 
-        public async Task Delete()
+        public async Task Delete(string cookieValue)
         {
-            _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
-
             var handler = new HttpClientHandler
             {
-                CookieContainer = GetCookieContainer(_cookieValue)
+                CookieContainer = GetCookieContainer(cookieValue)
             };
 
             using (var httpClient = new HttpClient(handler))
@@ -123,9 +118,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.Repositories
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(ContentType.JSON));
                 request.Headers.Host = _uri.Host;
 
-                var response = await httpClient.SendAsync(request);
-
-                var t = response;
+                await httpClient.SendAsync(request);
             }
         }
 

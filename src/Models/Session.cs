@@ -21,7 +21,7 @@ namespace Aisoftware.Tracker.Admin.Models
         private bool _twelveHourFormat;
         private string _coordinateFormat;
         private bool _disabled;
-        private DateTime _expirationTime;
+        private DateTime? _expirationTime;
         private int _deviceLimit;
         private int _userLimit;
         private bool _deviceReadonly;
@@ -45,7 +45,7 @@ namespace Aisoftware.Tracker.Admin.Models
         public bool TwelveHourFormat { get => _twelveHourFormat; set => _twelveHourFormat = value; }
         public string CoordinateFormat { get => _coordinateFormat; set => _coordinateFormat = value; }
         public bool Disabled { get => _disabled; set => _disabled = value; }
-        public DateTime ExpirationTime { get => _expirationTime; set => _expirationTime = value; }
+        public DateTime? ExpirationTime { get => _expirationTime; set => _expirationTime = value; }
         public int DeviceLimit { get => _deviceLimit; set => _deviceLimit = value; }
         public int UserLimit { get => _userLimit; set => _userLimit = value; }
         public bool DeviceReadonly { get => _deviceReadonly; set => _deviceReadonly = value; }
