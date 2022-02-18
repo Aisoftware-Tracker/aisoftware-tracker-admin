@@ -12,8 +12,6 @@ namespace Aisoftware.Tracker.Admin.Controllers
     public class DriversController : Controller
     {
         private readonly IDriverUseCase _useCase;
-        private string _controllerName;
-
         public DriversController(IDriverUseCase useCase)
         {
             _useCase = useCase;
