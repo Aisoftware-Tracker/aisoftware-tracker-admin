@@ -1,11 +1,9 @@
 using System;
-using System.Linq;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Aisoftware.Tracker.Admin.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Aisoftware.Tracker.Admin.Domain.Drivers.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 
@@ -32,12 +30,22 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public ActionResult Create()
         {
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            {
+                return AccessDenied();
+            }
+
             return View();
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateDriver(Driver request)
         {
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            {
+                return AccessDenied();
+            }
+
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
 
             try
@@ -58,6 +66,11 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public bool Delete(int id)
         {
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            {
+                return false;
+            }
+
             try
             {
 
@@ -75,6 +88,10 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public async Task<ActionResult> Update(int id)
         {
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            {
+                return AccessDenied();
+            }
             Driver response = await _useCase.FindById(id);
 
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
@@ -85,11 +102,29 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateDriver(Driver request)
         {
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            {
+                return AccessDenied();
+            }
+
             await _useCase.Update(request);
 
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
 
             return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
+        }
+
+        [HttpPost]
+        public ActionResult Cancel()
+        {
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+
+            return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
+        }
+
+        private ActionResult AccessDenied()
+        {
+            return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
         }
     }
 }

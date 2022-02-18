@@ -1,5 +1,3 @@
-using System;
-
 namespace Aisoftware.Tracker.Admin.Models
 {
     public class ErrorViewModel

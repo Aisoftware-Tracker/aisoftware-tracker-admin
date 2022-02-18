@@ -1,11 +1,9 @@
 using System;
-using System.Linq;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Aisoftware.Tracker.Admin.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Aisoftware.Tracker.Admin.Domain.Users.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 
@@ -22,23 +20,38 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public async Task<ActionResult> Index()
         {
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            {
+                return AccessDenied();
+            }
+
             IEnumerable<User> users = await _useCase.FindAll();
-            
+
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
-            
+
             return View(users);
         }
 
         public ActionResult Create()
         {
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            {
+                return AccessDenied();
+            }
+
             return View();
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateUser(User user)
         {
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            {
+                return AccessDenied();
+            }
+
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
-            
+
             try
             {
                 var response = await _useCase.Save(user);
@@ -57,6 +70,11 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public bool Delete(int id)
         {
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            {
+                return false;
+            }
+
             try
             {
 
@@ -75,20 +93,45 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public async Task<ActionResult> Update(int id)
         {
-            User user = await _useCase.FindById(id);
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            {
+                return AccessDenied();
+            }
 
-            return View(user);
-            //return View(db.User.Where(s => s.Id == id).First());
+            User response = await _useCase.FindById(id);
+
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+
+            return View(response);
         }
 
         [HttpPost]
-        public ActionResult UpdateUser(User user)
+        public async Task<ActionResult> UpdateUser(User request)
         {
-            _useCase.Update(user);
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            {
+                return AccessDenied();
+            }
+
+            await _useCase.Update(request);
 
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
 
             return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
         }
+
+        [HttpPost]
+        public ActionResult Cancel()
+        {
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+
+            return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
+        }
+
+        private ActionResult AccessDenied()
+        {
+            return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
+        }
+
     }
 }

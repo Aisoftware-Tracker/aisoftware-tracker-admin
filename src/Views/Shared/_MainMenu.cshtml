@@ -1,39 +1,64 @@
+@using System
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+   bool readOnly = Convert.ToBoolean(HttpContextAccessor.HttpContext.Session.GetString("userReadOnly"));
+}
+
 <ul class="sidebar-menu" data-widget="tree">
-<li class="header">HEADER</li>
-<!-- Optionally, you can add icons to the links -->
-<!-- <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li> -->
-<li><a href="/"><i class="fa fa-dashboard"></i> <span>Home</span></a></li>
-@* <li class="treeview">
-    <a href="#"><i class="fa fa-user"></i> <span>Doctors</span>
-    <span class="pull-right-container">
+    <li class="header">HEADER</li>
+    <!-- Optionally, you can add icons to the links -->
+    <!-- <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li> -->
+    <li><a href="/"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+    @* <li class="treeview">
+        <a href="#"><i class="fa fa-user"></i> <span>Doctors</span>
+        <span class="pull-right-container">
         <i class="fa fa-angle-left pull-right"></i>
         </span>
-    </a>
-    <ul class="treeview-menu">
-    <li><a href="/Doctors/Create">Create Doctor</a></li>
-    <li><a href="/Doctors">All Doctors</a></li>
-    </ul>
-</li> *@
-<li class="treeview">
-    <a href="#"><i class="fa fa-user"></i> <span>Usuários</span>
-    <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-        </span>
-    </a>
-    <ul class="treeview-menu">
-    <li><a href="/Users/Create">Cadastrar Usuário</a></li>
-    <li><a href="/Users">Todos Usuários</a></li>
-    </ul>
-</li>
-<li class="treeview">
-    <a href="#"><i class="fa fa-user"></i> <span>Motoristas</span>
-    <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-        </span>
-    </a>
-    <ul class="treeview-menu">
-    <li><a href="/Drivers/Create">Cadastrar Motorista</a></li>
-    <li><a href="/Drivers">Todos Motoristas</a></li>
-    </ul>
-</li>
+        </a>
+        <ul class="treeview-menu">
+        <li><a href="/Doctors/Create">Create Doctor</a></li>
+        <li><a href="/Doctors">All Doctors</a></li>
+        </ul>
+        </li> *@
+
+    <li class="treeview">
+        <a href="#"><i class="fa fa-gear"></i> <span>Configurações</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            @if (!readOnly)
+            {
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-user"></i> <span>Usuários</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="/Users/Create">Cadastrar Usuário</a></li>
+                        <li><a href="/Users">Todos Usuários</a></li>
+                    </ul>
+                </li>
+            }
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-id-card"></i> <span>Motoristas</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    @if (!readOnly)
+                    {
+                        <li><a href="/Drivers/Create">Cadastrar Motorista</a></li>
+                    }
+                    <li><a href="/Drivers">Todos Motoristas</a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
 </ul>
