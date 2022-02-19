@@ -50,7 +50,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
             HttpContext.Session.Clear();
             _useCase.Delete(_cookieValue);
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction(ActionName.LOGIN, ControllerName.ACCOUNT);
         }
 
         private void SetSessions(Session session)

@@ -16,6 +16,8 @@ using Aisoftware.Tracker.Admin.Domain.Drivers.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
 using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Devices.Repositories;
+using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Groups.Repositories;
 using Microsoft.Extensions.Logging;
 
 namespace Aisoftware.Tracker.Admin
@@ -51,6 +53,8 @@ namespace Aisoftware.Tracker.Admin
             services.AddScoped<IDriverRepository, DriverRepository>();
             services.AddScoped<IDeviceUseCase, DeviceUseCase>();
             services.AddScoped<IDeviceRepository, DeviceRepository>();
+            services.AddScoped<IGroupUseCase, GroupUseCase>();
+            services.AddScoped<IGroupRepository, GroupRepository>();
 
             services.AddScoped<IAppConfiguration, AppConfiguration>();
             #endregion
