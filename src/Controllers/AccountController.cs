@@ -58,6 +58,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
             _cookieValue = _useCase.GetCookieValue();
 
             HttpContext.Session.SetString(CookieName.JSESSIONID, _cookieValue);
+            HttpContext.Session.SetInt32(SessionKey.USER_ID, session.Id);
             HttpContext.Session.SetString(SessionKey.USER_NAME, session.Name);
             HttpContext.Session.SetString(SessionKey.USER_EMAIL, session.Email);
             HttpContext.Session.SetString(SessionKey.USER_READ_ONLY, session.Readonly.ToString());

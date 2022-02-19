@@ -36,7 +36,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Devices.Model
         {
             return new Dictionary<string, string>
             {
-                { "seta", "fas fa-arrow-right" },
+                { "seta", "<fas fa-location-arrow" },
                 { "padrão", "fas fa-car" },
                 { "animal", "fas fa-paw" },
                 { "bicicleta", "fas fa-bicycle" },
