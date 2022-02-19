@@ -5,6 +5,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Constants
         public const string INDEX = "Index";
         public const string LOGIN = "Login";
         public const string CONTROLLER = "controller";
+        public const string ACTION = "action";
 
     }
 

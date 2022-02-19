@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -18,9 +14,9 @@ using Aisoftware.Tracker.Admin.Domain.Users.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Drivers.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Drivers.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
-using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
-using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
-using Aisoftware.Tracker.Admin.Models;
+using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Devices.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace Aisoftware.Tracker.Admin
 {
@@ -53,7 +49,9 @@ namespace Aisoftware.Tracker.Admin
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IDriverUseCase, DriverUseCase>();
             services.AddScoped<IDriverRepository, DriverRepository>();
-            
+            services.AddScoped<IDeviceUseCase, DeviceUseCase>();
+            services.AddScoped<IDeviceRepository, DeviceRepository>();
+
             services.AddScoped<IAppConfiguration, AppConfiguration>();
             #endregion
 
@@ -61,8 +59,10 @@ namespace Aisoftware.Tracker.Admin
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddFile($"../Logs/{DateTime.Now}.log");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
