@@ -18,8 +18,8 @@
                     <h3 class="box-title">Gerenciar Usuários</h3>
                 </div>
                 <!-- /.box-header -->
-                <div class="box-body">
-                    <table id="data-table" class="table table-bordered table-striped">
+                <div class="box-body overflow-x">
+                    <table id="data-table" class="table table-bordered table-striped display nowrap" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Id</th>
@@ -62,13 +62,16 @@
 </section>
 
 <!-- DataTables -->
-<script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="~/bower_components/datatables.net/js/jquery.dataTables.js"></script>
 <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 
 <!-- page script -->
 <script>
-    $(function () {
-        $('#data-table').DataTable();
+    $(document).ready(function () {
+        $('#data-table').DataTable({
+            "scrollY": 200,
+            "scrollX": true
+        });
     });
     function Delete(id) {
         var txt;

@@ -1,0 +1,12 @@
+.on {
+    color: #198754;
+}
+
+.off {
+    color: #dc3545;
+}
+.overflow-x {
+    width: auto;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
