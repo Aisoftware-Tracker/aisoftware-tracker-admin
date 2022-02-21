@@ -22,6 +22,7 @@ namespace Aisoftware.Tracker.Admin.Models
         private int _accuracy;
         private object _network;
         private ReportRouteAttributes _attributes;
+        
 
         [JsonProperty("id")]
         public int Id { get => _id; set => _id = value; }
