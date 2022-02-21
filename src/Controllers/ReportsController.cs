@@ -22,7 +22,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         private readonly ILogger _logger;
         private const string DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'";
 
-        public ReportsController(IReportSummaryUseCase useCase,
+        public ReportsController(IBaseReportUseCase<ReportSummary> useCase,
             IGroupUseCase group,
             IDeviceUseCase device,
             ILogger<GroupsController> logger)

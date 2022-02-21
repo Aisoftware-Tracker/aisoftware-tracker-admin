@@ -18,9 +18,11 @@ using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Devices.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Groups.Repositories;
-using Aisoftware.Tracker.Admin.Domain.Reports.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Reports.UseCases;
 using Microsoft.Extensions.Logging;
+using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
+using Aisoftware.Tracker.Admin.Models;
+using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 
 namespace Aisoftware.Tracker.Admin
 {
@@ -57,8 +59,11 @@ namespace Aisoftware.Tracker.Admin
             services.AddScoped<IDeviceRepository, DeviceRepository>();
             services.AddScoped<IGroupUseCase, GroupUseCase>();
             services.AddScoped<IGroupRepository, GroupRepository>();
-            services.AddScoped<IReportSummaryUseCase, ReportSummaryUseCase>();
-            services.AddScoped<IReportSummaryRepository, ReportSummaryRepository>();
+            services.AddScoped<IBaseReportUseCase<ReportSummary>, ReportSummaryUseCase>();
+            services.AddScoped<IBaseReportRepository<ReportSummary>, BaseReportRepository<ReportSummary>>();
+            services.AddScoped<IBaseReportUseCase<ReportRoute>, ReportRouteUseCase>();
+            services.AddScoped<IBaseReportRepository<ReportRoute>, BaseReportRepository<ReportRoute>>();
+
 
             services.AddScoped<IAppConfiguration, AppConfiguration>();
             #endregion

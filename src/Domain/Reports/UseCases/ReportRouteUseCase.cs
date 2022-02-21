@@ -8,18 +8,18 @@ using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 
 namespace Aisoftware.Tracker.Admin.Domain.Reports.UseCases
 {
-    public class ReportSummaryUseCase : IBaseReportUseCase<ReportSummary>
+    public class ReportRouteUseCase : IBaseReportUseCase<ReportRoute>
     {
-        private readonly IBaseReportRepository<ReportSummary> _repository;
+        private readonly IBaseReportRepository<ReportRoute> _repository;
 
-        public ReportSummaryUseCase(IBaseReportRepository<ReportSummary> repository)
+        public ReportRouteUseCase(IBaseReportRepository<ReportRoute> repository)
         {
             _repository = repository;
         }
 
-        public async Task<IEnumerable<ReportSummary>> FindAll(IDictionary<string, string> queryParams)
+        public async Task<IEnumerable<ReportRoute>> FindAll(IDictionary<string, string> queryParams)
         {
-            var response = await _repository.FindAll($"{Endpoints.REPORTS}/{Endpoints.SUMMARY}", queryParams);
+            var response = await _repository.FindAll($"{Endpoints.REPORTS}/{Endpoints.ROUTE}", queryParams);
 
             return response;
         }
