@@ -13,7 +13,11 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Constants
         public const string REPORTS = "reports";
         public const string NOTIFICATIONS = "notifications";
         public const string GEOFENCES = "geofences";
-        public const string DRIVERS = "drivers";     
+        public const string DRIVERS = "drivers";
+
+        public const string ROUTE = "route";
+
+        public const string SUMMARY = "summary";
 
     }
 }
