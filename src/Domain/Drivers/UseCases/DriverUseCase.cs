@@ -5,7 +5,6 @@ using Aisoftware.Tracker.Admin.Models;
 using Aisoftware.Tracker.Admin.Domain.Drivers.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
-using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 
 namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
 {

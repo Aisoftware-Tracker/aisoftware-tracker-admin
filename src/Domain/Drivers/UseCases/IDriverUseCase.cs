@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Aisoftware.Tracker.Admin.Models;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 
