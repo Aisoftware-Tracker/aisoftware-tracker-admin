@@ -25,6 +25,15 @@
                                 <th>Id</th>
                                 <th>Nome</th>
                                 <th>Cliente Base</th>
+                                <th>Endereço</th>
+                                <th>Cidade</th>
+                                <th>UF</th>
+                                <th>País</th>
+                                <th>E-mail</th>
+                                <th>Celular</th>
+                                <th>Valor do Plano</th>
+                                <th>Tipo de Cobrança</th>
+                                <th>Data de Vencimento</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -33,9 +42,20 @@
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => item.Id)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                                    <td>@Html.DisplayFor(modelItem => Model.Where(x => x.Id == item.GroupId).FirstOrDefault().Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => Model.Where(x => x.Id ==
+                                    item.GroupId).FirstOrDefault().Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.City)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.State)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Country)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ValorPlano)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.TipoCobranca)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.DataVencimento)</td>
                                     <td>
-                                        <a href="@ViewBag.ControllerName/Update/@item.Id" class="btn btn-block btn-primary">Editar</a>
+                                        <a href="@ViewBag.ControllerName/Update/@item.Id"
+                                        class="btn btn-block btn-primary">Editar</a>
                                         <a href="" class="btn btn-block btn-danger" onclick="Delete('@item.Id')">Excluir</a>
                                     </td>
                                 </tr>
