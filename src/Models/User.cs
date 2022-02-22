@@ -11,6 +11,7 @@ namespace Aisoftware.Tracker.Admin.Models
         private int _id;
         private string _name;
         private string _email;
+        private string _login;
         private string _phone;
         private bool _readonly;
         private bool _administrator;
@@ -40,6 +41,9 @@ namespace Aisoftware.Tracker.Admin.Models
 
         [JsonProperty("name")]
         public string Name { get => _name; set => _name = value; }
+
+        [JsonProperty("login")]
+        public string Login { get => _login; set => _login = value; }
 
         [JsonProperty("email")]
         public string Email { get => _email; set => _email = value; }

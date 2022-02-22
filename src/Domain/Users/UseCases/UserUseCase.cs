@@ -5,7 +5,6 @@ using Aisoftware.Tracker.Admin.Models;
 using Aisoftware.Tracker.Admin.Domain.Users.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
-using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 
 namespace Aisoftware.Tracker.Admin.Domain.Users.UseCases
 {
@@ -35,38 +34,39 @@ namespace Aisoftware.Tracker.Admin.Domain.Users.UseCases
             return await _repository.Save(request, Endpoints.USERS);
         }
 
-        public async Task<User> Update(User user)
+        public async Task<User> Update(User content)
         {
-            User response = await _repository.FindById(user.Id, Endpoints.USERS);
+            User response = await _repository.FindById(content.Id, Endpoints.USERS);
 
             User request = new User
             {
-                Id = user.Id,
-                Name = user.Name ?? response.Name,
-                Email = user.Email ?? response.Email,
-                Phone = user.Phone ?? response.Phone,
-                Readonly = user.Readonly,
-                Administrator = user.Administrator,
-                Map = user.Map ?? response.Map,
-                Latitude = response.Latitude == 0 ? user.Latitude : response.Latitude,
-                Longitude = response.Longitude == 0 ? user.Longitude : response.Longitude,
-                Zoom = response.Zoom == 0 ? user.Zoom : response.Zoom,
-                Password = user.Password ?? response.Password,
-                TwelveHourFormat = user.TwelveHourFormat,
-                CoordinateFormat = user.CoordinateFormat ?? response.CoordinateFormat,
-                Disabled = user.Disabled,
-                ExpirationTime = user.ExpirationTime ?? response.ExpirationTime,
-                DeviceLimit = response.DeviceLimit == 0 ? user.DeviceLimit : response.DeviceLimit,
-                UserLimit = response.UserLimit == 0 ? user.UserLimit : response.UserLimit,
-                DeviceReadonly = user.DeviceReadonly,
-                LimitCommands = user.LimitCommands,
-                PoiLayer = user.PoiLayer ?? response.PoiLayer,
-                Token = user.Token ?? response.Token,
-                Photo = user.Photo ?? response.Photo,
-                Whatsapp = user.Whatsapp ?? response.Whatsapp,
-                Telegram = user.Telegram ?? response.Telegram,
-                Sms = response.Sms == 0 ? user.Sms : response.Sms,
-                Attributes = user.Attributes ?? response.Attributes
+                Id = content.Id,
+                Attributes = content.Attributes ?? response.Attributes,
+                Name = content.Name ?? response.Name,
+                Login = content.Login ?? response.Login,
+                Email = content.Email ?? response.Email,
+                Phone = content.Phone ?? response.Phone,
+                Readonly = content.Readonly,
+                Administrator = content.Administrator,
+                Map = content.Map ?? response.Map,
+                Latitude = response.Latitude == 0 ? content.Latitude : response.Latitude,
+                Longitude = response.Longitude == 0 ? content.Longitude : response.Longitude,
+                Zoom = response.Zoom == 0 ? content.Zoom : response.Zoom,
+                TwelveHourFormat = content.TwelveHourFormat,
+                CoordinateFormat = content.CoordinateFormat ?? response.CoordinateFormat,
+                Disabled = content.Disabled,
+                ExpirationTime = content.ExpirationTime ?? response.ExpirationTime,
+                DeviceLimit = response.DeviceLimit == 0 ? content.DeviceLimit : response.DeviceLimit,
+                UserLimit = response.UserLimit == 0 ? content.UserLimit : response.UserLimit,
+                DeviceReadonly = content.DeviceReadonly,
+                LimitCommands = content.LimitCommands,
+                PoiLayer = content.PoiLayer ?? response.PoiLayer,
+                Token = content.Token ?? response.Token,
+                Photo = content.Photo ?? response.Photo,
+                Whatsapp = content.Whatsapp ?? response.Whatsapp,
+                Telegram = content.Telegram ?? response.Telegram,
+                Sms = response.Sms == 0 ? content.Sms : response.Sms,
+                Password = content.Password ?? response.Password
             };
 
             return await _repository.Update(request, Endpoints.USERS);
