@@ -89,7 +89,10 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public async Task<ActionResult> Update(int id)
         {
-            if (Convert.ToInt32(HttpContext.Session.GetString(SessionKey.USER_ID)) != id )
+            bool isReadOnly = Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY));
+            bool isNotMyUser = Convert.ToInt32(HttpContext.Session.GetString(SessionKey.USER_ID)) != id;
+
+            if (isReadOnly && isNotMyUser)
             {
                 return AccessDenied();
             }
