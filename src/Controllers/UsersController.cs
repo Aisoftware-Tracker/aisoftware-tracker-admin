@@ -77,11 +77,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
             try
             {
-
-
-                //db.User.Where(s => s.Id == id).First();
-                //db.User.Remove(user);
-                //db.SaveChanges();
+                _useCase.Delete(id);
                 return true;
             }
             catch (System.Exception)
@@ -93,7 +89,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public async Task<ActionResult> Update(int id)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToInt32(HttpContext.Session.GetString(SessionKey.USER_ID)) != id )
             {
                 return AccessDenied();
             }
