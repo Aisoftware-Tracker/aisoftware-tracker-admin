@@ -4,7 +4,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Devices.Model
 {
     public static class Category
     {
-        public static Dictionary<string, string> Get()
+        public static IDictionary<string, string> Get()
         {
             return new Dictionary<string, string>
             {
@@ -32,7 +32,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Devices.Model
             };
         }
 
-        public static Dictionary<string, string> GetIcons()
+        public static IDictionary<string, string> GetIcons()
         {
             return new Dictionary<string, string>
             {

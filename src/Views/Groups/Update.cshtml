@@ -19,7 +19,22 @@
                 <div class="form-group">
                     <label for="Name" class="col-sm-2 control-label">Nome</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="Name" value="@Model.Group.Name">
+                        <input type="text" class="form-control" name="Name" placeholder="Nome"
+                            value="@Model.Group.Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Email" class="col-sm-2 control-label">E-mail</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" name="Email" placeholder="email@email.com"
+                            value="@Model.Group.Email">
+                    </div>
+                </div>
+                                    
+                <div class="form-group">
+                    <label for="Phone" class="col-sm-2 control-label">Celular</label>
+                    <div class="col-sm-10">
+                        <input type="tel" class="form-control" name="Phone" maxlength="12" value="@Model.Group.Phone">
                     </div>
                 </div>
                 <div class="form-group">
@@ -29,12 +44,68 @@
                             <option value="">Selecione um Cliente Base</option>
                             @foreach (var item in Model.Groups)
                             {
-                                <!option value="@item.Id" @((Model.Group.GroupId == item.Id) ? "selected" : string.Empty)>@item.Name</!option>
+                                <option value="@item.Id" selected="@( item.Id == Model.Group.Id )">@item.Name</option>
                             }
                         </select>
                     </div>
                 </div>
-                <input type="hidden" name="Id" value="@Model.Group.Id" />
+                <div class="form-group">
+                    <label for="Address" class="col-sm-2 control-label">Endereço</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="Address" placeholder="Endereço"
+                            value="@Model.Group.Address">
+                    </div>
+                    <label for="City" class="col-sm-1 control-label">Cidade</label>
+                    <div class="col-sm-3">
+                        <input type="dtext" class="form-control" name="City" placeholder="Cidade"
+                            value="@Model.Group.City">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="State" class="col-sm-2 control-label">UF</label>
+                    <div class="col-sm-2">
+                        <select class="form-control" name="State">
+                            <option value="">Selecione</option>
+                            @foreach (var item in Aisoftware.Tracker.Admin.Domain.Common.Constants.States.Get())
+                            {
+                                <option value="@item" selected="@( item == Model.Group.State )">@item</option>
+                            }
+                        </select>
+                    </div>
+                    <label for="Country" class="col-sm-1 control-label">País</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" name="Country" placeholder="País"
+                            value="@Model.Group.Country">
+                    </div>
+                    <label for="ValorPlano" class="col-sm-1 control-label">Valor do Plano</label>
+                    <div class="col-sm-3">
+                        <input type="number" class="form-control" name="ValorPlano" placeholder="R$ 50,00"
+                            value="@Model.Group.ValorPlano">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Name" class="col-sm-2 control-label">Tipo Cobrança</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="TipoCobranca" placeholder="Tipo de Cobrança"
+                            value="@Model.Group.TipoCobranca">
+                    </div>
+                    <label for="DataVencimento" class="col-sm-2 control-label">Vencimento</label>
+                    <div class="col-sm-4">
+                        <input type="datetime-local" class="form-control" name="DataVencimento"
+                            value="@Model.Group.DataVencimento">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="ObsFinanceiro" class="col-sm-2 control-label">Obs Financeiro</label>
+                    <div class="col-sm-10">
+                        <textarea type="text" class="form-control" name="ObsFinanceiro" rows="3"
+                            placeholder="Obs Financeiro" value="@Model.Group.ObsFinanceiro">
+                        </textarea>
+                    </div>
+                </div>
             </div>
             <!-- /.box-body -->
             <div class="box-footer">

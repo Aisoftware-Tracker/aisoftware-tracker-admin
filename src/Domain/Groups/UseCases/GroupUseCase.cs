@@ -40,7 +40,21 @@ namespace Aisoftware.Tracker.Admin.Domain.Groups.UseCases
 
             Group request = new Group
             {
-                
+                Id = content.Id,
+                Attributes = content.Attributes ?? response.Attributes,
+                GroupId = content.GroupId,
+                Document = string.IsNullOrEmpty(content.Document) ? response.Document : content.Document,
+                Address = string.IsNullOrEmpty(content.Address) ? response.Address : content.Address,
+                City = string.IsNullOrEmpty(content.City) ? response.City : content.City,
+                State = string.IsNullOrEmpty(content.State) ? response.State : content.State,
+                Country = string.IsNullOrEmpty(content.Country) ? response.Country : content.Country,
+                PostalCode = string.IsNullOrEmpty(content.PostalCode) ? response.PostalCode : content.PostalCode,
+                Email = string.IsNullOrEmpty(content.Email) ? response.Email : content.Email,
+                Phone = string.IsNullOrEmpty(content.Phone) ? response.Phone : content.Phone,
+                ValorPlano = string.IsNullOrEmpty(content.ValorPlano) ? response.ValorPlano : content.ValorPlano,
+                TipoCobranca = string.IsNullOrEmpty(content.TipoCobranca) ? response.TipoCobranca : content.TipoCobranca,
+                DataVencimento = content.DataVencimento ?? response.DataVencimento,
+                ObsFinanceiro = string.IsNullOrEmpty(content.ObsFinanceiro) ? response.ObsFinanceiro : content.ObsFinanceiro
             };
 
             return await _repository.Update(request, Endpoints.GROUPS);
