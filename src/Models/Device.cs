@@ -32,7 +32,7 @@ namespace Aisoftware.Tracker.Admin.Models
 
         
         [JsonProperty("id")]
-        public int Id { get => Id; set => Id = value; }
+        public int Id { get => _id; set => _id = value; }
         
         [JsonProperty("attributes")]
         public object Attributes { get => _attributes; set => _attributes = value; }
