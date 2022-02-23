@@ -62,21 +62,20 @@
                     <li><a href="/Devices">Todos Dispositivos</a></li>
                 </ul>
             </li>
-
-            <li class="treeview">
-                <a href="#"><i class="fa fa-building"></i> <span>Clientes</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    @if (!readOnly)
-                    {
+            @if (!readOnly)
+            {
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-building"></i> <span>Clientes</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
                         <li><a href="/Groups/Create">Cadastrar Clientes</a></li>
-                    }
-                    <li><a href="/Groups">Todos Clientes</a></li>
-                </ul>
-            </li>
+                        <li><a href="/Groups">Todos Clientes</a></li>
+                    </ul>
+                </li>
+            }
         </ul>
     </li>
     <li class="treeview">
