@@ -24,11 +24,11 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Nome</th>
-                                @* <th>Atributos</th> *@
                                 <th>Identificador</th>
                                 <th>Imagem</th>
                                 <th>Documento</th>
                                 <th>Validade do Documento</th>
+                                <th></th>
 
                             </tr>
                         </thead>
@@ -38,13 +38,13 @@
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => item.Id)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                                    @* <td>@Html.DisplayFor(modelItem => item.Attributes)</td> *@
                                     <td>@Html.DisplayFor(modelItem => item.UniqueId)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Photo)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Document)</td>
                                     <td>@Html.DisplayFor(modelItem => item.DocumentValidAt)</td>
                                     <td>
-                                        <a href="@ViewBag.ControllerName/Update/@item.Id" class="btn btn-block btn-primary">Editar</a>
+                                        <a href="@ViewBag.ControllerName/Update/@item.Id"
+                                        class="btn btn-block btn-primary">Editar</a>
                                         <a href="" class="btn btn-block btn-danger" onclick="Delete('@item.Id')">Excluir</a>
                                     </td>
                                 </tr>
@@ -66,8 +66,27 @@
 
 <!-- page script -->
 <script>
-    $(function () {
-        $('#data-table').DataTable();
+    $(document).ready(function () {
+        $('#data-table').DataTable({
+            @* "pagingType": "full_numbers", *@
+            "language": {
+            "sProcessing": "Buscando ...",
+            "sLengthMenu": "Mostrar _MENU_ registos",
+            "sZeroRecords": "Não foram encontrados resultados",
+            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registos",
+            "sInfoEmpty": "Mostrando de 0 até 0 de 0 registos",
+            "sInfoFiltered": "(filtrado de _MAX_ registos no total)",
+            "sInfoPostFix": "",
+            "sSearch": "Pesquisar:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "Primeiro",
+                "sPrevious": "Anterior",
+                "sNext": "Seguinte",
+                "sLast": "Último"
+            }
+        }
+        });
     });
     function Delete(id) {
         var txt;
