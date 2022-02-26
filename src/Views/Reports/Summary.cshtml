@@ -66,12 +66,10 @@
 <!-- DataTables -->
 <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="~/dist/js/dataTablesConfig.js"></script>
 
 <!-- page script -->
 <script>
-    $(function () {
-        $('#data-table').DataTable();
-    });
     function Delete(id) {
         var txt;
         var r = confirm("Você tem certeza que deseja excluir este usuário?");
