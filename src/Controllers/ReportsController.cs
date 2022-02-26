@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
-using Aisoftware.Tracker.Admin.Domain.Reports.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 
@@ -17,17 +16,20 @@ namespace Aisoftware.Tracker.Admin.Controllers
     {
         private readonly IBaseReportUseCase<ReportSummary> _summaryUseCase;
         private readonly IBaseReportUseCase<ReportRoute> _routeUseCase;
+        private readonly IBaseReportUseCase<ReportEvent> _eventUseCase;
         private readonly IGroupUseCase _groupUseCase;
         private readonly IDeviceUseCase _deviceUseCase;
         private readonly ILogger _logger;
         private const string DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'";
 
-        public ReportsController(IBaseReportUseCase<ReportSummary> useCase,
+        public ReportsController(
+            IBaseReportUseCase<ReportSummary> summaryUseCase,
+            
             IGroupUseCase group,
             IDeviceUseCase device,
             ILogger<GroupsController> logger)
         {
-            _summaryUseCase = useCase;
+            _summaryUseCase = summaryUseCase;
             _logger = logger;
             _groupUseCase = group;
             _deviceUseCase = device;
@@ -53,22 +55,29 @@ namespace Aisoftware.Tracker.Admin.Controllers
         public async Task<ActionResult> Summary(
                 [FromQuery] int? deviceId,
                 [FromQuery] int? groupId,
-                [FromQuery] DateTime from,
-                [FromQuery] DateTime to
+                [FromQuery] DateTime? from,
+                [FromQuery] DateTime? to
         )
         {
+
+            if (from == null || to == null)
+            {
+                return Json(new { status = true, message = "Campos de data, De e Até, são obrigatórios" });
+            }
+
             IEnumerable<ReportSummary> response = new List<ReportSummary>();
 
-            string strFrom = from.ToString(DATE_FORMAT);
-            string strTo = to.ToString(DATE_FORMAT);
+            string strFrom = from?.ToString(DATE_FORMAT);
+            string strTo = to?.ToString(DATE_FORMAT);
 
             IDictionary<string, string> queryParams = new Dictionary<string, string>
             {
-                { "deviceId", deviceId.ToString() },
-                { "groupId", groupId.ToString() },
                 { "from", strFrom },
                 { "to", strTo }
             };
+
+            if (deviceId != null) { queryParams.Add("deviceId", deviceId.ToString()); }
+            if (groupId != null) { queryParams.Add("groupId", groupId.ToString()); }
 
             var context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = context.Values[ActionName.CONTROLLER];
@@ -95,6 +104,46 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 [FromQuery] DateTime to
         )
         {
+            IEnumerable<ReportEvent> response = new List<ReportEvent>();
+
+            string strFrom = from.ToString(DATE_FORMAT);
+            string strTo = to.ToString(DATE_FORMAT);
+
+            IDictionary<string, string> queryParams = new Dictionary<string, string>
+            {
+                { "from", strFrom },
+                { "to", strTo }
+            };
+
+            if (deviceId != null) { queryParams.Add("deviceId", deviceId.ToString()); }
+            if (groupId != null) { queryParams.Add("groupId", groupId.ToString()); }
+
+
+            var context = this.ControllerContext.RouteData;
+            ViewBag.ControllerName = context.Values[ActionName.CONTROLLER];
+
+            try
+            {
+                response = await _eventUseCase.FindAll(queryParams);
+
+                _logger.LogInformation($"SUCCESS: { GetType().FullName }::{ context.Values[ActionName.ACTION] }");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"ERROR: { GetType().FullName }::{ context.Values[ActionName.ACTION] }\nEXCEPTION:{ExceptionHelper.InnerException(e).Message}");
+            }
+
+            return View(response);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Event(
+                [FromQuery] int? deviceId,
+                [FromQuery] int? groupId,
+                [FromQuery] DateTime from,
+                [FromQuery] DateTime to
+        )
+        {
             IEnumerable<ReportRoute> response = new List<ReportRoute>();
 
             string strFrom = from.ToString(DATE_FORMAT);
@@ -102,11 +151,13 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
             IDictionary<string, string> queryParams = new Dictionary<string, string>
             {
-                { "deviceId", deviceId.ToString() },
-                { "groupId", groupId.ToString() },
                 { "from", strFrom },
                 { "to", strTo }
             };
+
+            if (deviceId != null) { queryParams.Add("deviceId", deviceId.ToString()); }
+            if (groupId != null) { queryParams.Add("groupId", groupId.ToString()); }
+
 
             var context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = context.Values[ActionName.CONTROLLER];
