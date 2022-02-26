@@ -1,0 +1,102 @@
+@model IEnumerable<Aisoftware.Tracker.Admin.Models.ReportEvent>
+
+<section class="content-header">
+    <h1>
+        Relatórios/Eventos
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Dasheboard</a></li>
+        <li class="active">Relatórios</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Relatórios de Eventos</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body overflow-x">
+                    <table id="data-table" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Tipo</th>
+                                <th>Hora do Servidor</th>
+                                <th>Id do Dispositivo</th>
+                                <th>Id do Posicionamento</th>
+                                <th>Id da Georeferencia</th>
+                                <th>Id da Manutenção</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Type)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ServerTime)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.DeviceId)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.PositionId)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.GeofenceId)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.MaintenanceId)</td>
+                                </tr>
+                            }
+                    </table>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="box-footer">
+                                <a href="/@ViewBag.ControllerName?report=summary" class="btn btn-default">Voltar</a>
+                                <a href="" onclick="alert('Exportar excel ainda nao implementado!')"
+                                    class="btn btn-success pull-right"><i class="fas fa-file-excel"></i> Exportar em
+                                    Excel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
+<!-- DataTables -->
+<script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="~/dist/js/dataTablesConfig.js"></script>
+
+<!-- page script -->
+<script>
+    function Delete(id) {
+        var txt;
+        var r = confirm("Você tem certeza que deseja excluir este usuário?");
+        if (r == true) {
+
+            $.ajax(
+                {
+                    type: "POST",
+                    url: '@Url.Action("Delete", "@ViewBag.ControllerName")',
+                    data: {
+                        id: id
+                    },
+                    error: function (result) {
+                        alert("error");
+                    },
+                    success: function (result) {
+                        if (result == true) {
+                            var baseUrl = "/@ViewBag.ControllerName";
+                            window.location.reload();
+                        }
+                        else {
+                            alert("Houve um problema inesperado, Tente novamente mais tarde!");
+                        }
+                    }
+                });
+        }
+    }
+</script>
