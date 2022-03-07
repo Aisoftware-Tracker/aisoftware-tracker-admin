@@ -99,5 +99,10 @@ namespace Aisoftware.Tracker.Admin.Models
         
         [JsonProperty("dateInstall")]
         public string DateInstall { get => _dateInstall; set => _dateInstall = value; }
+
+        public string LastUpdateStr
+        {
+            get => _lastUpdate?.ToString("dd/MM/yyyy HH:mm:ss") ?? string.Empty;
+        }
     }
 }

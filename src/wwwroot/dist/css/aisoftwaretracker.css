@@ -1,9 +1,13 @@
 .on {
     color: #198754;
+    margin-left: 5px;
+    font-weight: 600;
 }
 
 .off {
     color: #dc3545;
+    margin-left: 5px;
+    font-weight: 600;
 }
 .overflow-x {
     width: auto;

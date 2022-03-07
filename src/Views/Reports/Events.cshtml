@@ -1,4 +1,4 @@
-@model IEnumerable<Aisoftware.Tracker.Admin.Models.ReportEvent>
+@model Aisoftware.Tracker.Admin.Models.ReportEventViewModel
 
 <section class="content-header">
     <h1>
@@ -25,25 +25,30 @@
                                 <th>Id</th>
                                 <th>Tipo</th>
                                 <th>Hora do Servidor</th>
-                                <th>Id do Dispositivo</th>
+                                <th>Dispositivos</th>
                                 <th>Id do Posicionamento</th>
                                 <th>Id da Georeferencia</th>
                                 <th>Id da Manutenção</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model)
+                            @foreach (var item in Model.Events)
                             {
-                                <tr>
-                                    <td>@Html.DisplayFor(modelItem => item.Id)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Type)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.ServerTime)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.DeviceId)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.PositionId)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.GeofenceId)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.MaintenanceId)</td>
-                                </tr>
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                        <td>
+                                            <i class="@Aisoftware.Tracker.Admin.Domain.Reports.Models.EventType.GetIcon()[item.Type]  @item.Type"></i>
+                                            @Html.DisplayFor(modelItem => Aisoftware.Tracker.Admin.Domain.Reports.Models.EventType.Get()[item.Type])
+                                        </td>
+                                        <td>@Html.DisplayFor(modelItem => item.ServerTime)</td>
+                                        <td>@Html.DisplayFor(modelItem => Model.Devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.PositionId)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.GeofenceId)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.MaintenanceId)</td>
+                                    </tr>
                             }
+                            
+                        </tbody>
                     </table>
                     <div class="row">
                         <div class="col-xs-12">
@@ -69,6 +74,38 @@
 <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script src="~/dist/js/dataTablesConfig.js"></script>
+
+<style>
+    .deviceOnline {
+        color: #198754;
+    }
+
+    .deviceOffline {
+        color: #dc3545;
+    }
+
+    .ignitionOn {
+        color: #198754;
+    }
+
+    .ignitionOff {
+        color: #dc3545;
+    }
+
+    .deviceStopped {
+        color: #ffc107;
+    }
+
+    .deviceMoving {
+        color: #0d6efd;
+    }
+
+    .overflow-x {
+        width: auto;
+        overflow-x: scroll;
+        white-space: nowrap;
+    }
+</style>
 
 <!-- page script -->
 <script>

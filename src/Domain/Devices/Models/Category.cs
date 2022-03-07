@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Aisoftware.Tracker.Admin.Domain.Devices.Model
+namespace Aisoftware.Tracker.Admin.Domain.Devices.Models
 {
     public static class Category
     {
@@ -36,7 +36,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Devices.Model
         {
             return new Dictionary<string, string>
             {
-                { "seta", "<fas fa-location-arrow" },
+                { "seta", "fas fa-location-arrow" },
                 { "padrão", "fas fa-car" },
                 { "animal", "fas fa-paw" },
                 { "bicicleta", "fas fa-bicycle" },

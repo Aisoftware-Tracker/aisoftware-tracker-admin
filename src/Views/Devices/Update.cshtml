@@ -46,7 +46,7 @@
                     <label for="Category" class="col-sm-2 control-label">Categoria</label>
                     <div class="col-sm-10">
                         <select class="form-control" name="Category">
-                            @foreach (var item in Aisoftware.Tracker.Admin.Domain.Devices.Model.Category.Get())
+                            @foreach (var item in Aisoftware.Tracker.Admin.Domain.Devices.Models.Category.Get())
                             {
                                 <option value=@Html.DisplayFor(modelItem => item.Key)>
                                     @Html.DisplayFor(modelItem => item.Value)

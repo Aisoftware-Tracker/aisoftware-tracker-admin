@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Aisoftware.Tracker.Admin.Models
 {
     public class DashboardViewModel
@@ -5,6 +7,10 @@ namespace Aisoftware.Tracker.Admin.Models
         public int doctors_count { get; set; }
         public int nurses_count { get; set; }
         public int patients_count { get; set; }
+        public Position Position { get; set; }
+        public IEnumerable<Position> Positions { get; set; }
 
+        public Device Device { get; set; }
+        public IEnumerable<Device> Devices { get; set; }
     }
 }

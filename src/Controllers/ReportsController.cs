@@ -24,12 +24,15 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public ReportsController(
             IBaseReportUseCase<ReportSummary> summaryUseCase,
-            
+            IBaseReportUseCase<ReportRoute> routeUseCase,
+            IBaseReportUseCase<ReportEvent> eventUseCase,
             IGroupUseCase group,
             IDeviceUseCase device,
             ILogger<GroupsController> logger)
         {
             _summaryUseCase = summaryUseCase;
+            _routeUseCase = routeUseCase;
+            _eventUseCase = eventUseCase;
             _logger = logger;
             _groupUseCase = group;
             _deviceUseCase = device;
@@ -97,7 +100,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Route(
+        public async Task<ActionResult> Events(
                 [FromQuery] int? deviceId,
                 [FromQuery] int? groupId,
                 [FromQuery] DateTime from,
@@ -105,6 +108,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
         )
         {
             IEnumerable<ReportEvent> response = new List<ReportEvent>();
+            IEnumerable<Device> devices = new List<Device>();
+            ReportEventViewModel viewModel = new ReportEventViewModel();
 
             string strFrom = from.ToString(DATE_FORMAT);
             string strTo = to.ToString(DATE_FORMAT);
@@ -118,13 +123,13 @@ namespace Aisoftware.Tracker.Admin.Controllers
             if (deviceId != null) { queryParams.Add("deviceId", deviceId.ToString()); }
             if (groupId != null) { queryParams.Add("groupId", groupId.ToString()); }
 
-
             var context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = context.Values[ActionName.CONTROLLER];
 
             try
             {
-                response = await _eventUseCase.FindAll(queryParams);
+                viewModel.Events = await _eventUseCase.FindAll(queryParams);
+                viewModel.Devices = await _deviceUseCase.FindAll();
 
                 _logger.LogInformation($"SUCCESS: { GetType().FullName }::{ context.Values[ActionName.ACTION] }");
             }
@@ -133,11 +138,11 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 _logger.LogError($"ERROR: { GetType().FullName }::{ context.Values[ActionName.ACTION] }\nEXCEPTION:{ExceptionHelper.InnerException(e).Message}");
             }
 
-            return View(response);
+            return View(viewModel);
         }
 
         [HttpGet]
-        public async Task<ActionResult> Event(
+        public async Task<ActionResult> Route(
                 [FromQuery] int? deviceId,
                 [FromQuery] int? groupId,
                 [FromQuery] DateTime from,

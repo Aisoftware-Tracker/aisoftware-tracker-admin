@@ -38,7 +38,7 @@
                                     <td>@Html.DisplayFor(modelItem => item.Id)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
                                     <td>@Html.DisplayFor(modelItem => item.UniqueId)</td>
-                                    <td><i class="@Aisoftware.Tracker.Admin.Domain.Devices.Model.Category.GetIcons()[string.IsNullOrEmpty(item.Category)
+                                    <td><i class="@Aisoftware.Tracker.Admin.Domain.Devices.Models.Category.GetIcons()[string.IsNullOrEmpty(item.Category)
                                         ? "null" : item.Category] 
                                         @(item.Status == "online" ? "on" : "off")">
                                         </i>
@@ -68,6 +68,21 @@
 <script src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script src="~/dist/js/dataTablesConfig.js"></script>
+
+<style>
+    .on {
+        color: #198754;
+    }
+
+    .off {
+        color: #dc3545;
+    }
+    .overflow-x {
+        width: auto;
+        overflow-x: scroll;
+        white-space: nowrap;
+    }
+</style>
 
 <!-- page script -->
 <script>
