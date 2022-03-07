@@ -46,7 +46,7 @@
                 <div class="icon">
                     <i class="fas fa-power-off"></i>
                 </div>
-                <a href="#" class="small-box-footer">Mais Informações <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="Devices" class="small-box-footer">Mais Informações <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <!-- ./col -->
@@ -60,7 +60,7 @@
                 <div class="icon">
                     <i class="fas fa-ban"></i>
                 </div>
-                <a href="#" class="small-box-footer">Mais Informações <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="Devices" class="small-box-footer">Mais Informações <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <!-- ./col -->
@@ -74,7 +74,7 @@
                 <div class="icon">
                     <i class="fas fa-route"></i>
                 </div>
-                <a href="#" class="small-box-footer">Mais Informações <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="Devices" class="small-box-footer">Mais Informações <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <!-- ./col -->
@@ -88,7 +88,7 @@
                 <div class="icon">
                     <i class="fas fa-car"></i>
                 </div>
-                <a href="#" class="small-box-footer">Mais Informações <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="Devices" class="small-box-footer">Mais Informações <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <!-- ./col -->
@@ -157,7 +157,7 @@
                         <thead>
                             <tr>
                                 <th>Nome</th>
-                                <th>Categoria</th>
+                                <th>Status</th>
                                 <th>Última Comunicação</th>
                                 <th>Velocidade Km/h</th>
                                 <th></th>
@@ -166,25 +166,29 @@
                         <tbody>
                             @foreach (var item in Model.Devices)
                             {
+                                bool isMotion = Model.Positions.Where(p => p.DeviceId == item.Id && item.Status == "online")?.FirstOrDefault()?.Attributes?.Motion ?? false;
+
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
                                     <td>
                                         <i class="@Category.GetIcons()[item.Category ?? "null"] 
-                                        @(item.Status == "online" ? "on" : "off")">
+                                        @(item.Status == "online" ? "on" : "off")" title="@item.Status">
                                         </i>
                                         @Html.DisplayFor(modelItem => item.Category)
-                                        <span class="@(item.Status == "online" ? "label label-success" : "label label-danger") pull-right" style="margin-left : 5px">
+                                        <span class="@(Model.Positions.Where(p => p.DeviceId == item.Id).FirstOrDefault().Attributes.Ignition ? "label label-success" : "label label-danger") pull-right" style="margin-left : 5px">
                                             <i class="fas fa-key"></i>&nbsp;
                                             @(Model.Positions.Where(p => p.DeviceId == item.Id).FirstOrDefault().Attributes.Ignition ? "ingnição ligada" : "ingnição desligada")
                                         </span>
-
+                                        <span class="@(isMotion ? "label label-primary" : "label label-default") pull-right">
+                                          <i class="@(isMotion ? "fas fa-route" : "fas fa-ban")"></i> &nbsp; @(isMotion ? "Movimento" : "Parado") 
+                                        </span>
                                     </td>
                                     <td>@Html.DisplayFor(modelItem => item.LastUpdateStr)</td>
                                     <td>@Html.DisplayFor(modelItem => 
                                         (Model.Positions.Where(p => p.DeviceId == item.Id).FirstOrDefault().Speed))
                                     </td>
                                     <td>
-                                        <a href="@ViewBag.ControllerName/Update/@item.Id"
+                                        <a href="Devices/Update/@item.Id"
                                         class="btn btn-block btn-primary">Editar</a>
                                         <a href="" class="btn btn-block btn-danger" onclick="Delete('@item.Id')">Excluir</a>
                                     </td>
