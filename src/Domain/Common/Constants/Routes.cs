@@ -13,6 +13,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Constants
     {
         public const string HOME = "Home";
         public const string ACCOUNT = "Account";
+        public const string MAPS = "Maps";
 
     }
 

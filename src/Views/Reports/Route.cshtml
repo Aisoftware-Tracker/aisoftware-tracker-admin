@@ -40,7 +40,7 @@
                                 <th>Ignição</th>
                                 <th>Status</th>
                                 <th>Distancia</th>
-                                <th>Distancia Total</th>
+                                <th>Distancia Total /Km</th>
                                 <th>Movimentação</th>
                                 <th>Horas</th>
                             </tr>
@@ -52,13 +52,13 @@
                                     <td>@Html.DisplayFor(modelItem => item.Id)</td>
                                     <td>@Html.DisplayFor(modelItem => item.DeviceId)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Protocol)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.DeviceTime)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.FixTime)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.ServerTime)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.DeviceTimeStr)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.FixTimeStr)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ServerTimeStr)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Outdated)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Valid)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Latitude)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Longitude)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.LatitudeStr)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.LongitudeStr)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Altitude)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Speed)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Address)</td>
@@ -76,8 +76,13 @@
                         <div class="col-xs-12">
                             <div class="box-footer">
                                 <a href="/@ViewBag.ControllerName?report=route" class="btn btn-default">Voltar</a>
+
                                 <a href="" onclick="alert('Exportar excel ainda nao implementado!')"
-                                    class="btn btn-success pull-right"><i class="fas fa-file-excel"></i> Exportar em Excel</a>
+                                    class="btn btn-success pull-right" style="margin-left: 15px;"><i
+                                        class="fas fa-file-excel"></i> Exportar em Excel</a>
+
+                                <a href="/Maps?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to"
+                                    class="btn btn-primary pull-right"><i class="fa fa-map"></i> Ver Rota no Mapa</a>
                             </div>
                         </div>
                     </div>
@@ -99,7 +104,6 @@
 <!-- page script -->
 <script>
     function Delete(report) {
-        alert('foi')
         $.ajax(
             {
                 type: "POST",

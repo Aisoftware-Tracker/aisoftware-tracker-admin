@@ -15,8 +15,8 @@ namespace Aisoftware.Tracker.Admin.Models
         private DateTime? _fixTime;
         private bool _outdated;
         private bool _valid;
-        private double _latitude;
-        private double _longitude;
+        private decimal _latitude;
+        private decimal _longitude;
         private double _altitude;
         private double _speed;
         private double _course;
@@ -55,10 +55,10 @@ namespace Aisoftware.Tracker.Admin.Models
         public bool Valid { get => _valid; set => _valid = value; }
 
         [JsonProperty("latitude")]
-        public double Latitude { get => _latitude; set => _latitude = value; }
+        public decimal Latitude { get => _latitude; set => _latitude = value; }
 
         [JsonProperty("longitude")]
-        public double Longitude { get => _longitude; set => _longitude = value; }
+        public decimal Longitude { get => _longitude; set => _longitude = value; }
 
         [JsonProperty("altitude")]
         public double Altitude { get => _altitude; set => _altitude = value; }

@@ -135,9 +135,11 @@
                 </div>
                 <div class="box-body chart-responsive">
                     <div id="map" style="height: 300px; position: relative;"></div>
+                    <div class="small-box-footer" style="padding-left: 10px;">
+                        <a href="Maps" class="small-box-footer">Mais Informações <i class="fas fa-arrow-circle-right" aria-hidden="true"></i></a>
+                    </div>
                 </div>
                 <!-- /.box-body -->
-                <a href="#" class="small-box-footer">Mais Informações <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </section>
         <!-- right col -->
@@ -167,6 +169,9 @@
                             @foreach (var item in Model.Devices)
                             {
                                 bool isMotion = Model.Positions.Where(p => p.DeviceId == item.Id && item.Status == "online")?.FirstOrDefault()?.Attributes?.Motion ?? false;
+                                var position = Model.Positions.Where(p => p.DeviceId == item.Id)?.FirstOrDefault();
+                                decimal lat = position.Latitude;
+                                decimal lng = position.Longitude;
 
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
@@ -190,7 +195,8 @@
                                     <td>
                                         <a href="Devices/Update/@item.Id"
                                         class="btn btn-block btn-primary">Editar</a>
-                                        <a href="" class="btn btn-block btn-danger" onclick="Delete('@item.Id')">Excluir</a>
+                                        <a href="https://www.google.com/maps/dir/@lat,@lng/@@@lat,@lng,14z" target="_blank" class="btn btn-block btn-danger">
+                                        <i class="fa fa-google"></i> Mostrar no Mapa</a>
                                     </td>
                                 </tr>
                             }
@@ -214,14 +220,13 @@
 <script src="~/dist/js/dataTablesConfig.js"></script>
 
 
-  <style>
+<style>
     #map {
-      height: 180px;
-      position: relative;
+        height: 180px;
+        position: relative;
     }
-  </style>
+</style>
 <script>
-
     const MULTIPLIER = 60000;
     let min = 10;
     ms = MULTIPLIER * min;
@@ -293,29 +298,12 @@
 		</text>
 	}
 
-    @* var circle = L.circle([51.508, -0.11], {
-      color: 'red',
-      fillColor: '#f03',
-      fillOpacity: 0.5,
-      radius: 500
-    }).addTo(map);
-
-    var polygon = L.polygon([
-      [51.509, -0.08],
-      [51.503, -0.06],
-      [51.51, -0.047],
-      [51.54, -0.050]
-    ]).addTo(map); *@
-
-    @* circle.bindPopup("I am a circle.");
-    polygon.bindPopup("I am a polygon."); *@
-
     var popup = L.popup();
 
     function onMapClick(e) {
       popup
         .setLatLng(e.latlng)
-        .setContent("Voce clicou no mapa em " + e.latlng.toString())
+        .setContent("Latitude e longitude " + e.latlng.toString())
         .openOn(map);
     }
 

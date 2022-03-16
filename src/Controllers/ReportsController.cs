@@ -149,8 +149,47 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 [FromQuery] DateTime to
         )
         {
-            IEnumerable<ReportRoute> response = new List<ReportRoute>();
+            var response = await GetReportRoute(deviceId, groupId, from, to);
+            ViewBag.deviceId = deviceId;
+            ViewBag.groupId = groupId;
+            ViewBag.from = from;
+            ViewBag.to = to;
 
+            return View(response);
+        }
+
+        [HttpGet]
+        public IActionResult TrackRouteMap(
+                [FromQuery] int? deviceId,
+                [FromQuery] int? groupId,
+                [FromQuery] DateTime from,
+                [FromQuery] DateTime to
+        )
+        {
+            return RedirectToAction(ActionName.INDEX, ControllerName.MAPS, new { deviceId, groupId, from, to });
+        }
+
+        [HttpPost]
+        public ActionResult Cancel(string report)
+        {
+            var context = this.ControllerContext.RouteData;
+            return RedirectToAction(ActionName.INDEX, $"{context.Values[ActionName.CONTROLLER]}?report={report}");
+        }
+
+        private ActionResult AccessDenied()
+        {
+            _logger.LogWarning($"TENTATIVA DE ACESSO: { GetType().FullName }\n{ HttpContext.Session.GetString(SessionKey.USER_EMAIL) }");
+
+            return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
+        }
+
+        private async Task<IEnumerable<ReportRoute>> GetReportRoute(
+                [FromQuery] int? deviceId,
+                [FromQuery] int? groupId,
+                [FromQuery] DateTime from,
+                [FromQuery] DateTime to
+        )
+        {
             string strFrom = from.ToString(DATE_FORMAT);
             string strTo = to.ToString(DATE_FORMAT);
 
@@ -167,6 +206,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
             var context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = context.Values[ActionName.CONTROLLER];
 
+            IEnumerable<ReportRoute> response = new List<ReportRoute>();
+
             try
             {
                 response = await _routeUseCase.FindAll(queryParams);
@@ -178,21 +219,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 _logger.LogError($"ERROR: { GetType().FullName }::{ context.Values[ActionName.ACTION] }\nEXCEPTION:{ExceptionHelper.InnerException(e).Message}");
             }
 
-            return View(response);
-        }
-
-        [HttpPost]
-        public ActionResult Cancel(string report)
-        {
-            var context = this.ControllerContext.RouteData;
-            return RedirectToAction(ActionName.INDEX, $"{context.Values[ActionName.CONTROLLER]}?report={report}");
-        }
-
-        private ActionResult AccessDenied()
-        {
-            _logger.LogWarning($"TENTATIVA DE ACESSO: { GetType().FullName }\n{ HttpContext.Session.GetString(SessionKey.USER_EMAIL) }");
-
-            return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
+            return response;
         }
 
         private IDictionary<string, string> Title()

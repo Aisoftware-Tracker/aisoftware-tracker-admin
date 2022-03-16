@@ -32,14 +32,12 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
             DashboardViewModel dashboard = new DashboardViewModel
             {
-                doctors_count = 10,//db.Doctors.Count()
-                nurses_count = 10,//db.Nurses.Count()
-                patients_count = 5,//db.Patients.Count()
                 Devices = await _deviceUseCase.FindAll(),
                 Positions = await _positionUseCase.FindAll()
             };
 
             return View(dashboard);
         }
+
     }
 }
