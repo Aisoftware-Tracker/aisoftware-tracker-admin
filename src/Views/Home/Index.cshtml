@@ -196,7 +196,7 @@
                                         <a href="Devices/Update/@item.Id"
                                         class="btn btn-block btn-primary">Editar</a>
                                         <a href="https://www.google.com/maps/dir/@lat,@lng/@@@lat,@lng,14z" target="_blank" class="btn btn-block btn-danger">
-                                        <i class="fa fa-google"></i> Mostrar no Mapa</a>
+                                        <i class="fa fa-google"></i> Ver no Mapa</a>
                                     </td>
                                 </tr>
                             }
@@ -264,9 +264,6 @@
       zoomOffset: -1
     }).addTo(map);
 
-
-    console.log(@devicesTotal);
-
     @foreach(var item in Model.Positions)
 	{
         string nameIcon = @Model.Devices.Where(d => d.Id == item.DeviceId).FirstOrDefault().Category;
@@ -275,6 +272,7 @@
         string clazz = icon + " " + onOf; 
         string deviceName = @Model.Devices.Where(d => d.Id == item.DeviceId).FirstOrDefault().Name;
         string positionAddress = @item.Address;
+        string urlMap = "https://www.google.com/maps/dir/" + @item.Latitude + "," + @item.Longitude + "/@" + @item.Latitude + "," + @item.Longitude + ",14z";
 
 	   <text>
 			var lat = @item.Latitude;
@@ -293,7 +291,7 @@
 
             var marker = L.marker([lat, long], { icon: myIcon }).addTo(map);
             
-            marker.bindPopup("<b>Dispositivo:</b> @deviceName <br> <b>Ultimo endereço:</b> @positionAddress").openPopup();
+            marker.bindPopup("<b>Dispositivo:</b> @deviceName <br> <b>Ultimo endereço:</b> @positionAddress <br><b>Visualizar:</b> <a href= @urlMap target='_blank'>Ver no Google maps</a>").openPopup();
            
 		</text>
 	}
