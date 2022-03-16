@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
     public class DriverUseCase : IDriverUseCase
     {
         private readonly IBaseRepository<Driver> _repository;
+        private const string FORMAT_DATE_BR = "dd/MM/yyyy";
+        private const string FORMAT_TIME_00 = "T00:00";
 
         public DriverUseCase(IDriverRepository repository)
         {
@@ -21,12 +24,19 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
         {
             IEnumerable<Driver> response = await _repository.FindAll(Endpoints.DRIVERS);
 
+            foreach (var item in response)
+            {
+                item.DocumentValidAt = Convert.ToDateTime(item.DocumentValidAt).ToString(FORMAT_DATE_BR);
+            }
+
             return response.OrderBy(driver => driver.Id);
         }
 
         public async Task<Driver> FindById(int id)
         {
-            return await _repository.FindById(id, Endpoints.DRIVERS);
+            var driver = await _repository.FindById(id, Endpoints.DRIVERS);
+            driver.DocumentValidAt = $"{driver.DocumentValidAt}{FORMAT_TIME_00}";
+            return driver;
         }
 
         public async Task<Driver> Save(Driver request)
@@ -37,6 +47,8 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
         public async Task<Driver> Update(Driver driver)
         {
             Driver response = await _repository.FindById(driver.Id, Endpoints.DRIVERS);
+
+            driver.DocumentValidAt = driver.DocumentValidAt.Replace(FORMAT_TIME_00, string.Empty);
 
             Driver request = new Driver
             {

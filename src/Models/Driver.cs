@@ -11,7 +11,7 @@ namespace Aisoftware.Tracker.Admin.Models
         private string _uniqueId;
         private string _photo;
         private string _document;
-        private DateTime? _documentValidAt;
+        private string _documentValidAt;
 
         [JsonProperty("id")]
         public int Id { get => _id; set => _id = value; }
@@ -32,6 +32,6 @@ namespace Aisoftware.Tracker.Admin.Models
         public string Document { get => _document; set => _document = value; }
         
         [JsonProperty("documentValidAt")]
-        public DateTime? DocumentValidAt { get => _documentValidAt; set => _documentValidAt = value; }
+        public string DocumentValidAt { get => _documentValidAt; set => _documentValidAt = value; }
     }
 }
