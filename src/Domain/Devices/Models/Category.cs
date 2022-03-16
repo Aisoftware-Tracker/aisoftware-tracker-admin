@@ -28,6 +28,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Devices.Models
                 { "bonde", "Bonde" },
                 { "onibus eltrico", "Onibus eltrico" },
                 { "caminhão", "Caminhão" },
+                { "truck", "Caminhão" },
                 { "van", "Van" }
             };
         }
@@ -56,6 +57,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Devices.Models
                 { "bonde", "fas fa-train-tram" },
                 { "onibus eltrico", "fas fa-bus-alt" },
                 { "caminhão", "fas fa-truck" },
+                { "truck", "fas fa-truck" },
                 { "van", "fas fa-shuttle-van" },
                 { "null", "fas fa-question" }
             };
