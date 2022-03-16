@@ -92,6 +92,7 @@
             string clazz = icon + " " + onOf; 
             string deviceName = @Model.Devices.Where(d => d.Id == item.DeviceId).FirstOrDefault().Name;
             string positionAddress = @item.Address;
+            string urlMap = "https://www.google.com/maps/place/" + @item.Latitude + "," + @item.Longitude + "/@" + @item.Latitude + "," + @item.Longitude + ",17z";
 
         <text>
                 var lat = @item.Latitude;
@@ -110,7 +111,7 @@
 
                 var marker = L.marker([lat, long], { icon: myIcon }).addTo(map);
                 
-                marker.bindPopup("<b>Dispositivo:</b> @deviceName <br> <b>Ultimo endereço:</b> @positionAddress").openPopup();
+                marker.bindPopup("<b>Dispositivo:</b> @deviceName <br> <b>Ultimo endereço:</b> @positionAddress <br><b>Visualizar:</b> <a href= @urlMap target='_blank'>Ver no Google maps</a>").openPopup();
             
             </text>
         }

@@ -195,7 +195,7 @@
                                     <td>
                                         <a href="Devices/Update/@item.Id"
                                         class="btn btn-block btn-primary">Editar</a>
-                                        <a href="https://www.google.com/maps/dir/@lat,@lng/@@@lat,@lng,14z" target="_blank" class="btn btn-block btn-danger">
+                                        <a href="https://www.google.com/maps/place/@lat,@lng/@@@lat,@lng,17z" target="_blank" class="btn btn-block btn-danger">
                                         <i class="fa fa-google"></i> Ver no Mapa</a>
                                     </td>
                                 </tr>
@@ -272,7 +272,7 @@
         string clazz = icon + " " + onOf; 
         string deviceName = @Model.Devices.Where(d => d.Id == item.DeviceId).FirstOrDefault().Name;
         string positionAddress = @item.Address;
-        string urlMap = "https://www.google.com/maps/dir/" + @item.Latitude + "," + @item.Longitude + "/@" + @item.Latitude + "," + @item.Longitude + ",14z";
+        string urlMap = "https://www.google.com/maps/place/" + @item.Latitude + "," + @item.Longitude + "/@" + @item.Latitude + "," + @item.Longitude + ",17z";
 
 	   <text>
 			var lat = @item.Latitude;
