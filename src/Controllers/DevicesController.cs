@@ -14,6 +14,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
     {
         private readonly IDeviceUseCase _useCase;
         private readonly ILogger _logger;
+        
         public DevicesController(IDeviceUseCase useCase, ILogger<DevicesController> logger)
         {
             _useCase = useCase;

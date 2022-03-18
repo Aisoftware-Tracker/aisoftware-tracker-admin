@@ -1,6 +1,6 @@
 using System;
 
-namespace Aisoftware.Tracker.Admin.Controllers
+namespace Aisoftware.Tracker.Admin
 {
     public static class ExceptionHelper
     {
