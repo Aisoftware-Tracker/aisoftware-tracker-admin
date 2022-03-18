@@ -84,25 +84,27 @@ namespace Aisoftware.Tracker.Admin.Controllers
         }
 
         [HttpPost]
-        public bool Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
             {
-                return false;
+                return AccessDenied();
             }
+
+            _context = this.ControllerContext.RouteData;
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
             try
             {
+                await _useCase.Delete(id);
+                _logger.LogInformation(LogUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
+                return Ok();
 
-
-                //db.Driver.Where(s => s.Id == id).First();
-                //db.Driver.Remove(Driver);
-                //db.SaveChanges();
-                return true;
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
-                return false;
+                _logger.LogError(LogUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
+                return StatusCode(500);
             }
         }
 
@@ -112,9 +114,21 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 return AccessDenied();
             }
-            Driver response = await _useCase.FindById(id);
 
-            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+            Driver response = new Driver();
+            _context = this.ControllerContext.RouteData;
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
+
+            try
+            {
+                response = await _useCase.FindById(id);
+
+                _logger.LogInformation(LogUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(LogUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
+            }
 
             return View(response);
         }
@@ -127,9 +141,18 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 return AccessDenied();
             }
 
-            await _useCase.Update(request);
+            _context = this.ControllerContext.RouteData;
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
-            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+            try
+            {
+                await _useCase.Update(request);
+                _logger.LogInformation(LogUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(LogUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
+            }
 
             return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
         }
@@ -144,6 +167,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         private ActionResult AccessDenied()
         {
+            _logger.LogError(LogUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), "401 - Nao Autorizado"));
             return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
         }
     }

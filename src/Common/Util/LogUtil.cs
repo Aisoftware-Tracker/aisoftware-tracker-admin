@@ -12,7 +12,12 @@ namespace Aisoftware.Tracker.Admin.Common.Util
 
         public static string Error(string className, string ActionName, Exception exception)
         {
-            return $"ERROR: { className }::{ ActionName }\nEXCEPTION:{ExceptionHelper.InnerException(exception).Message}";
+            return $"ERROR: { className }::{ ActionName }\nEXCEPTION:{ExceptionHelper.InnerException(exception)?.Message}";
+        }
+
+        public static string Error(string className, string ActionName, string message)
+        {
+            return $"ERROR: { className }::{ ActionName }\nMESSAGE:{message}";
         }
     }
 }

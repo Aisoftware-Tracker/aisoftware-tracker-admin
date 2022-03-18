@@ -6,7 +6,7 @@ namespace Aisoftware.Tracker.Admin
     {
         public static Exception InnerException(Exception e)
         {
-            if (e.InnerException != null)
+            if (e?.InnerException != null)
             {
                 InnerException(e.InnerException);
             }
