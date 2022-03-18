@@ -41,6 +41,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
 
         public async Task<Driver> Save(Driver request)
         {
+            request.DocumentValidAt = request.DocumentValidAt.Remove(10, 6);
             return await _repository.Save(request, Endpoints.DRIVERS);
         }
 
