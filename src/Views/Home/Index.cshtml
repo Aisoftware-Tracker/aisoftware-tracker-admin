@@ -162,6 +162,8 @@
                                 <th>Status</th>
                                 <th>Última Comunicação</th>
                                 <th>Velocidade Km/h</th>
+                                <th>Distância Total</th>
+                                <th>Horas</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -180,18 +182,18 @@
                                         @(item.Status == "online" ? "on" : "off")" title="@item.Status">
                                         </i>
                                         @Html.DisplayFor(modelItem => item.Category)
-                                        <span class="@(Model.Positions.Where(p => p.DeviceId == item.Id).FirstOrDefault().Attributes.Ignition ? "label label-success" : "label label-danger") pull-right" style="margin-left : 5px">
+                                        <span class="@(position.Attributes.Ignition ? "label label-success" : "label label-danger") pull-right" style="margin-left : 5px">
                                             <i class="fas fa-key"></i>&nbsp;
-                                            @(Model.Positions.Where(p => p.DeviceId == item.Id).FirstOrDefault().Attributes.Ignition ? "ingnição ligada" : "ingnição desligada")
+                                            @(position.Attributes.Ignition ? "ingnição ligada" : "ingnição desligada")
                                         </span>
                                         <span class="@(isMotion ? "label label-primary" : "label label-default") pull-right">
                                           <i class="@(isMotion ? "fas fa-route" : "fas fa-ban")"></i> &nbsp; @(isMotion ? "Movimento" : "Parado") 
                                         </span>
                                     </td>
                                     <td>@Html.DisplayFor(modelItem => item.LastUpdateStr)</td>
-                                    <td>@Html.DisplayFor(modelItem => 
-                                        (Model.Positions.Where(p => p.DeviceId == item.Id).FirstOrDefault().Speed))
-                                    </td>
+                                    <td>@Html.DisplayFor(modelItem => position.Speed)</td>
+                                    <td>@Html.DisplayFor(modelItem => position.Attributes.TotalDistance)</td>
+                                    <td>@Html.DisplayFor(modelItem => position.Attributes.Hours)</td>
                                     <td>
                                         <a href="Devices/Update/@item.Id"
                                         class="btn btn-block btn-primary">Editar</a>
