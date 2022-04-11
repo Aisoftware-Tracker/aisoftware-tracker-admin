@@ -25,6 +25,7 @@ using Aisoftware.Tracker.Admin.Models;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Positions.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Positions.Repositories;
+using Aisoftware.Tracker.Admin.Common.Util;
 
 namespace Aisoftware.Tracker.Admin
 {
@@ -69,6 +70,9 @@ namespace Aisoftware.Tracker.Admin
             services.AddScoped<IBaseReportRepository<ReportRoute>, BaseReportRepository<ReportRoute>>();
             services.AddScoped<IBaseReportUseCase<ReportEvent>, ReportEventUseCase>();
             services.AddScoped<IBaseReportRepository<ReportEvent>, BaseReportRepository<ReportEvent>>();
+
+            services.AddScoped<ISessionUtil, SessionUtil>();
+            services.AddScoped<ILogUtil, LogUtil>();
 
             services.AddScoped<IAppConfiguration, AppConfiguration>();
             #endregion

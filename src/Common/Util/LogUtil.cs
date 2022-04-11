@@ -1,18 +1,41 @@
 using System;
 using Aisoftware.Tracker.Admin;
+using Aisoftware.Tracker.Admin.Common.Util;
 
 namespace Aisoftware.Tracker.Admin.Common.Util
 {
-    public static class LogUtil
+    public class LogUtil : ILogUtil
     {
-        public static string Succes(string className, string ActionName)
+        private readonly ISessionUtil _sessionUtil;
+
+        public LogUtil(ISessionUtil sessionUtil)
         {
-            return $"SUCCESS: { className }::{ ActionName }";
+            _sessionUtil = sessionUtil;
         }
 
-        public static string Error(string className, string ActionName, Exception exception)
+        public string Succes(string className, string ActionName)
         {
-            return $"ERROR: { className }::{ ActionName }\nEXCEPTION:{ExceptionHelper.InnerException(exception).Message}";
+            return GetMessage("SUCCESS", className, ActionName);
         }
+
+        public string Error(string className, string ActionName, Exception exception = null)
+        {
+            return GetMessage("ERROR", className, ActionName, exception);
+        }
+
+        public string Unauthorized(string className, string ActionName)
+        {
+            return GetMessage("ACCESS_DENIED", className, ActionName);
+        }
+
+        private string GetMessage(string type, string className, string actionName, Exception exception = null)
+        {
+            string exceptionMessage = exception == null ? string.Empty :  $"\nEXCEPTION: {ExceptionHelper.InnerException(exception).Message}";
+            string userMessage = "USER: ";
+            userMessage += string.IsNullOrEmpty(_sessionUtil.GetUserNameAndEmail()) ? "ERROR_NOT_FOUND" : _sessionUtil.GetUserNameAndEmail();
+
+            return $"{type}: {className}::{actionName}; {userMessage}; {exceptionMessage}";
+        }
+
     }
 }
