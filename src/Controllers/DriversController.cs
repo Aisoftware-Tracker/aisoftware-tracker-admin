@@ -16,12 +16,14 @@ namespace Aisoftware.Tracker.Admin.Controllers
     {
         private readonly IDriverUseCase _useCase;
         private readonly ILogger _logger;
+        private readonly ILogUtil _logUtil;
         private RouteData _context;
 
-        public DriversController(IDriverUseCase useCase, ILogger<DevicesController> logger)
+        public DriversController(IDriverUseCase useCase, ILogger<DevicesController> logger, ILogUtil logUtil)
         {
             _useCase = useCase;
             _logger = logger;
+            _logUtil = logUtil;
         }
 
         public async Task<ActionResult> Index()
@@ -34,11 +36,12 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 response = await _useCase.FindAll();
 
-                _logger.LogInformation(LogUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
+                System.Console.WriteLine(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
             catch (Exception e)
             {
-                _logger.LogError(LogUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
             }
 
             return View(response);
@@ -69,21 +72,21 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 var response = await _useCase.Save(request);
 
-                _logger.LogInformation(LogUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
 
                 return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
             }
             catch (Exception e)
             {
                 //TODO ver como retornar msg de erro return Json(new { status = false, message = "Erro ao tentar salvar o novo usuário" });
-                _logger.LogError(LogUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
 
                 return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
             }
 
         }
 
-        [HttpPost]
+        [HttpDelete]
         public bool Delete(int id)
         {
             if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
@@ -91,17 +94,17 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 return false;
             }
 
+            _context = this.ControllerContext.RouteData;
+
             try
             {
-
-
-                //db.Driver.Where(s => s.Id == id).First();
-                //db.Driver.Remove(Driver);
-                //db.SaveChanges();
+                _useCase.Delete(id);
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
                 return true;
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
                 return false;
             }
         }
@@ -112,11 +115,21 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 return AccessDenied();
             }
-            Driver response = await _useCase.FindById(id);
 
-            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+            _context = this.ControllerContext.RouteData;
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
-            return View(response);
+            try
+            {
+                Driver response = await _useCase.FindById(id);
+                return View(response);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
+                return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
+            }
+
         }
 
         [HttpPost]
@@ -127,7 +140,19 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 return AccessDenied();
             }
 
-            await _useCase.Update(request);
+            _context = this.ControllerContext.RouteData;
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
+
+            try
+            {
+                await _useCase.Update(request);
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
+                return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
+            }
 
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
 
@@ -137,13 +162,17 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public ActionResult Cancel()
         {
-            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
-
+            _context = this.ControllerContext.RouteData;
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
+            _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
         }
 
         private ActionResult AccessDenied()
         {
+            _context = this.ControllerContext.RouteData;
+            _logger.LogInformation(_logUtil.Unauthorized(GetType().FullName, 
+            _context.Values[ActionName.ACTION].ToString()));
             return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
         }
     }
