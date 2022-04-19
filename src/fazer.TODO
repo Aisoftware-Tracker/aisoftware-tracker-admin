@@ -1,0 +1,10 @@
+refatorar:
+    ☐ todos os deletes nas controllers (criando objeto de resposta para controle http de sucesso)
+        ☐ drivers
+        ☐ devices
+        ☐ groups
+    ☐ todos os deletes nos use cases (criando objeto de resposta para controle http de sucesso)
+        ☐ drivers
+        ☐ devices
+        ☐ groups
+        ☐ sessions
