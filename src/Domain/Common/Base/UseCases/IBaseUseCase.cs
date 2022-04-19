@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Net.Http;
 
 namespace Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases
 {
@@ -10,7 +11,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases
         Task<T> FindById(int id);
         Task<T> Save(T request);
         Task<T> Update(T request);
-        Task Delete(int id);
+        Task<HttpResponseMessage> Delete(int id);
     }
 
 }

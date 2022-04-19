@@ -80,8 +80,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 //TODO ver como retornar msg de erro return Json(new { status = false, message = "Erro ao tentar salvar o novo usuário" });
                 _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
+                
+                return Redirect("/Shared/Error");
 
-                return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
             }
 
         }
@@ -98,7 +99,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
             try
             {
-                _useCase.Delete(id);
+                var response = _useCase.Delete(id);
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
                 return true;
             }

@@ -5,6 +5,7 @@ using Aisoftware.Tracker.Admin.Models;
 using Aisoftware.Tracker.Admin.Domain.Devices.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
+using System.Net.Http;
 
 namespace Aisoftware.Tracker.Admin.Domain.Devices.UseCases
 {
@@ -69,9 +70,9 @@ namespace Aisoftware.Tracker.Admin.Domain.Devices.UseCases
 
         }
 
-        public async Task Delete(int id)
+        public async Task<HttpResponseMessage> Delete(int id)
         {
-            await _repository.Delete(id, Endpoints.DEVICES);
+            return await _repository.Delete(id, Endpoints.DEVICES);
         }
 
     }

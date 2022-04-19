@@ -19,7 +19,6 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
         public static Cookie _cookie;
         private readonly string _url;
         private string _cookieValue;
-        private T item;
         private HttpClientHandler _handler;
         private Uri _uri;
 
@@ -82,12 +81,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
 
                 var response = await httpClient.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    item = await response.Content.ReadAsAsync<T>();
-                }
-
-                return item;
+                return await GetResponse(response, id);
             }
 
         }
@@ -115,17 +109,13 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
 
                 var response = await httpClient.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    item = await response.Content.ReadAsAsync<T>();
-                }
-
-                return item;
+                return await GetResponse(response, content);
             }
         }
 
         public async Task<T> Update(T content, string endpoint)
         {
+            _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
             _uri = new Uri($"{_url}/{endpoint}");
             _handler = new HttpClientHandler();
             _handler.UseCookies = false;
@@ -144,22 +134,19 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
 
                     var response = await httpClient.SendAsync(request);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        item = await response.Content.ReadAsAsync<T>();
-                    }
-
-                    return item;
+                    return await GetResponse(response, content);
                 }
             }
         }
 
-        public async Task Delete(int id, string endpoint)
+        public async Task<HttpResponseMessage> Delete(int id, string endpoint)
         {
+            _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
             _uri = new Uri($"{_url}/{endpoint}/{id}");
-
             _handler = new HttpClientHandler();
             _handler.UseCookies = false;
+
+            HttpResponseMessage response = new HttpResponseMessage();
 
             using (var httpClient = new HttpClient(_handler))
             {
@@ -167,9 +154,16 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
                 {
                     request.Headers.TryAddWithoutValidation(HeaderKey.COOKIE, $"{CookieName.JSESSIONID}={_cookieValue}");
 
-                    var response = await httpClient.SendAsync(request);
+                    response = await httpClient.SendAsync(request);
+
+                    if(response.StatusCode != HttpStatusCode.NoContent)
+                    {
+                        throw new Exception($"{response.ReasonPhrase} -> Error deleting item");
+                    }
                 }
             }
+
+            return response;
         }
 
         private CookieContainer GetCookieContainer(string cookie)
@@ -178,6 +172,30 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
             var cookies = new CookieContainer();
             cookies.Add(_cookie);
             return cookies;
+        }
+
+        private async Task<T> GetResponse(HttpResponseMessage response, T content)
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<T>();
+            }
+            else
+            {
+                throw new Exception($"{response.ReasonPhrase} -> {response.RequestMessage}\n CONTENT: {JsonConvert.SerializeObject(content)}");
+            }
+        }
+
+        private async Task<T> GetResponse(HttpResponseMessage response, int id)
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<T>();
+            }
+            else
+            {
+                throw new Exception($"{response.ReasonPhrase} -> {response.RequestMessage}\n ID: {id}");
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using Aisoftware.Tracker.Admin.Models;
 using Aisoftware.Tracker.Admin.Domain.Drivers.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
+using System.Net.Http;
 
 namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
 {
@@ -26,7 +27,10 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
 
             foreach (var item in response)
             {
-                item.DocumentValidAt = Convert.ToDateTime(item.DocumentValidAt).ToString(FORMAT_DATE_BR);
+                if(!string.IsNullOrEmpty(item.DocumentValidAt))
+                {
+                    item.DocumentValidAt = Convert.ToDateTime(item.DocumentValidAt).ToString(FORMAT_DATE_BR);
+                }
             }
 
             return response.OrderBy(driver => driver.Id);
@@ -41,7 +45,9 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
 
         public async Task<Driver> Save(Driver request)
         {
+            // request.Photo = request.Photo ?? string.Empty;
             request.DocumentValidAt = request.DocumentValidAt.Remove(10, 6);
+            // request.UniqueId = Guid.NewGuid().ToString();
             return await _repository.Save(request, Endpoints.DRIVERS);
         }
 
@@ -49,7 +55,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
         {
             Driver response = await _repository.FindById(driver.Id, Endpoints.DRIVERS);
 
-            driver.DocumentValidAt = driver.DocumentValidAt.Replace(FORMAT_TIME_00, string.Empty);
+            driver.DocumentValidAt = driver.DocumentValidAt.Substring(0, 10);
 
             Driver request = new Driver
             {
@@ -66,9 +72,9 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
 
         }
 
-        public async Task Delete(int id)
+        public async Task<HttpResponseMessage> Delete(int id)
         {
-            await _repository.Delete(id, Endpoints.DRIVERS);
+            return await _repository.Delete(id, Endpoints.DRIVERS);
         }
 
     }
