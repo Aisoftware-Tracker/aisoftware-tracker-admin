@@ -5,8 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
-using Aisoftware.Tracker.Admin.Domain.Doctor.UseCases;
-using Aisoftware.Tracker.Admin.Domain.Doctor.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Sessions.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Sessions.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Users.UseCases;
@@ -50,8 +48,6 @@ namespace Aisoftware.Tracker.Admin
             #region Dependency Injection
 
             #region Use Cases && Repositories
-            services.AddScoped<IDoctorsUseCase, DoctorsUseCase>();
-            services.AddScoped<IDoctorsRepository, DoctorsRepository>();
             services.AddScoped<ISessionUseCase, SessionUseCase>();
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<IUserUseCase, UserUseCase>();

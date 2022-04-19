@@ -4,8 +4,6 @@ namespace Aisoftware.Tracker.Admin.Models
 {
     public class DashboardViewModel
     {
-        public int doctors_count { get; set; }
-        public int nurses_count { get; set; }
         public string LatLong { get; set; }
         public Position Position { get; set; }
         public IEnumerable<Position> Positions { get; set; }
