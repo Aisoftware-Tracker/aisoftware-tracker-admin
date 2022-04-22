@@ -5,6 +5,9 @@ using Aisoftware.Tracker.Admin.Models;
 using Microsoft.AspNetCore.Http;
 using Aisoftware.Tracker.Admin.Domain.Sessions.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Routing;
+using Aisoftware.Tracker.Admin.Common.Util;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
@@ -12,10 +15,15 @@ namespace Aisoftware.Tracker.Admin.Controllers
     {
         private readonly ISessionUseCase _useCase;
         private string _cookieValue;
+        private readonly ILogger _logger;
+        private readonly ILogUtil _logUtil;
+        private RouteData _context;
 
-        public AccountController(ISessionUseCase useCase)
+        public AccountController(ISessionUseCase useCase, ILogger<AccountController> logger, ILogUtil logUtil)
         {
             _useCase = useCase;
+            _logger = logger;
+            _logUtil = logUtil;
         }
 
         public IActionResult Login()
@@ -25,13 +33,17 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public async Task<ActionResult> Validate(Login login)
         {
+            _context = this.ControllerContext.RouteData;
+
             try
             {
                 var response = await _useCase.Create(login, _cookieValue);
 
                 this.SetSessions(response);
+                string message = "Login Realizado com Sucesso!";
 
-                return Json(new { status = true, message = "Login Realizado com Sucesso!" });
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), $"{message} -> {login.Email}"));
+                return Json(new { status = true, message = message });
 
             }
             catch (Exception e)
@@ -39,6 +51,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 string message = e.Message == "Unauthorized" ?
                 "Login ou senha inválido" :
                 "Erro inesperado!\n Tente novamente em instantes";
+
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e, $"{message} -> {login.Email}"));
                 return Json(new { status = false, message = message });
             }
 
@@ -50,6 +64,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
             HttpContext.Session.Clear();
             _useCase.Delete(_cookieValue);
+
+            _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
+
             return RedirectToAction(ActionName.LOGIN, ControllerName.ACCOUNT);
         }
 

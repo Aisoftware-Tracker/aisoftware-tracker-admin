@@ -39,7 +39,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             if (HttpContext.Session.GetString(CookieName.JSESSIONID) == null)
             {
-                return Redirect($"/{ControllerName.ACCOUNT}/{ActionName.LOGIN}");
+                return RedirectToAction(ActionName.LOGIN, ControllerName.ACCOUNT);
             }
 
             DashboardViewModel dashboard = new DashboardViewModel();

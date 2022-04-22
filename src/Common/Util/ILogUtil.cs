@@ -13,11 +13,10 @@ namespace Aisoftware.Tracker.Admin.Common.Util
 {
     public interface ILogUtil
     {
-        string Succes(string className, string ActionName);
-
-        string Error(string className, string ActionName, Exception exception = null);
-
-        string Unauthorized(string className, string ActionName);
+        string Succes(string className, string ActionName, string message = "");
+        string Info(string className, string ActionName, string message = "");
+        string Error(string className, string ActionName, Exception exception = null, string message = "");
+        string Unauthorized(string className, string ActionName, string message = "");
     } 
     
 }

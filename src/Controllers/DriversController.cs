@@ -37,11 +37,10 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 response = await _useCase.FindAll();
 
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
-                System.Console.WriteLine(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
             catch (Exception e)
             {
-                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));           
             }
 
             return View(response);
@@ -70,7 +69,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
             try
             {
-                var response = await _useCase.Save(request);
+                await _useCase.Save(request);
 
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
 
@@ -80,33 +79,31 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 //TODO ver como retornar msg de erro return Json(new { status = false, message = "Erro ao tentar salvar o novo usuário" });
                 _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
-                
-                return Redirect("/Shared/Error");
-
+                return View("Error");
             }
 
         }
 
         [HttpDelete]
-        public bool Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
             {
-                return false;
+                return AccessDenied();
             }
 
             _context = this.ControllerContext.RouteData;
 
             try
             {
-                var response = _useCase.Delete(id);
+                var response = await _useCase.Delete(id);
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
-                return true;
+                return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
             }
             catch (Exception e)
             {
                 _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
-                return false;
+                return View("Error");
             }
         }
 
@@ -152,7 +149,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
             catch(Exception e)
             {
                 _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
-                return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
+                return View("Error");
+
             }
 
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
@@ -172,7 +170,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         private ActionResult AccessDenied()
         {
             _context = this.ControllerContext.RouteData;
-            _logger.LogInformation(_logUtil.Unauthorized(GetType().FullName, 
+            _logger.LogWarning(_logUtil.Unauthorized(GetType().FullName, 
             _context.Values[ActionName.ACTION].ToString()));
             return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
         }

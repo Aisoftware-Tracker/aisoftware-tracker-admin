@@ -73,7 +73,7 @@
         if (r == true) {
 
             $.ajax({
-                url: '@ViewBag.ControllerName/Delete/' + id,
+                url: `@ViewBag.ControllerName/Delete/${id}`,
                 type: 'DELETE',
                 success: function (data) {
                     alert("Motorista excluído com sucesso!");

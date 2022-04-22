@@ -9,6 +9,8 @@ using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
+using Aisoftware.Tracker.Admin.Common.Util;
+using Microsoft.AspNetCore.Components;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
@@ -20,6 +22,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
         private readonly IGroupUseCase _groupUseCase;
         private readonly IDeviceUseCase _deviceUseCase;
         private readonly ILogger _logger;
+        private readonly ILogUtil _logUtil;
+        private RouteData _context;
         private const string DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'";
 
         public ReportsController(
@@ -89,11 +93,11 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 response = await _summaryUseCase.FindAll(queryParams);
 
-                _logger.LogInformation($"SUCCESS: { GetType().FullName }::{ context.Values[ActionName.ACTION] }");
+                _logger.LogInformation($"SUCCESS: {GetType().FullName}::{context.Values[ActionName.ACTION]}");
             }
             catch (Exception e)
             {
-                _logger.LogError($"ERROR: { GetType().FullName }::{ context.Values[ActionName.ACTION] }\nEXCEPTION:{ExceptionHelper.InnerException(e).Message}");
+                _logger.LogError($"ERROR: {GetType().FullName}::{context.Values[ActionName.ACTION]}\nEXCEPTION:{ExceptionHelper.InnerException(e).Message}");
             }
 
             return View(response);
@@ -131,11 +135,11 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 viewModel.Events = await _eventUseCase.FindAll(queryParams);
                 viewModel.Devices = await _deviceUseCase.FindAll();
 
-                _logger.LogInformation($"SUCCESS: { GetType().FullName }::{ context.Values[ActionName.ACTION] }");
+                _logger.LogInformation($"SUCCESS: {GetType().FullName}::{context.Values[ActionName.ACTION]}");
             }
             catch (Exception e)
             {
-                _logger.LogError($"ERROR: { GetType().FullName }::{ context.Values[ActionName.ACTION] }\nEXCEPTION:{ExceptionHelper.InnerException(e).Message}");
+                _logger.LogError($"ERROR: {GetType().FullName}::{context.Values[ActionName.ACTION]}\nEXCEPTION:{ExceptionHelper.InnerException(e).Message}");
             }
 
             return View(viewModel);
@@ -178,7 +182,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         private ActionResult AccessDenied()
         {
-            _logger.LogWarning($"TENTATIVA DE ACESSO: { GetType().FullName }\n{ HttpContext.Session.GetString(SessionKey.USER_EMAIL) }");
+            _logger.LogWarning($"TENTATIVA DE ACESSO: {GetType().FullName}\n{HttpContext.Session.GetString(SessionKey.USER_EMAIL)}");
 
             return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
         }
@@ -212,11 +216,11 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 response = await _routeUseCase.FindAll(queryParams);
 
-                _logger.LogInformation($"SUCCESS: { GetType().FullName }::{ context.Values[ActionName.ACTION] }");
+                _logger.LogInformation($"SUCCESS: {GetType().FullName}::{context.Values[ActionName.ACTION]}");
             }
             catch (Exception e)
             {
-                _logger.LogError($"ERROR: { GetType().FullName }::{ context.Values[ActionName.ACTION] }\nEXCEPTION:{ExceptionHelper.InnerException(e).Message}");
+                _logger.LogError($"ERROR: {GetType().FullName}::{context.Values[ActionName.ACTION]}\nEXCEPTION:{ExceptionHelper.InnerException(e).Message}");
             }
 
             return response;

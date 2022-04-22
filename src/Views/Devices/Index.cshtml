@@ -88,29 +88,20 @@
 <script>
     function Delete(id) {
         var txt;
-        var r = confirm("Você tem certeza que deseja excluir este usuário?");
+        var r = confirm("Você tem certeza que deseja excluir este dispositivo?");
         if (r == true) {
 
-            $.ajax(
-                {
-                    type: "POST",
-                    url: '@Url.Action("Delete", "@ViewBag.ControllerName")',
-                    data: {
-                        id: id
-                    },
-                    error: function (result) {
-                        alert("error");
-                    },
-                    success: function (result) {
-                        if (result == true) {
-                            var baseUrl = "/@ViewBag.ControllerName";
-                            window.location.reload();
-                        }
-                        else {
-                            alert("Houve um problema inesperado, Tente novamente mais tarde!");
-                        }
-                    }
-                });
+            $.ajax({
+                url: `@ViewBag.ControllerName/Delete/${id}`,
+                type: 'DELETE',
+                success: function (data) {
+                    alert("Dispositivo excluído com sucesso!");
+                    location.reload();
+                },
+                error: function (data) {
+                    alert("Erro ao excluir dispositivo!");
+                }
+            });
         }
     }
 </script>

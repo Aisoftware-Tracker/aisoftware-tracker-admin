@@ -1,6 +1,4 @@
 using System;
-using Aisoftware.Tracker.Admin;
-using Aisoftware.Tracker.Admin.Common.Util;
 
 namespace Aisoftware.Tracker.Admin.Common.Util
 {
@@ -13,28 +11,33 @@ namespace Aisoftware.Tracker.Admin.Common.Util
             _sessionUtil = sessionUtil;
         }
 
-        public string Succes(string className, string ActionName)
+        public string Succes(string className, string ActionName, string message = "")
         {
-            return GetMessage("SUCCESS", className, ActionName);
+            return GetMessage("SUCCESS", className, ActionName, message);
         }
 
-        public string Error(string className, string ActionName, Exception exception = null)
+        public string Info(string className, string ActionName, string message = "")
         {
-            return GetMessage("ERROR", className, ActionName, exception);
+            return GetMessage("INFO", className, ActionName, message);
         }
 
-        public string Unauthorized(string className, string ActionName)
+        public string Error(string className, string ActionName, Exception exception = null, string message = "" )
         {
-            return GetMessage("ACCESS_DENIED", className, ActionName);
+            return GetMessage("ERROR", className, ActionName, message, exception);
         }
 
-        private string GetMessage(string type, string className, string actionName, Exception exception = null)
+        public string Unauthorized(string className, string ActionName, string message = "")
         {
-            string exceptionMessage = exception == null ? string.Empty :  $"\nEXCEPTION: {ExceptionHelper.InnerException(exception).Message}";
+            return GetMessage("UNAUTHORIZED", className, ActionName, message);
+        }
+
+        private string GetMessage(string type, string className, string actionName, string message, Exception exception = null)
+        {
+            string exceptionMessage = exception == null ? string.Empty : $"\nEXCEPTION: {ExceptionHelper.InnerException(exception).Message}";
             string userMessage = "USER: ";
             userMessage += string.IsNullOrEmpty(_sessionUtil.GetUserNameAndEmail()) ? "ERROR_NOT_FOUND" : _sessionUtil.GetUserNameAndEmail();
 
-            return $"{type}: {className}::{actionName}; {userMessage}; {exceptionMessage}";
+            return $"{type}: {className}::{actionName}; {userMessage}; {message} {exceptionMessage}";
         }
 
     }
