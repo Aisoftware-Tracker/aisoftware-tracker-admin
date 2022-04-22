@@ -10,7 +10,7 @@ using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 using Aisoftware.Tracker.Admin.Common.Util;
-using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Routing;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
@@ -24,7 +24,6 @@ namespace Aisoftware.Tracker.Admin.Controllers
         private readonly ILogger _logger;
         private readonly ILogUtil _logUtil;
         private RouteData _context;
-        private const string DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'";
 
         public ReportsController(
             IBaseReportUseCase<ReportSummary> summaryUseCase,
@@ -32,12 +31,14 @@ namespace Aisoftware.Tracker.Admin.Controllers
             IBaseReportUseCase<ReportEvent> eventUseCase,
             IGroupUseCase group,
             IDeviceUseCase device,
-            ILogger<GroupsController> logger)
+            ILogger<GroupsController> logger,
+            ILogUtil logUtil)
         {
             _summaryUseCase = summaryUseCase;
             _routeUseCase = routeUseCase;
             _eventUseCase = eventUseCase;
             _logger = logger;
+            _logUtil = logUtil;
             _groupUseCase = group;
             _deviceUseCase = device;
         }
@@ -45,59 +46,53 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpGet]
         public ActionResult Index(string report)
         {
+            _context = this.ControllerContext.RouteData;
+            ReportViewModel viewModel = new ReportViewModel();
 
-            ReportViewModel viewModel = new ReportViewModel
+            try
             {
-                Groups = _groupUseCase.FindAll().Result,
-                Devices = _deviceUseCase.FindAll().Result
-            };
+                viewModel = new ReportViewModel
+                {
+                    Groups = _groupUseCase.FindAll().Result,
+                    Devices = _deviceUseCase.FindAll().Result
+                };
 
-            ViewBag.Title = Title()[report];
-            ViewBag.reportName = report;
+                ViewBag.Title = Title()[report];
+                ViewBag.reportName = report;
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
+            }
 
             return View(viewModel);
+
         }
+
 
         [HttpGet]
         public async Task<ActionResult> Summary(
                 [FromQuery] int? deviceId,
                 [FromQuery] int? groupId,
-                [FromQuery] DateTime? from,
-                [FromQuery] DateTime? to
+                [FromQuery] DateTime from,
+                [FromQuery] DateTime to
         )
         {
-
-            if (from == null || to == null)
-            {
-                return Json(new { status = true, message = "Campos de data, De e Até, são obrigatórios" });
-            }
-
             IEnumerable<ReportSummary> response = new List<ReportSummary>();
-
-            string strFrom = from?.ToString(DATE_FORMAT);
-            string strTo = to?.ToString(DATE_FORMAT);
-
-            IDictionary<string, string> queryParams = new Dictionary<string, string>
-            {
-                { "from", strFrom },
-                { "to", strTo }
-            };
-
-            if (deviceId != null) { queryParams.Add("deviceId", deviceId.ToString()); }
-            if (groupId != null) { queryParams.Add("groupId", groupId.ToString()); }
-
             var context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = context.Values[ActionName.CONTROLLER];
 
             try
             {
-                response = await _summaryUseCase.FindAll(queryParams);
-
-                _logger.LogInformation($"SUCCESS: {GetType().FullName}::{context.Values[ActionName.ACTION]}");
+                response = await _summaryUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to));
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
             catch (Exception e)
             {
-                _logger.LogError($"ERROR: {GetType().FullName}::{context.Values[ActionName.ACTION]}\nEXCEPTION:{ExceptionHelper.InnerException(e).Message}");
+                string message = messageParams(deviceId, groupId, from, to);
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e, message));
             }
 
             return View(response);
@@ -115,31 +110,20 @@ namespace Aisoftware.Tracker.Admin.Controllers
             IEnumerable<Device> devices = new List<Device>();
             ReportEventViewModel viewModel = new ReportEventViewModel();
 
-            string strFrom = from.ToString(DATE_FORMAT);
-            string strTo = to.ToString(DATE_FORMAT);
-
-            IDictionary<string, string> queryParams = new Dictionary<string, string>
-            {
-                { "from", strFrom },
-                { "to", strTo }
-            };
-
-            if (deviceId != null) { queryParams.Add("deviceId", deviceId.ToString()); }
-            if (groupId != null) { queryParams.Add("groupId", groupId.ToString()); }
-
             var context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = context.Values[ActionName.CONTROLLER];
 
             try
             {
-                viewModel.Events = await _eventUseCase.FindAll(queryParams);
+                viewModel.Events = await _eventUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to));
                 viewModel.Devices = await _deviceUseCase.FindAll();
 
-                _logger.LogInformation($"SUCCESS: {GetType().FullName}::{context.Values[ActionName.ACTION]}");
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
             catch (Exception e)
             {
-                _logger.LogError($"ERROR: {GetType().FullName}::{context.Values[ActionName.ACTION]}\nEXCEPTION:{ExceptionHelper.InnerException(e).Message}");
+                string message = messageParams(deviceId, groupId, from, to);
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e, message));
             }
 
             return View(viewModel);
@@ -170,6 +154,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 [FromQuery] DateTime to
         )
         {
+            _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()), messageParams(deviceId, groupId, from, to));
             return RedirectToAction(ActionName.INDEX, ControllerName.MAPS, new { deviceId, groupId, from, to });
         }
 
@@ -180,13 +165,6 @@ namespace Aisoftware.Tracker.Admin.Controllers
             return RedirectToAction(ActionName.INDEX, $"{context.Values[ActionName.CONTROLLER]}?report={report}");
         }
 
-        private ActionResult AccessDenied()
-        {
-            _logger.LogWarning($"TENTATIVA DE ACESSO: {GetType().FullName}\n{HttpContext.Session.GetString(SessionKey.USER_EMAIL)}");
-
-            return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
-        }
-
         private async Task<IEnumerable<ReportRoute>> GetReportRoute(
                 [FromQuery] int? deviceId,
                 [FromQuery] int? groupId,
@@ -194,8 +172,35 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 [FromQuery] DateTime to
         )
         {
-            string strFrom = from.ToString(DATE_FORMAT);
-            string strTo = to.ToString(DATE_FORMAT);
+            var context = this.ControllerContext.RouteData;
+            ViewBag.ControllerName = context.Values[ActionName.CONTROLLER];
+
+            IEnumerable<ReportRoute> response = new List<ReportRoute>();
+
+            try
+            {
+                response = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to));
+
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
+            }
+            catch (Exception e)
+            {
+                string message = messageParams(deviceId, groupId, from, to);
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e, message));
+            }
+
+            return response;
+        }
+
+        private IDictionary<string, string> GetQueryParameters(
+                [FromQuery] int? deviceId,
+                [FromQuery] int? groupId,
+                [FromQuery] DateTime from,
+                [FromQuery] DateTime to
+        )
+        {
+            string strFrom = from.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_T_HH_MM_SS_Z);
+            string strTo = to.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_T_HH_MM_SS_Z);
 
             IDictionary<string, string> queryParams = new Dictionary<string, string>
             {
@@ -206,24 +211,13 @@ namespace Aisoftware.Tracker.Admin.Controllers
             if (deviceId != null) { queryParams.Add("deviceId", deviceId.ToString()); }
             if (groupId != null) { queryParams.Add("groupId", groupId.ToString()); }
 
+            return queryParams;
+        }
 
-            var context = this.ControllerContext.RouteData;
-            ViewBag.ControllerName = context.Values[ActionName.CONTROLLER];
-
-            IEnumerable<ReportRoute> response = new List<ReportRoute>();
-
-            try
-            {
-                response = await _routeUseCase.FindAll(queryParams);
-
-                _logger.LogInformation($"SUCCESS: {GetType().FullName}::{context.Values[ActionName.ACTION]}");
-            }
-            catch (Exception e)
-            {
-                _logger.LogError($"ERROR: {GetType().FullName}::{context.Values[ActionName.ACTION]}\nEXCEPTION:{ExceptionHelper.InnerException(e).Message}");
-            }
-
-            return response;
+        private string messageParams(int? deviceId, int? groupId, DateTime? from, DateTime? to)
+        {
+            string message = "NAO INFORMADO";
+            return $"deviceId: {deviceId?.ToString() ?? message} - groupId: {groupId?.ToString() ?? message} - from: {from?.ToString() ?? message} - to: {to?.ToString() ?? message}";
         }
 
         private IDictionary<string, string> Title()
@@ -234,6 +228,14 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 {Endpoints.ROUTE, "Rota"},
                 {Endpoints.EVENTS, "Eventos"},
             };
+        }
+
+        private ActionResult Forbidden()
+        {
+            _context = this.ControllerContext.RouteData;
+            _logger.LogWarning(_logUtil.Forbidden(GetType().FullName,
+            _context.Values[ActionName.ACTION].ToString()));
+            return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
         }
     }
 }

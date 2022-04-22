@@ -51,7 +51,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
             {
-                return AccessDenied();
+                return Forbidden();
             }
 
             GroupViewModel viewModel = new GroupViewModel
@@ -67,7 +67,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
             {
-                return AccessDenied();
+                return Forbidden();
             }
 
             _context = this.ControllerContext.RouteData;
@@ -94,7 +94,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
             {
-                return AccessDenied();
+                return Forbidden();
             }
 
             _context = this.ControllerContext.RouteData;
@@ -116,7 +116,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
             {
-                return AccessDenied();
+                return Forbidden();
             }
 
             _context = this.ControllerContext.RouteData;
@@ -144,7 +144,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
             {
-                return AccessDenied();
+                return Forbidden();
             }
 
             _context = this.ControllerContext.RouteData;
@@ -173,10 +173,10 @@ namespace Aisoftware.Tracker.Admin.Controllers
             return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
         }
 
-        private ActionResult AccessDenied()
+        private ActionResult Forbidden()
         {
             _context = this.ControllerContext.RouteData;
-            _logger.LogWarning(_logUtil.Unauthorized(GetType().FullName, 
+            _logger.LogWarning(_logUtil.Forbidden(GetType().FullName, 
             _context.Values[ActionName.ACTION].ToString()));
             return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
         }

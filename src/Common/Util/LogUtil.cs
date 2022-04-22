@@ -26,9 +26,9 @@ namespace Aisoftware.Tracker.Admin.Common.Util
             return GetMessage("ERROR", className, ActionName, message, exception);
         }
 
-        public string Unauthorized(string className, string ActionName, string message = "")
+        public string Forbidden(string className, string ActionName, string message = "")
         {
-            return GetMessage("UNAUTHORIZED", className, ActionName, message);
+            return GetMessage("FORBIDDEN", className, ActionName, message);
         }
 
         private string GetMessage(string type, string className, string actionName, string message, Exception exception = null)

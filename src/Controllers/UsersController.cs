@@ -6,28 +6,48 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Aisoftware.Tracker.Admin.Domain.Users.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Routing;
+using Aisoftware.Tracker.Admin.Common.Util;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
     public class UsersController : Controller
     {
         private readonly IUserUseCase _useCase;
+        private readonly ILogger _logger;
+        private readonly ILogUtil _logUtil;
+        private RouteData _context;
 
-        public UsersController(IUserUseCase useCase)
+        public UsersController(IUserUseCase useCase, ILogger<UsersController> logger, ILogUtil logUtil)
         {
             _useCase = useCase;
+            _logger = logger;
+            _logUtil = logUtil;
         }
 
         public async Task<ActionResult> Index()
         {
             if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
             {
-                return AccessDenied();
+                return Forbidden();
             }
 
-            IEnumerable<User> users = await _useCase.FindAll();
+            IEnumerable<User> users = new List<User>();
 
+            _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+
+            try
+            {
+                users = await _useCase.FindAll();
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
+            }
+
 
             return View(users);
         }
@@ -36,7 +56,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
             {
-                return AccessDenied();
+                return Forbidden();
             }
 
             return View();
@@ -47,44 +67,47 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
             {
-                return AccessDenied();
+                return Forbidden();
             }
 
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+            _context = this.ControllerContext.RouteData;
 
             try
             {
                 var response = await _useCase.Save(user);
-
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
                 return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
             }
             catch (Exception e)
             {
-                //TODO ver como retornar msg de erro return Json(new { status = false, message = "Erro ao tentar salvar o novo usuário" });
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
                 return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
-
             }
 
         }
 
-        [HttpPost]
-        public bool Delete(int id)
+        [HttpDelete]
+        public async Task<ActionResult> Delete(int id)
         {
             if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
             {
-                return false;
+                return Forbidden();
             }
+
+            _context = this.ControllerContext.RouteData;
 
             try
             {
-                _useCase.Delete(id);
-                return true;
+                var response = await _useCase.Delete(id);
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
+                return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
-                return false;
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
+                return View("Error");
             }
-
         }
 
         public async Task<ActionResult> Update(int id)
@@ -94,14 +117,26 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
             if (isReadOnly && isNotMyUser)
             {
-                return AccessDenied();
+                return Forbidden();
             }
 
-            User response = await _useCase.FindById(id);
+            _context = this.ControllerContext.RouteData;
 
-            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+            User response = new User();
 
+            try
+            {
+                response = await _useCase.FindById(id);
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
+                return View("Error");
+            }
             return View(response);
+
+
         }
 
         [HttpPost]
@@ -109,10 +144,21 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
             {
-                return AccessDenied();
+                return Forbidden();
             }
 
-            await _useCase.Update(request);
+            _context = this.ControllerContext.RouteData;
+
+            try
+            {
+                var response = await _useCase.Update(request);
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
+                return View("Error");
+            }
 
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
 
@@ -122,13 +168,17 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public ActionResult Cancel()
         {
-            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
-
+            _context = this.ControllerContext.RouteData;
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
+            _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
         }
 
-        private ActionResult AccessDenied()
+        private ActionResult Forbidden()
         {
+            _context = this.ControllerContext.RouteData;
+            _logger.LogWarning(_logUtil.Forbidden(GetType().FullName,
+            _context.Values[ActionName.ACTION].ToString()));
             return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
         }
 
