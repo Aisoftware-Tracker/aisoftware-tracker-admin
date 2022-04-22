@@ -1,11 +1,11 @@
 using System;
+using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Newtonsoft.Json;
 
 namespace Aisoftware.Tracker.Admin.Models
 {
     public class ReportRoute
     {
-        private const string FORMAT_DATE_TIME_BR = "dd/MM/yyyy HH:mm:ss";
         private int _id;
         private int _deviceId;
         private string _protocol;
@@ -75,11 +75,9 @@ namespace Aisoftware.Tracker.Admin.Models
         [JsonProperty("attributes")]
         public ReportRouteAttributes Attributes { get => _attributes; set => _attributes = value; }
 
-
-
-        public string DeviceTimeStr { get => _deviceTime?.ToString(FORMAT_DATE_TIME_BR); }
-        public string FixTimeStr { get => _fixTime?.ToString(FORMAT_DATE_TIME_BR); }
-        public string ServerTimeStr { get => _serverTime?.ToString(FORMAT_DATE_TIME_BR); }
+        public string DeviceTimeStr { get => _deviceTime?.ToString(FormatString.FORMAT_DATE_TIME_BR); }
+        public string FixTimeStr { get => _fixTime?.ToString(FormatString.FORMAT_DATE_TIME_BR); }
+        public string ServerTimeStr { get => _serverTime?.ToString(FormatString.FORMAT_DATE_TIME_BR); }
         public string LatitudeStr { get => _latitude.ToString(); }
         public string LongitudeStr { get => _longitude.ToString(); }
 

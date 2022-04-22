@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Reports.UseCases;
+using Aisoftware.Tracker.Admin.Common.Util;
+using Microsoft.AspNetCore.Routing;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
@@ -19,16 +21,19 @@ namespace Aisoftware.Tracker.Admin.Controllers
         private readonly IDeviceUseCase _deviceUseCase;
         private readonly IBaseReportUseCase<ReportRoute> _routeUseCase;
         private readonly ILogger _logger;
-        private const string DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.fffffff'Z'";
+        private readonly ILogUtil _logUtil;
+        private RouteData _context;
+
         public MapsController(IPositionUseCase positionUseCase,
             IDeviceUseCase deviceUseCase,
             IBaseReportUseCase<ReportRoute> routeUseCase,
-            ILogger<HomeController> logger)
+            ILogger<HomeController> logger, ILogUtil logUtil)
         {
             _positionUseCase = positionUseCase;
             _deviceUseCase = deviceUseCase;
             _routeUseCase = routeUseCase;
             _logger = logger;
+            _logUtil = logUtil;
         }
 
         public async Task<IActionResult> Index(
@@ -44,7 +49,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
             DashboardViewModel dashboard = new DashboardViewModel();
 
-            if (deviceId == null)
+            if (deviceId is null)
             {
                 dashboard.Devices = await _deviceUseCase.FindAll();
                 dashboard.Positions = await _positionUseCase.FindAll();
@@ -65,8 +70,10 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 [FromQuery] DateTime to
         )
         {
-            string strFrom = from.ToString(DATE_FORMAT);
-            string strTo = to.ToString(DATE_FORMAT);
+            _context = this.ControllerContext.RouteData;
+
+            string strFrom = from.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_T_HH_MM_SS_Z);
+            string strTo = to.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_T_HH_MM_SS_Z);
 
             IDictionary<string, string> queryParams = new Dictionary<string, string>
             {
@@ -77,7 +84,6 @@ namespace Aisoftware.Tracker.Admin.Controllers
             if (deviceId != null) { queryParams.Add("deviceId", deviceId.ToString()); }
             if (groupId != null) { queryParams.Add("groupId", groupId.ToString()); }
 
-
             var context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = context.Values[ActionName.CONTROLLER];
 
@@ -87,11 +93,11 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 response = await _routeUseCase.FindAll(queryParams);
 
-                _logger.LogInformation($"SUCCESS: { GetType().FullName }::{ context.Values[ActionName.ACTION] }");
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
             catch (Exception e)
             {
-                _logger.LogError($"ERROR: { GetType().FullName }::{ context.Values[ActionName.ACTION] }\nEXCEPTION:{ExceptionHelper.InnerException(e).Message}");
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
             }
 
             return response;

@@ -1,6 +1,7 @@
 using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 
 namespace Aisoftware.Tracker.Admin.Models
 {
@@ -102,7 +103,7 @@ namespace Aisoftware.Tracker.Admin.Models
 
         public string LastUpdateStr
         {
-            get => _lastUpdate?.ToString("dd/MM/yyyy HH:mm:ss") ?? string.Empty;
+            get => _lastUpdate?.ToString(FormatString.FORMAT_DATE_TIME_BR) ?? string.Empty;
         }
     }
 }

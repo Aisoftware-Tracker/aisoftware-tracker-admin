@@ -13,8 +13,6 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
     public class DriverUseCase : IDriverUseCase
     {
         private readonly IBaseRepository<Driver> _repository;
-        private const string FORMAT_DATE_BR = "dd/MM/yyyy";
-        private const string FORMAT_TIME_00 = "T00:00";
 
         public DriverUseCase(IDriverRepository repository)
         {
@@ -27,9 +25,9 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
 
             foreach (var item in response)
             {
-                if(!string.IsNullOrEmpty(item.DocumentValidAt))
+                if (!string.IsNullOrEmpty(item.DocumentValidAt))
                 {
-                    item.DocumentValidAt = Convert.ToDateTime(item.DocumentValidAt).ToString(FORMAT_DATE_BR);
+                    item.DocumentValidAt = Convert.ToDateTime(item.DocumentValidAt).ToString(FormatString.FORMAT_DATE_BR);
                 }
             }
 
@@ -39,15 +37,18 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
         public async Task<Driver> FindById(int id)
         {
             var driver = await _repository.FindById(id, Endpoints.DRIVERS);
-            driver.DocumentValidAt = $"{driver.DocumentValidAt}{FORMAT_TIME_00}";
+            driver.DocumentValidAt = $"{driver.DocumentValidAt}{FormatString.FORMAT_TIME_00}";
+            
             return driver;
         }
 
         public async Task<Driver> Save(Driver request)
         {
-            // request.Photo = request.Photo ?? string.Empty;
+            request.Attributes = request.Attributes ?? new object();
+            request.Photo = request.Photo ?? string.Empty;
+            request.UniqueId = Guid.NewGuid().ToString();
             request.DocumentValidAt = request.DocumentValidAt.Remove(10, 6);
-            // request.UniqueId = Guid.NewGuid().ToString();
+            
             return await _repository.Save(request, Endpoints.DRIVERS);
         }
 
