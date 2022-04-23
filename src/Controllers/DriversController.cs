@@ -35,12 +35,11 @@ namespace Aisoftware.Tracker.Admin.Controllers
             try
             {
                 response = await _useCase.FindAll();
-
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
             catch (Exception e)
             {
-                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));           
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
             }
 
             return View(response);
@@ -117,17 +116,20 @@ namespace Aisoftware.Tracker.Admin.Controllers
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
+            Driver response = new Driver();
+
             try
             {
-                Driver response = await _useCase.FindById(id);
-                return View(response);
+                response = await _useCase.FindById(id);
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
             catch (Exception e)
             {
                 _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
                 return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
             }
-
+            
+            return View(response);
         }
 
         [HttpPost]
@@ -146,14 +148,14 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 await _useCase.Update(request);
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
                 return View("Error");
 
             }
 
-            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
             return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
         }
@@ -170,7 +172,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         private ActionResult Forbidden()
         {
             _context = this.ControllerContext.RouteData;
-            _logger.LogWarning(_logUtil.Forbidden(GetType().FullName, 
+            _logger.LogWarning(_logUtil.Forbidden(GetType().FullName,
             _context.Values[ActionName.ACTION].ToString()));
             return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
         }
