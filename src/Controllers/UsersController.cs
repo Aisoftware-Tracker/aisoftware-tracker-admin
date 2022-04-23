@@ -34,9 +34,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
             }
 
             IEnumerable<User> users = new List<User>();
-
             _context = this.ControllerContext.RouteData;
-            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
             try
             {
@@ -70,8 +69,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 return Forbidden();
             }
 
-            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
             _context = this.ControllerContext.RouteData;
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
             try
             {
@@ -121,6 +120,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
             }
 
             _context = this.ControllerContext.RouteData;
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
             User response = new User();
 
@@ -134,9 +134,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
                 return View("Error");
             }
+            
             return View(response);
-
-
         }
 
         [HttpPost]
@@ -148,6 +147,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
             }
 
             _context = this.ControllerContext.RouteData;
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
             try
             {
@@ -159,8 +159,6 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
                 return View("Error");
             }
-
-            ViewBag.ControllerName = this.ControllerContext.RouteData.Values[ActionName.CONTROLLER];
 
             return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
         }
