@@ -60,6 +60,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public ActionResult Logout()
         {
+            _context = this.ControllerContext.RouteData;
+
             _cookieValue = HttpContext.Session.GetString(CookieName.JSESSIONID);
 
             HttpContext.Session.Clear();
