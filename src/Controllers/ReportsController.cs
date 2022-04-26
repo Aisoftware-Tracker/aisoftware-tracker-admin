@@ -80,9 +80,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 [FromQuery] DateTime to
         )
         {
+            _context = this.ControllerContext.RouteData;
             IEnumerable<ReportSummary> response = new List<ReportSummary>();
-            var context = this.ControllerContext.RouteData;
-            ViewBag.ControllerName = context.Values[ActionName.CONTROLLER];
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
             try
             {
@@ -106,12 +106,11 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 [FromQuery] DateTime to
         )
         {
+            _context = this.ControllerContext.RouteData;
             IEnumerable<ReportEvent> response = new List<ReportEvent>();
             IEnumerable<Device> devices = new List<Device>();
             ReportEventViewModel viewModel = new ReportEventViewModel();
-
-            var context = this.ControllerContext.RouteData;
-            ViewBag.ControllerName = context.Values[ActionName.CONTROLLER];
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
             try
             {
@@ -161,8 +160,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public ActionResult Cancel(string report)
         {
-            var context = this.ControllerContext.RouteData;
-            return RedirectToAction(ActionName.INDEX, $"{context.Values[ActionName.CONTROLLER]}?report={report}");
+            _context = this.ControllerContext.RouteData;
+            return RedirectToAction(ActionName.INDEX, $"{_context.Values[ActionName.CONTROLLER]}?report={report}");
         }
 
         private async Task<IEnumerable<ReportRoute>> GetReportRoute(
@@ -172,8 +171,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 [FromQuery] DateTime to
         )
         {
-            var context = this.ControllerContext.RouteData;
-            ViewBag.ControllerName = context.Values[ActionName.CONTROLLER];
+            _context = this.ControllerContext.RouteData;
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
             IEnumerable<ReportRoute> response = new List<ReportRoute>();
 
