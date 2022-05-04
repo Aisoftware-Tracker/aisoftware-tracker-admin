@@ -1,10 +1,55 @@
 refatorar:
     ☐ todos os deletes nas controllers (criando objeto de resposta para controle http de sucesso)
-        ☐ drivers
-        ☐ devices
-        ☐ groups
+        ☐ drivers @started(22-05-04 15:21)
+        ☐ devices @started(22-05-04 15:21)
+        ☐ groups @started(22-05-04 15:21)
     ☐ todos os deletes nos use cases (criando objeto de resposta para controle http de sucesso)
-        ☐ drivers
-        ☐ devices
-        ☐ groups
-        ☐ sessions
+        ☐ drivers @started(22-05-04 15:21)
+        ☐ devices @started(22-05-04 15:21)
+        ☐ groups @started(22-05-04 15:21)
+        ☐ sessions @started(22-05-04 15:21)
+
+review:
+    Telas:
+        Dasheboard:
+            Gerenciar Dispositivos:
+                ☐ Trocar texto "nome" para "placa"
+                ☐ Refatorar "ingnicao" para "ignicao" (gramática)
+                ☐ Remover "Distancia Total", "Velocidade"e "Horas"
+                ☐ Adicionar o "endereco" do dispositivo em dashboard
+            Cards:
+                ☐ Remover o "Mais informacoes" (talvez deixar o do "Total de Dispositivos")
+    Menu:
+        ☐ Remover container "Configurações" e deixar menu com itens direto
+    Cadastro/Editar Usuario:
+        ☐ Adicionar campo "deviceReadonly"
+    Cadastro/Editar Dispositivo:
+        ☐ * Adicionar campo de Cliente ("groupId")  PRIORIZAR
+        ☐ * Adicionar campo de IMEI (Identificador) ("uniqueId")
+        ☐ Alterar "Nome" para "Placa"
+        ☐ Alterar "Documento" para "Equipamento" ("contact" na api "Obs" na trackmax)
+        ☐ Remover "Válido Até"
+        ☐ Adicionar "Data de Instalação" (dateInstall)
+        ☐ Adicionar "Linha" (numero do chip) ("phone")
+        ☐ Adicionar "ICCID" ("icc")
+        ☐ Adicionar "Fornecedor" ("vendor")
+        ☐ Adicionar "Operadora" ("operator")
+        ☐ * Adicionar "Modelo do Rastreador" ("hardware")
+    
+    Cadastro/Editar Cliente (Group):
+        ☐ Criar um checkbox que define se o cliente base ou não
+        ☐ Alterar dropdown "Cliente Base" para trazer apenas clientes Base "groupId = 0"
+
+    Bug:
+        ✘ Verificar controle de acesso dos usuarios (Israel verificar com trackmax) @cancelled(22-05-04 16:22)
+        ☐ Alterar aonde que tem restricoes de "readOnly" alterar para "deviceReadonly": true,
+        ☐ Nao é possivel logar com aisoftware@aisoftware.com.br (rev10519) PRIORIZAR
+
+backlog:
+    Gerenciar Dispositivos:
+        ☐ Ao clicar em um dispositivo da lista, abrir o mesmo no mapa a cima com as informacoes do mesmo
+
+pendencias:
+    ☐ Descobrir como vincular dispositivo (device) a um cliente(group)
+    ☐ Descobrir como vincular usuario (user) a um cliente (group)
+    ☐ Descobrir como vincular usuario (user) a um dispositivo (device)
