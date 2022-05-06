@@ -161,9 +161,7 @@
                                 <th>Nome</th>
                                 <th>Status</th>
                                 <th>Última Comunicação</th>
-                                <th>Velocidade Km/h</th>
-                                <th>Distância Total</th>
-                                <th>Horas</th>
+                                <th>Endereço</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -191,9 +189,7 @@
                                         </span>
                                     </td>
                                     <td>@Html.DisplayFor(modelItem => item.LastUpdateStr)</td>
-                                    <td>@Html.DisplayFor(modelItem => position.Speed)</td>
-                                    <td>@Html.DisplayFor(modelItem => position.Attributes.TotalDistance)</td>
-                                    <td>@Html.DisplayFor(modelItem => position.Attributes.Hours)</td>
+                                    <td>@Html.DisplayFor(modelItem => position.Address)</td>
                                     <td>
                                         <a href="Devices/Update/@item.Id"
                                         class="btn btn-block btn-primary">Editar</a>

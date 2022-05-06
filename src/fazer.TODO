@@ -15,8 +15,8 @@ review:
             Gerenciar Dispositivos:
                 ✔ Trocar texto "nome" para "placa" @done(22-05-05 23:06)
                 ✔ Refatorar "ingnicao" para "ignicao" (gramática) @done(22-05-05 23:10)
-                ☐ Remover "Distancia Total", "Velocidade"e "Horas"
-                ☐ Adicionar o "endereco" do dispositivo em dashboard
+                ✔ Remover "Distancia Total", "Velocidade"e "Horas" @done(22-05-05 23:12)
+                ✔ Adicionar o "endereco" do dispositivo em dashboard @done(22-05-05 23:12)
             Cards:
                 ☐ Remover o "Mais informacoes" (talvez deixar o do "Total de Dispositivos")
     Menu:
