@@ -21,24 +21,38 @@ review:
                 ✔ Remover o "Mais informacoes" (talvez deixar o do "Total de Dispositivos") @done(22-05-05 23:17)
     Menu:
         ✔ Remover container "Configurações" e deixar menu com itens direto @done(22-05-05 23:23)
-    Cadastro/Editar Usuario:
-        ✔ Adicionar campo "deviceReadonly" @done(22-05-05 23:36)
-    Cadastro/Editar Dispositivo:
-        ☐ * Adicionar campo de Cliente ("groupId")  PRIORIZAR
-        ☐ * Adicionar campo de IMEI (Identificador) ("uniqueId")
-        ☐ Alterar "Nome" para "Placa"
-        ☐ Alterar "Documento" para "Equipamento" ("contact" na api "Obs" na trackmax)
-        ☐ Remover "Válido Até"
-        ☐ Adicionar "Data de Instalação" (dateInstall)
-        ☐ Adicionar "Linha" (numero do chip) ("phone")
-        ☐ Adicionar "ICCID" ("icc")
-        ☐ Adicionar "Fornecedor" ("vendor")
-        ☐ Adicionar "Operadora" ("operator")
-        ☐ * Adicionar "Modelo do Rastreador" ("hardware")
+    Usuario:
+        Cadastro/Editar:
+            ✔ Adicionar campo "deviceReadonly" @done(22-05-05 23:36)
+    Dispositivo:
+        Cadastro/Editar:
+            ☐ * Adicionar campo de Cliente ("groupId")  PRIORIZAR
+            ☐ * Adicionar campo de IMEI (Identificador) ("uniqueId")
+            ☐ Alterar "Nome" para "Placa"
+            ☐ Alterar "Documento" para "Equipamento" ("contact" na api "Obs" na trackmax)
+            ☐ Remover "Válido Até"
+            ☐ Adicionar "Data de Instalação" (dateInstall)
+            ☐ Adicionar "Linha" (numero do chip) ("phone")
+            ☐ Adicionar "ICCID" ("icc")
+            ☐ Adicionar "Fornecedor" ("vendor")
+            ☐ Adicionar "Operadora" ("operator")
+            ☐ * Adicionar "Modelo do Rastreador" ("hardware")
+        Index:
+            ✔ * Adicionar campo de IMEI (Identificador) ("uniqueId") @done(22-05-05 23:49)
+            ✔ Alterar "Nome" para "Placa" @done(22-05-05 23:49)
+            ✔ Alterar "Documento" para "Equipamento" ("contact" na api "Obs" na trackmax) @done(22-05-05 23:49)
+            ✔ Remover "Válido Até" @done(22-05-05 23:49)
+            ✔ Adicionar "Data de Instalação" (dateInstall) @done(22-05-05 23:49)
+            ✔ Adicionar "Linha" (numero do chip) ("phone") @done(22-05-05 23:49)
+            ✔ Adicionar "ICCID" ("icc") @done(22-05-05 23:49)
+            ✔ Adicionar "Fornecedor" ("vendor") @done(22-05-05 23:49)
+            ✔ Adicionar "Operadora" ("operator") @done(22-05-05 23:49)
+            ✔ * Adicionar "Modelo do Rastreador" ("hardware") @done(22-05-05 23:49)
     
-    Cadastro/Editar Cliente (Group):
-        ☐ Criar um checkbox que define se o cliente base ou não
-        ☐ Alterar dropdown "Cliente Base" para trazer apenas clientes Base "groupId = 0"
+    Cliente (Group):
+        Cadastro/Editar:
+            ☐ Criar um checkbox que define se o cliente base ou não
+            ☐ Alterar dropdown "Cliente Base" para trazer apenas clientes Base "groupId = 0"
 
     Bug:
         ✘ Verificar controle de acesso dos usuarios (Israel verificar com trackmax) @cancelled(22-05-04 16:22)
