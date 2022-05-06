@@ -1,13 +1,13 @@
 refatorar:
-    ☐ todos os deletes nas controllers (criando objeto de resposta para controle http de sucesso)
-        ☐ drivers @started(22-05-04 15:21)
-        ☐ devices @started(22-05-04 15:21)
-        ☐ groups @started(22-05-04 15:21)
-    ☐ todos os deletes nos use cases (criando objeto de resposta para controle http de sucesso)
-        ☐ drivers @started(22-05-04 15:21)
-        ☐ devices @started(22-05-04 15:21)
-        ☐ groups @started(22-05-04 15:21)
-        ☐ sessions @started(22-05-04 15:21)
+    ✔ todos os deletes nas controllers (criando objeto de resposta para controle http de sucesso) @done(22-05-05 23:02)
+        ✔ drivers @started(22-05-04 15:21) @done(22-05-05 23:01) @lasted(1d7h40m38s)
+        ✔ devices @started(22-05-04 15:21) @done(22-05-05 23:01) @lasted(1d7h40m39s)
+        ✔ groups @started(22-05-04 15:21) @done(22-05-05 23:01) @lasted(1d7h40m39s)
+    ✔ todos os deletes nos use cases (criando objeto de resposta para controle http de sucesso) @done(22-05-05 23:02)
+        ✔ drivers @started(22-05-04 15:21) @done(22-05-05 23:01) @lasted(1d7h40m41s)
+        ✔ devices @started(22-05-04 15:21) @done(22-05-05 23:01) @lasted(1d7h40m41s)
+        ✔ groups @started(22-05-04 15:21) @done(22-05-05 23:01) @lasted(1d7h40m42s)
+        ✘ sessions @started(22-05-04 15:21) @cancelled(22-05-05 23:02) @wasted(1d7h41m27s)
 
 review:
     Telas:
