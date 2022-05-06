@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq;
 using System.Net.Http;
 
 namespace Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases
