@@ -16,8 +16,8 @@ namespace Aisoftware.Tracker.Admin.Domain.Reports.Models
                 { "deviceOnline", "Dispositivo Ligado"  },
                 { "deviceMoving", "Dispositivo em Movimento" },
                 { "deviceStopped", "Dispositivo Parado" },
-                { "ignitionOn", "Ingnição Ligada" },
-                { "ignitionOff", "Ingnição Desligada" },
+                { "ignitionOn", "Ignição Ligada" },
+                { "ignitionOff", "Ignição Desligada" },
             };
         }
 
