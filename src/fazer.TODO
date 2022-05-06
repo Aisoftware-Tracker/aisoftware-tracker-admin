@@ -18,7 +18,7 @@ review:
                 ✔ Remover "Distancia Total", "Velocidade"e "Horas" @done(22-05-05 23:12)
                 ✔ Adicionar o "endereco" do dispositivo em dashboard @done(22-05-05 23:12)
             Cards:
-                ☐ Remover o "Mais informacoes" (talvez deixar o do "Total de Dispositivos")
+                ✔ Remover o "Mais informacoes" (talvez deixar o do "Total de Dispositivos") @done(22-05-05 23:17)
     Menu:
         ☐ Remover container "Configurações" e deixar menu com itens direto
     Cadastro/Editar Usuario:
