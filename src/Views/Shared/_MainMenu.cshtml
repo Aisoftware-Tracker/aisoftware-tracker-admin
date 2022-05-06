@@ -11,8 +11,24 @@
     <!-- Optionally, you can add icons to the links -->
     <!-- <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li> -->
     <li><a href="/"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+
+    @if (!readOnly)
+    {
+        <li class="treeview">
+            <a href="#"><i class="fa fa-users"></i> <span>Usuários</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="/Users/Create">Cadastrar Usuário</a></li>
+                <li><a href="/Users">Todos Usuários</a></li>
+            </ul>
+        </li>
+    }
+
     <li class="treeview">
-        <a href="#"><i class="fa fa-gear"></i> <span>Configurações</span>
+        <a href="#"><i class="fa fa-id-card"></i> <span>Motoristas</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -20,74 +36,52 @@
         <ul class="treeview-menu">
             @if (!readOnly)
             {
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-users"></i> <span>Usuários</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="/Users/Create">Cadastrar Usuário</a></li>
-                        <li><a href="/Users">Todos Usuários</a></li>
-                    </ul>
-                </li>
+                <li><a href="/Drivers/Create">Cadastrar Motorista</a></li>
             }
-
-            <li class="treeview">
-                <a href="#"><i class="fa fa-id-card"></i> <span>Motoristas</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    @if (!readOnly)
-                    {
-                        <li><a href="/Drivers/Create">Cadastrar Motorista</a></li>
-                    }
-                    <li><a href="/Drivers">Todos Motoristas</a></li>
-                </ul>
-            </li>
-
-            <li class="treeview">
-                <a href="#"><i class="fa fa-car"></i> <span>Dispositivos</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    @if (!readOnly)
-                    {
-                        <li><a href="/Devices/Create">Cadastrar Dispositivos</a></li>
-                    }
-                    <li><a href="/Devices">Todos Dispositivos</a></li>
-                </ul>
-            </li>
-            @if (!readOnly)
-            {
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-building"></i> <span>Clientes</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="/Groups/Create">Cadastrar Clientes</a></li>
-                        <li><a href="/Groups">Todos Clientes</a></li>
-                    </ul>
-                </li>
-            }
-            <li class="treeview">
-                <a href="#"><i class="fa fa-map"></i> <span>Mapa</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="/Maps">Visualizar</a></li>
-                </ul>
-            </li>
+            <li><a href="/Drivers">Todos Motoristas</a></li>
         </ul>
     </li>
+
+    <li class="treeview">
+        <a href="#"><i class="fa fa-car"></i> <span>Dispositivos</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            @if (!readOnly)
+            {
+                <li><a href="/Devices/Create">Cadastrar Dispositivos</a></li>
+            }
+            <li><a href="/Devices">Todos Dispositivos</a></li>
+        </ul>
+    </li>
+    @if (!readOnly)
+    {
+        <li class="treeview">
+            <a href="#"><i class="fa fa-building"></i> <span>Clientes</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="/Groups/Create">Cadastrar Clientes</a></li>
+                <li><a href="/Groups">Todos Clientes</a></li>
+            </ul>
+        </li>
+    }
+    <li class="treeview">
+        <a href="#"><i class="fa fa-map"></i> <span>Mapa</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="/Maps">Visualizar</a></li>
+        </ul>
+    </li>
+
+
     <li class="treeview">
         <a href="#"><i class="fa fa-file-alt"></i> <span>Relatórios</span>
             <span class="pull-right-container">

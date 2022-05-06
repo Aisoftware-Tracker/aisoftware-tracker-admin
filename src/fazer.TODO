@@ -20,7 +20,7 @@ review:
             Cards:
                 ✔ Remover o "Mais informacoes" (talvez deixar o do "Total de Dispositivos") @done(22-05-05 23:17)
     Menu:
-        ☐ Remover container "Configurações" e deixar menu com itens direto
+        ✔ Remover container "Configurações" e deixar menu com itens direto @done(22-05-05 23:23)
     Cadastro/Editar Usuario:
         ☐ Adicionar campo "deviceReadonly"
     Cadastro/Editar Dispositivo:
