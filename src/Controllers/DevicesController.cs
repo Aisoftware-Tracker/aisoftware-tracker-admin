@@ -9,7 +9,6 @@ using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Microsoft.AspNetCore.Routing;
 using Aisoftware.Tracker.Admin.Common.Util;
-using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
@@ -50,7 +49,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public ActionResult Create()
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }
@@ -61,7 +60,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateDevice(Device request)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }
@@ -89,7 +88,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }
@@ -111,7 +110,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public async Task<ActionResult> Update(int id)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }
@@ -138,7 +137,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateDevice(Device request)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }

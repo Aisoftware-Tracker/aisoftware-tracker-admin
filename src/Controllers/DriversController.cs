@@ -47,7 +47,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public ActionResult Create()
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }
@@ -58,7 +58,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateDriver(Driver request)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }
@@ -86,7 +86,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }
@@ -108,7 +108,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public async Task<ActionResult> Update(int id)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }
@@ -135,7 +135,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateDriver(Driver request)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }

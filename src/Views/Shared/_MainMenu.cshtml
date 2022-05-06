@@ -3,7 +3,7 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
-    bool readOnly = Convert.ToBoolean(HttpContextAccessor.HttpContext.Session.GetString("userReadOnly"));
+    bool deviceReadonly = Convert.ToBoolean(HttpContextAccessor.HttpContext.Session.GetString("deviceReadonly"));
 }
 
 <ul class="sidebar-menu" data-widget="tree">
@@ -12,7 +12,7 @@
     <!-- <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li> -->
     <li><a href="/"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
 
-    @if (!readOnly)
+    @if (!deviceReadonly)
     {
         <li class="treeview">
             <a href="#"><i class="fa fa-users"></i> <span>Usuários</span>
@@ -34,7 +34,7 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            @if (!readOnly)
+            @if (!deviceReadonly)
             {
                 <li><a href="/Drivers/Create">Cadastrar Motorista</a></li>
             }
@@ -49,14 +49,14 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            @if (!readOnly)
+            @if (!deviceReadonly)
             {
                 <li><a href="/Devices/Create">Cadastrar Dispositivos</a></li>
             }
             <li><a href="/Devices">Todos Dispositivos</a></li>
         </ul>
     </li>
-    @if (!readOnly)
+    @if (!deviceReadonly)
     {
         <li class="treeview">
             <a href="#"><i class="fa fa-building"></i> <span>Clientes</span>

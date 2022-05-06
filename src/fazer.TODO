@@ -22,7 +22,7 @@ review:
     Menu:
         ✔ Remover container "Configurações" e deixar menu com itens direto @done(22-05-05 23:23)
     Cadastro/Editar Usuario:
-        ☐ Adicionar campo "deviceReadonly"
+        ✔ Adicionar campo "deviceReadonly" @done(22-05-05 23:36)
     Cadastro/Editar Dispositivo:
         ☐ * Adicionar campo de Cliente ("groupId")  PRIORIZAR
         ☐ * Adicionar campo de IMEI (Identificador) ("uniqueId")

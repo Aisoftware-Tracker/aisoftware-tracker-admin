@@ -80,7 +80,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
             HttpContext.Session.SetInt32(SessionKey.USER_ID, session.Id);
             HttpContext.Session.SetString(SessionKey.USER_NAME, session.Name);
             HttpContext.Session.SetString(SessionKey.USER_EMAIL, session.Email);
-            HttpContext.Session.SetString(SessionKey.USER_READ_ONLY, session.Readonly.ToString());
+            HttpContext.Session.SetString(SessionKey.USER_DEVICE_READ_ONLY, session.DeviceReadonly.ToString());
             HttpContext.Session.SetString(SessionKey.USER_PHOTO,
                 string.IsNullOrEmpty(session.Photo) ?
                 "/dist/img/user-default.png" : session.Photo

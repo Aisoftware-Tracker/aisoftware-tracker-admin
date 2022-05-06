@@ -28,7 +28,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public async Task<ActionResult> Index()
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }
@@ -53,7 +53,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public ActionResult Create()
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }
@@ -64,7 +64,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateUser(User user)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }
@@ -89,7 +89,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }
@@ -111,7 +111,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public async Task<ActionResult> Update(int id)
         {
-            bool isReadOnly = Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY));
+            bool isReadOnly = Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY));
             bool isNotMyUser = HttpContext.Session.GetInt32(SessionKey.USER_ID) != id;
 
             if (isReadOnly && isNotMyUser)
@@ -141,7 +141,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateUser(User request)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_READ_ONLY)))
+            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
             {
                 return Forbidden();
             }
