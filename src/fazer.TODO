@@ -13,7 +13,7 @@ review:
     Telas:
         Dasheboard:
             Gerenciar Dispositivos:
-                ☐ Trocar texto "nome" para "placa"
+                ✔ Trocar texto "nome" para "placa" @done(22-05-05 23:06)
                 ☐ Refatorar "ingnicao" para "ignicao" (gramática)
                 ☐ Remover "Distancia Total", "Velocidade"e "Horas"
                 ☐ Adicionar o "endereco" do dispositivo em dashboard
