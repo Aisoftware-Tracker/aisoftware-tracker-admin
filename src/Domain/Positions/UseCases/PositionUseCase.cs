@@ -6,36 +6,20 @@ using Aisoftware.Tracker.Admin.Domain.Positions.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
 using System.Net.Http;
+using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 
 namespace Aisoftware.Tracker.Admin.Domain.Positions.UseCases
 {
-    public class PositionUseCase : IPositionUseCase
+    public class PositionUseCase : BaseUseCase<Position>, IPositionUseCase
     {
         private readonly IBaseRepository<Position> _repository;
 
-        public PositionUseCase(IPositionRepository repository)
+        public PositionUseCase(IPositionRepository repository) : base(repository)
         {
             _repository = repository;
         }
 
-        public async Task<IEnumerable<Position>> FindAll()
-        {
-            IEnumerable<Position> response = await _repository.FindAll(Endpoints.POSITIONS);
-
-            return response.OrderBy(Position => Position.Id);
-        }
-
-        public async Task<Position> FindById(int PositionId)
-        {
-            return await _repository.FindById(PositionId, Endpoints.POSITIONS);
-        }
-
-        public async Task<Position> Save(Position request)
-        {
-            return await _repository.Save(request, Endpoints.POSITIONS);
-        }
-
-        public async Task<Position> Update(Position content)
+        public override async Task<Position> Update(Position content)
         {
             Position response = await _repository.FindById(content.Id, Endpoints.POSITIONS);
 
@@ -64,11 +48,5 @@ namespace Aisoftware.Tracker.Admin.Domain.Positions.UseCases
             return await _repository.Update(request, Endpoints.POSITIONS);
 
         }
-
-        public async Task<HttpResponseMessage> Delete(int id)
-        {
-            return await _repository.Delete(id, Endpoints.POSITIONS);
-        }
-
     }
 }

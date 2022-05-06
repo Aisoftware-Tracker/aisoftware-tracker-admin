@@ -6,20 +6,20 @@ using Aisoftware.Tracker.Admin.Models;
 using Aisoftware.Tracker.Admin.Domain.Drivers.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
-using System.Net.Http;
+using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 
 namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
 {
-    public class DriverUseCase : IDriverUseCase
+    public class DriverUseCase : BaseUseCase<Driver>, IDriverUseCase
     {
         private readonly IBaseRepository<Driver> _repository;
 
-        public DriverUseCase(IDriverRepository repository)
+        public DriverUseCase(IDriverRepository repository) : base(repository)
         {
             _repository = repository;
         }
 
-        public async Task<IEnumerable<Driver>> FindAll()
+        public override async Task<IEnumerable<Driver>> FindAll()
         {
             IEnumerable<Driver> response = await _repository.FindAll(Endpoints.DRIVERS);
 
@@ -34,7 +34,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
             return response.OrderBy(driver => driver.Id);
         }
 
-        public async Task<Driver> FindById(int id)
+        public override async Task<Driver> FindById(int id)
         {
             var driver = await _repository.FindById(id, Endpoints.DRIVERS);
             driver.DocumentValidAt = $"{driver.DocumentValidAt}{FormatString.FORMAT_TIME_00}";
@@ -42,7 +42,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
             return driver;
         }
 
-        public async Task<Driver> Save(Driver request)
+        public override async Task<Driver> Save(Driver request)
         {
             request.Attributes = request.Attributes ?? new object();
             request.Photo = request.Photo ?? string.Empty;
@@ -52,7 +52,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
             return await _repository.Save(request, Endpoints.DRIVERS);
         }
 
-        public async Task<Driver> Update(Driver driver)
+        public override async Task<Driver> Update(Driver driver)
         {
             Driver response = await _repository.FindById(driver.Id, Endpoints.DRIVERS);
 
@@ -72,11 +72,5 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
             return await _repository.Update(request, $"{Endpoints.DRIVERS}/{driver.Id}");
 
         }
-
-        public async Task<HttpResponseMessage> Delete(int id)
-        {
-            return await _repository.Delete(id, Endpoints.DRIVERS);
-        }
-
     }
 }
