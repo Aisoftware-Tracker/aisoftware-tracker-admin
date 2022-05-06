@@ -57,7 +57,8 @@ review:
     Bug:
         ✘ Verificar controle de acesso dos usuarios (Israel verificar com trackmax) @cancelled(22-05-04 16:22)
         ☐ Alterar aonde que tem restricoes de "readOnly" alterar para "deviceReadonly": true,
-        ☐ Nao é possivel logar com aisoftware@aisoftware.com.br (rev10519) PRIORIZAR
+        ✔ Nao é possivel logar com aisoftware@aisoftware.com.br (rev10519) PRIORIZAR @done(22-05-06 00:08)
+            "icone nao mapeado na categoria: 'pick-up'"
 
 backlog:
     Gerenciar Dispositivos:

@@ -59,6 +59,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Devices.Models
                 { "caminhão", "fas fa-truck" },
                 { "truck", "fas fa-truck" },
                 { "van", "fas fa-shuttle-van" },
+                { "pickup", "fas fa-truck-pickup" },
                 { "null", "fas fa-question" }
             };
         }
