@@ -26,17 +26,17 @@ review:
             ✔ Adicionar campo "deviceReadonly" @done(22-05-05 23:36)
     Dispositivo:
         Cadastro/Editar:
-            ☐ * Adicionar campo de Cliente ("groupId")  PRIORIZAR
-            ☐ * Adicionar campo de IMEI (Identificador) ("uniqueId")
-            ☐ Alterar "Nome" para "Placa"
-            ☐ Alterar "Documento" para "Equipamento" ("contact" na api "Obs" na trackmax)
-            ☐ Remover "Válido Até"
-            ☐ Adicionar "Data de Instalação" (dateInstall)
-            ☐ Adicionar "Linha" (numero do chip) ("phone")
-            ☐ Adicionar "ICCID" ("icc")
-            ☐ Adicionar "Fornecedor" ("vendor")
-            ☐ Adicionar "Operadora" ("operator")
-            ☐ * Adicionar "Modelo do Rastreador" ("hardware")
+            ✔ * Adicionar campo de Cliente ("groupId")  PRIORIZAR @done(22-05-07 00:33)
+            ✔ * Adicionar campo de IMEI (Identificador) ("uniqueId") @done(22-05-07 00:33)
+            ✔ Alterar "Nome" para "Placa" @done(22-05-07 00:33)
+            ✔ Alterar "Documento" para "Equipamento" ("contact" na api "Obs" na trackmax) @done(22-05-07 00:33)
+            ✔ Remover "Válido Até" @done(22-05-07 00:33)
+            ✔ Adicionar "Data de Instalação" (dateInstall) @done(22-05-07 00:33)
+            ✔ Adicionar "Linha" (numero do chip) ("phone") @done(22-05-07 00:33)
+            ✔ Adicionar "ICCID" ("icc") @done(22-05-07 00:33)
+            ✔ Adicionar "Fornecedor" ("vendor") @done(22-05-07 00:33)
+            ✔ Adicionar "Operadora" ("operator") @done(22-05-07 00:33)
+            ✔ * Adicionar "Modelo do Rastreador" ("hardware") @done(22-05-07 00:33)
         Index:
             ✔ * Adicionar campo de IMEI (Identificador) ("uniqueId") @done(22-05-05 23:49)
             ✔ Alterar "Nome" para "Placa" @done(22-05-05 23:49)
@@ -48,6 +48,8 @@ review:
             ✔ Adicionar "Fornecedor" ("vendor") @done(22-05-05 23:49)
             ✔ Adicionar "Operadora" ("operator") @done(22-05-05 23:49)
             ✔ * Adicionar "Modelo do Rastreador" ("hardware") @done(22-05-05 23:49)
+        Relatórios de Rotas:
+            ☐ Adicionar informacao de placa no grid de relatorio 
     
     Cliente (Group):
         Cadastro/Editar:
@@ -56,7 +58,7 @@ review:
 
     Bug:
         ✘ Verificar controle de acesso dos usuarios (Israel verificar com trackmax) @cancelled(22-05-04 16:22)
-        ☐ Alterar aonde que tem restricoes de "readOnly" alterar para "deviceReadonly": true,
+        ✔ Alterar aonde que tem restricoes de "readOnly" alterar para "deviceReadonly": true, @done(22-05-06 18:43)
         ✔ Nao é possivel logar com aisoftware@aisoftware.com.br (rev10519) PRIORIZAR @done(22-05-06 00:08)
             "icone nao mapeado na categoria: 'pick-up'"
 
