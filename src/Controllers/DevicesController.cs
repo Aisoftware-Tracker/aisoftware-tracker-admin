@@ -9,19 +9,23 @@ using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Microsoft.AspNetCore.Routing;
 using Aisoftware.Tracker.Admin.Common.Util;
+using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
+using System.Linq;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
     public class DevicesController : Controller
     {
         private readonly IDeviceUseCase _useCase;
+        private readonly IGroupUseCase _groupUseCase;
         private readonly ILogger _logger;
         private readonly ILogUtil _logUtil;
         private RouteData _context;
 
-        public DevicesController(IDeviceUseCase useCase, ILogger<DevicesController> logger, ILogUtil logUtil)
+        public DevicesController(IDeviceUseCase useCase, IGroupUseCase groupUseCase, ILogger<DevicesController> logger, ILogUtil logUtil)
         {
             _useCase = useCase;
+            _groupUseCase = groupUseCase;
             _logger = logger;
             _logUtil = logUtil;
         }
@@ -54,7 +58,12 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 return Forbidden();
             }
 
-            return View();
+            DeviceViewModel viewModel = new DeviceViewModel
+            {
+                Groups = _groupUseCase.FindAll().Result
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -118,11 +127,13 @@ namespace Aisoftware.Tracker.Admin.Controllers
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName =_context.Values[ActionName.CONTROLLER];
 
-            Device response = new Device();
+            DeviceViewModel response = new DeviceViewModel();
 
             try
             {
-                response = await _useCase.FindById(id);
+                response.Device = await _useCase.FindById(id);
+                response.Groups = await _groupUseCase.FindAll();
+                response.Group = response.Groups.Where(x => x.Id == response.Device.GroupId).FirstOrDefault();
 
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
