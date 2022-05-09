@@ -77,9 +77,8 @@
                             <div class="box-footer">
                                 <a href="/@ViewBag.ControllerName?report=route" class="btn btn-default">Voltar</a>
 
-                                <a href="" onclick="alert('Exportar excel ainda nao implementado!')"
-                                    class="btn btn-success pull-right" style="margin-left: 15px;"><i
-                                        class="fas fa-file-excel"></i> Exportar em Excel</a>
+                                <a href="/@ViewBag.ControllerName/ExportToCsv?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to" class="btn btn-success pull-right"
+                                    style="margin-left: 15px;"><i class="fas fa-file-excel"></i> Exportar em Excel</a>
 
                                 <a href="/Maps?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to"
                                     class="btn btn-primary pull-right"><i class="fa fa-map"></i> Ver Rota no Mapa</a>
@@ -103,6 +102,30 @@
 
 <!-- page script -->
 <script>
+    function ExportToCsv() {
+
+        var obj = $('#data-table').dataTable();
+        console.log(obj);
+
+        var csv = obj.fnGetData();
+        console.log(csv);
+
+        $.ajax({
+                url: '@ViewBag.ControllerName/ExportToCsv',
+                type: 'POST',
+                data: {
+                    reportRoutes: csv
+                },
+                success: function (data) {
+                    alert("Dispositivo excluído com sucesso!");
+                    location.reload();
+                },
+                error: function (data) {
+                    alert("Erro ao excluir dispositivo!");
+                }
+            });
+    }
+
     function Delete(report) {
         $.ajax(
             {
