@@ -50,6 +50,10 @@ review:
             ✔ * Adicionar "Modelo do Rastreador" ("hardware") @done(22-05-05 23:49)
         Relatórios de Rotas:
             ☐ Adicionar informacao de placa no grid de relatorio 
+            ☐ Exportar para excel ou csv @started(22-05-09 12:22)
+                ✔ Routs @done(22-05-09 12:22)
+                ☐ Summary
+                ☐ Events
     
     Cliente (Group):
         Cadastro/Editar:

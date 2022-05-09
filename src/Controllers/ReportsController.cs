@@ -4,13 +4,16 @@ using Aisoftware.Tracker.Admin.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 using Aisoftware.Tracker.Admin.Common.Util;
 using Microsoft.AspNetCore.Routing;
+using System.Text;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System.Linq;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
@@ -189,6 +192,38 @@ namespace Aisoftware.Tracker.Admin.Controllers
             }
 
             return response;
+        }
+
+        ///TODO Criar classe generica 
+        [HttpGet]
+        public async Task<IActionResult> ExportToCsv(
+            [FromQuery] int? deviceId,
+            [FromQuery] int? groupId,
+            [FromQuery] DateTime from,
+            [FromQuery] DateTime to
+        )
+        {
+            _context = this.ControllerContext.RouteData;
+
+            var reportRoutes = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to));
+
+            var devices = await _deviceUseCase.FindAll();
+
+            var builder = new StringBuilder();
+            builder.AppendLine("Id; Id Dispositivo; Protocolo; Horario do Dispositivo; Horario Corrigido; Horario do Servidor; Vencimento; Valido; Latitude; Longitude; Altitude; Velociadade; Endereco; Irregularidade; Ignicao; Status; Distancia; Distancia Total /Km; Movimentação; Horas");
+
+            foreach (var item in reportRoutes)
+            {
+                string outdated = item.Outdated ? "Desatualizado" : "Atualizado";
+                string valid = item.Valid ? "Sim" : "Nao";
+                string ignition = item.Attributes.Ignition ? "Ligado" : "Desligado";
+                string motion = item.Attributes.Motion ? "Em Movimento" : "Parado";
+                string placa = devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name;
+
+                builder.AppendLine($"{item.Id}; {placa}; {item.Protocol}; {item.DeviceTimeStr}; {item.FixTimeStr}; {item.ServerTimeStr}; {outdated}; {valid}; {item.LatitudeStr}; {item.LongitudeStr}; {item.Altitude}; {item.Speed}; {item.Address}; {item.Accuracy}; {ignition}; {item.Attributes.Status}; {item.Attributes.Distance}; {item.Attributes.TotalDistance}; {motion}; {item.Attributes.Hours}");
+            }
+
+            return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", $"ReportRoute_{DateTime.Now.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_HH_MM)}.csv");
         }
 
         private IDictionary<string, string> GetQueryParameters(
