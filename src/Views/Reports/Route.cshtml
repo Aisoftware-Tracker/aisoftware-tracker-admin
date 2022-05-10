@@ -1,4 +1,4 @@
-@model IEnumerable<Aisoftware.Tracker.Admin.Models.ReportRoute>
+@model Aisoftware.Tracker.Admin.Models.ReportRouteViewModel
 
 <section class="content-header">
     <h1>
@@ -23,7 +23,7 @@
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Id Dispositivo</th>
+                                <th>Placa</th>
                                 <th>Protocolo</th>
                                 <th>Horário do Dispositivo</th>
                                 <th>Horário Corrigido</th>
@@ -46,11 +46,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model)
+                            @foreach (var item in Model.Routes)
                             {
+                                string placa = Model.Devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name;
+                                
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => item.Id)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.DeviceId)</td>
+                                    <td>@Html.DisplayFor(modelItem => placa)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Protocol)</td>
                                     <td>@Html.DisplayFor(modelItem => item.DeviceTimeStr)</td>
                                     <td>@Html.DisplayFor(modelItem => item.FixTimeStr)</td>
@@ -77,7 +79,7 @@
                             <div class="box-footer">
                                 <a href="/@ViewBag.ControllerName?report=route" class="btn btn-default">Voltar</a>
 
-                                <a href="/@ViewBag.ControllerName/ExportToCsv?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to" class="btn btn-success pull-right"
+                                <a href="/@ViewBag.ControllerName/ExportToCsv?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to&typeReport=route" class="btn btn-success pull-right"
                                     style="margin-left: 15px;"><i class="fas fa-file-excel"></i> Exportar em Excel</a>
 
                                 <a href="/Maps?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to"

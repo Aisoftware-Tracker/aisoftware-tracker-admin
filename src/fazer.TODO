@@ -49,11 +49,15 @@ review:
             ✔ Adicionar "Operadora" ("operator") @done(22-05-05 23:49)
             ✔ * Adicionar "Modelo do Rastreador" ("hardware") @done(22-05-05 23:49)
         Relatórios de Rotas:
-            ☐ Adicionar informacao de placa no grid de relatorio 
+            ✔ Adicionar informacao de placa no grid de relatorio @done(22-05-10 01:19)
             ☐ Exportar para excel ou csv @started(22-05-09 12:22)
-                ✔ Routs @done(22-05-09 12:22)
-                ☐ Summary
+                ✔ Routes @done(22-05-09 12:22)
+                ✔ Summary @done(22-05-10 00:30)
                 ☐ Events
+                    ☐ _positionId;
+                    ☐ _geofenceId;
+                    ☐ _maintenanceId;
+
     
     Cliente (Group):
         Cadastro/Editar:
