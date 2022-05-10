@@ -84,12 +84,17 @@ namespace Aisoftware.Tracker.Admin.Controllers
         )
         {
             _context = this.ControllerContext.RouteData;
-            IEnumerable<ReportSummary> response = new List<ReportSummary>();
+            ReportSummaryViewModel viewModel = new ReportSummaryViewModel();
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
+            ViewBag.deviceId = deviceId;
+            ViewBag.groupId = groupId;
+            ViewBag.from = from;
+            ViewBag.to = to;
 
             try
             {
-                response = await _summaryUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to));
+                viewModel.Summaries = await _summaryUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to));
+                viewModel.Devices = await _deviceUseCase.FindAll();
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
             catch (Exception e)
@@ -98,7 +103,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e, message));
             }
 
-            return View(response);
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -110,10 +115,12 @@ namespace Aisoftware.Tracker.Admin.Controllers
         )
         {
             _context = this.ControllerContext.RouteData;
-            IEnumerable<ReportEvent> response = new List<ReportEvent>();
-            IEnumerable<Device> devices = new List<Device>();
             ReportEventViewModel viewModel = new ReportEventViewModel();
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
+            ViewBag.deviceId = deviceId;
+            ViewBag.groupId = groupId;
+            ViewBag.from = from;
+            ViewBag.to = to;
 
             try
             {
@@ -167,7 +174,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
             return RedirectToAction(ActionName.INDEX, $"{_context.Values[ActionName.CONTROLLER]}?report={report}");
         }
 
-        private async Task<IEnumerable<ReportRoute>> GetReportRoute(
+        private async Task<ReportRouteViewModel> GetReportRoute(
                 [FromQuery] int? deviceId,
                 [FromQuery] int? groupId,
                 [FromQuery] DateTime from,
@@ -177,11 +184,12 @@ namespace Aisoftware.Tracker.Admin.Controllers
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
-            IEnumerable<ReportRoute> response = new List<ReportRoute>();
+            ReportRouteViewModel viewModel = new ReportRouteViewModel();
 
             try
             {
-                response = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to));
+                viewModel.Routes = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to));
+                viewModel.Devices = await _deviceUseCase.FindAll();
 
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
@@ -191,7 +199,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e, message));
             }
 
-            return response;
+            return viewModel;
         }
 
         ///TODO Criar classe generica 
@@ -200,30 +208,48 @@ namespace Aisoftware.Tracker.Admin.Controllers
             [FromQuery] int? deviceId,
             [FromQuery] int? groupId,
             [FromQuery] DateTime from,
-            [FromQuery] DateTime to
+            [FromQuery] DateTime to,
+            [FromQuery] string typeReport
         )
         {
             _context = this.ControllerContext.RouteData;
 
-            var reportRoutes = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to));
-
-            var devices = await _deviceUseCase.FindAll();
-
-            var builder = new StringBuilder();
-            builder.AppendLine("Id; Id Dispositivo; Protocolo; Horario do Dispositivo; Horario Corrigido; Horario do Servidor; Vencimento; Valido; Latitude; Longitude; Altitude; Velociadade; Endereco; Irregularidade; Ignicao; Status; Distancia; Distancia Total /Km; Movimentação; Horas");
-
-            foreach (var item in reportRoutes)
+            try
             {
-                string outdated = item.Outdated ? "Desatualizado" : "Atualizado";
-                string valid = item.Valid ? "Sim" : "Nao";
-                string ignition = item.Attributes.Ignition ? "Ligado" : "Desligado";
-                string motion = item.Attributes.Motion ? "Em Movimento" : "Parado";
-                string placa = devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name;
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), typeReport));
 
-                builder.AppendLine($"{item.Id}; {placa}; {item.Protocol}; {item.DeviceTimeStr}; {item.FixTimeStr}; {item.ServerTimeStr}; {outdated}; {valid}; {item.LatitudeStr}; {item.LongitudeStr}; {item.Altitude}; {item.Speed}; {item.Address}; {item.Accuracy}; {ignition}; {item.Attributes.Status}; {item.Attributes.Distance}; {item.Attributes.TotalDistance}; {motion}; {item.Attributes.Hours}");
+                switch (typeReport)
+                {
+                    case Endpoints.SUMMARY:
+                        return ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, new ReportSummaryViewModel
+                        {
+                            Summaries = await _summaryUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
+                            Devices = await _deviceUseCase.FindAll()
+                        });
+                    case Endpoints.ROUTE:
+                        return ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, new ReportRouteViewModel
+                        {
+                            Routes = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
+                            Devices = await _deviceUseCase.FindAll()
+                        });
+                    case Endpoints.EVENTS:
+                        return ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, new ReportEventViewModel
+                        {
+                            Events = await _eventUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
+                            Devices = await _deviceUseCase.FindAll()
+                        });
+                    default:
+                        return View();
+                }
+            }
+            catch (Exception e)
+            {
+                string message = messageParams(deviceId, groupId, from, to);
+                _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e, message));
             }
 
-            return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", $"ReportRoute_{DateTime.Now.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_HH_MM)}.csv");
+            return null;
+
         }
 
         private IDictionary<string, string> GetQueryParameters(

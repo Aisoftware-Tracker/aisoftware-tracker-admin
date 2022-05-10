@@ -1,4 +1,4 @@
-@model IEnumerable<Aisoftware.Tracker.Admin.Models.ReportSummary>
+@model Aisoftware.Tracker.Admin.Models.ReportSummaryViewModel
 
 <section class="content-header">
     <h1>
@@ -23,7 +23,7 @@
                         <thead>
                             <tr>
                                 <th>Id Dispositivo</th>
-                                <th>Nome Dispositivo</th>
+                                <th>Placa</th>
                                 <th>Velocidade Máxima</th>
                                 <th>Velocidade Média</th>
                                 <th>Distancia</th>
@@ -32,10 +32,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model)
+                            @foreach (var item in Model.Summaries)
                             {
+                                string placa = Model.Devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name;
+
                                 <tr>
-                                    <td>@Html.DisplayFor(modelItem => item.DeviceId)</td>
+                                    <td>@Html.DisplayFor(modelItem => placa)</td>
                                     <td>@Html.DisplayFor(modelItem => item.DeviceName)</td>
                                     <td>@Html.DisplayFor(modelItem => item.MaxSpeed)</td>
                                     <td>@Html.DisplayFor(modelItem => item.AverageSpeed)</td>
@@ -49,8 +51,9 @@
                         <div class="col-xs-12">
                             <div class="box-footer">
                                 <a href="/@ViewBag.ControllerName?report=summary" class="btn btn-default">Voltar</a>
-                                <a href="" onclick="alert('Exportar excel ainda nao implementado!')"
-                                    class="btn btn-success pull-right"><i class="fas fa-file-excel"></i> Exportar em Excel</a>
+
+                                <a href="/@ViewBag.ControllerName/ExportToCsv?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to&typeReport=summary" class="btn btn-success pull-right"
+                                    style="margin-left: 15px;"><i class="fas fa-file-excel"></i> Exportar em Excel</a>
                             </div>
                         </div>
                     </div>
