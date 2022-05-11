@@ -5,7 +5,7 @@ using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
 
 namespace Aisoftware.Tracker.Admin.Domain.Devices.UseCases
 {
-    abstract public class BaseUseCase<T> where T : class 
+    abstract public class BaseUseCase<T> where T : class
     {
         private readonly IBaseRepository<T> _repository;
         private string _endpoint;
@@ -40,59 +40,47 @@ namespace Aisoftware.Tracker.Admin.Domain.Devices.UseCases
             return await _repository.Save(request, _endpoint);
         }
 
-        public abstract Task<T> Update(T content);
-        
-        ///TODO - Implementar futuramente, analizando as verificacoes de regras de negocio
-        // {
-        //     var response = await _repository.FindById(GetIdValue(content), _endpoint);
+        public virtual async Task<T> Update(T content)
+        {
+            T response = await _repository.FindById(GetIdValue(content), _endpoint);
 
-        //     var request = GetPropValue(content, response);
+            var request = this.SetSourceValueIfContentValueNull(content, response);
 
-        //     return await _repository.Update(request, _endpoint);        
-        
-        // }
+            return await _repository.Update(request, _endpoint);
 
-        // private T GetPropValue(object content, object response) 
-        // {
-        //     foreach(var propContent in content.GetType().GetProperties()) 
-        //     {
-        //         foreach(var propResponse in response.GetType().GetProperties())
-        //         {
-        //             if(propContent.Name == propResponse.Name)
-        //             {
-        //                 propResponse.SetValue(response, propContent.GetValue(content));
-        //             }
-        //         }
-        //     }
+        }
 
-        //     return response as T;
+        ///TODO Remover metodo duplicado
+        private int GetIdValue(T content)
+        {
+            var id = 0;
+            var type = content.GetType();
+            var property = type.GetProperty("Id");
+            if (!(property is null))
+            {
+                id = (int)property.GetValue(content);
+            }
+            return id;
+        }
 
-        // }
+        public virtual T SetSourceValueIfContentValueNull(T content, T source)
+        {
+            var typeContent = content.GetType();
+            var typeSourse = source.GetType();
+            var response = content;
 
-        // private object GeName(object obj)
-        // {
-        //     foreach(var prop in obj.GetType().GetProperties()) 
-        //     {
-        //         if (prop.ToString() == "Id")
-        //         {
-        //             return prop.Name;
-        //         }
-        //     }
-            
-        //     return null;
-        // }
+            foreach (var property in typeContent.GetProperties())
+            {
+                var valueContent = property.GetValue(content);
+                var valueSource = property.GetValue(source);
 
-        // private int GetIdValue(object obj)
-        // {
-        //     foreach(var prop in obj.GetType().GetProperties()) 
-        //     {
-        //         if (prop.Name.ToString() == "Id")
-        //         {
-        //             return Convert.ToInt32(prop.GetValue(obj, null));
-        //         }
-        //     }
+                if (valueContent is null)
+                {
+                    property.SetValue(response, valueSource);
+                }
+            }
 
-        //     return 0;
-        // }
+            return response;
+        }
     }
 }
