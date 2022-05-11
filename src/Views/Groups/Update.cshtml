@@ -48,7 +48,7 @@
                             <option value="">Selecione um Cliente Base</option>
                             @foreach (var item in Model.Groups.Where(x => x.GroupId == 0).ToList())
                             {
-                                <option value="@item.Id" selected="@(item.Id == Model.Group.GroupId)">@item.Name</option>
+                                <option value="@item.Id" selected="@(item.Id == Model.Group?.GroupId)">@item.Name</option>
                             }
                         </select>
                     </div>

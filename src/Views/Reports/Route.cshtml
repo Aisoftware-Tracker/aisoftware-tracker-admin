@@ -49,7 +49,7 @@
                             @foreach (var item in Model.Routes)
                             {
                                 string placa = Model.Devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name;
-                                
+
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => item.Id)</td>
                                     <td>@Html.DisplayFor(modelItem => placa)</td>
@@ -79,11 +79,15 @@
                             <div class="box-footer">
                                 <a href="/@ViewBag.ControllerName?report=route" class="btn btn-default">Voltar</a>
 
-                                <a href="/@ViewBag.ControllerName/ExportToCsv?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to&typeReport=route" class="btn btn-success pull-right"
-                                    style="margin-left: 15px;"><i class="fas fa-file-excel"></i> Exportar em Excel</a>
-
-                                <a href="/Maps?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to"
+                                <a href="/@ViewBag.ControllerName/ExportToCsv?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to&typeReport=route"
+                                    class="btn btn-success pull-right" style="margin-left: 15px;"><i
+                                        class="fas fa-file-excel"></i> Exportar em Excel</a>
+                                @if (!(ViewBag?.deviceId == null || ViewBag.deviceId == 0))
+                                {
+                                    <a href="/Maps?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to"
                                     class="btn btn-primary pull-right"><i class="fa fa-map"></i> Ver Rota no Mapa</a>
+                                }
+
                             </div>
                         </div>
                     </div>
@@ -113,19 +117,19 @@
         console.log(csv);
 
         $.ajax({
-                url: '@ViewBag.ControllerName/ExportToCsv',
-                type: 'POST',
-                data: {
-                    reportRoutes: csv
-                },
-                success: function (data) {
-                    alert("Dispositivo excluído com sucesso!");
-                    location.reload();
-                },
-                error: function (data) {
-                    alert("Erro ao excluir dispositivo!");
-                }
-            });
+            url: '@ViewBag.ControllerName/ExportToCsv',
+            type: 'POST',
+            data: {
+                reportRoutes: csv
+            },
+            success: function (data) {
+                alert("Dispositivo excluído com sucesso!");
+                location.reload();
+            },
+            error: function (data) {
+                alert("Erro ao excluir dispositivo!");
+            }
+        });
     }
 
     function Delete(report) {
