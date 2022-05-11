@@ -61,8 +61,8 @@ review:
     
     Cliente (Group):
         Cadastro/Editar:
-            ☐ Criar um checkbox que define se o cliente base ou não
-            ☐ Alterar dropdown "Cliente Base" para trazer apenas clientes Base "groupId = 0"
+            ✔ Criar um checkbox que define se o cliente base ou não @done(22-05-11 09:58)
+            ✔ Alterar dropdown "Cliente Base" para trazer apenas clientes Base "groupId = 0" @done(22-05-11 09:58)
 
     Bug:
         ✘ Verificar controle de acesso dos usuarios (Israel verificar com trackmax) @cancelled(22-05-04 16:22)
