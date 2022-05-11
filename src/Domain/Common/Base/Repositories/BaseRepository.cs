@@ -86,8 +86,10 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
 
         }
 
-        public async Task<T> Save(T content, string endpoint)
+        public async Task<T> Save(T input, string endpoint)
         {
+             var content = ReplaceContent(input);
+
             _uri = new Uri($"{_url}/{endpoint}");
             _handler = new HttpClientHandler();
             _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
@@ -116,7 +118,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
         public async Task<T> Update(T content, string endpoint)
         {
             _cookieValue = _httpContextAccessor.HttpContext.Session.GetString(CookieName.JSESSIONID);
-            _uri = new Uri($"{_url}/{endpoint}");
+            _uri = new Uri($"{_url}/{endpoint}/{GetIdValue(content)}");
             _handler = new HttpClientHandler();
             _handler.UseCookies = false;
 
@@ -156,7 +158,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
 
                     response = await httpClient.SendAsync(request);
 
-                    if(response.StatusCode != HttpStatusCode.NoContent)
+                    if (response.StatusCode != HttpStatusCode.NoContent)
                     {
                         throw new Exception($"{response.ReasonPhrase} -> Error deleting item");
                     }
@@ -197,5 +199,79 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
                 throw new Exception($"{response.ReasonPhrase} -> {response.RequestMessage}\n ID: {id}");
             }
         }
+
+        ///TODO Remover metodo duplicado
+        private int GetIdValue(T content)
+        {
+            var id = 0;
+            var type = content.GetType();
+            var property = type.GetProperty("Id");
+            if (!(property is null))
+            {
+                id = (int)property.GetValue(content);
+            }
+            return id;
+        }
+
+        private T ReplaceContent(T content)
+        {
+            var type = content.GetType();
+
+            foreach (var property in type.GetProperties())
+            {
+                if (property.PropertyType == typeof(string))
+                {
+                    if (string.IsNullOrEmpty(property.GetValue(content).ToString()))
+                    {
+                        property.SetValue(content, "");
+                    }
+                }
+                if (property.PropertyType == typeof(object))
+                {
+                    if (property.GetValue(content) is null)
+                    {
+                        property.SetValue(content, new object());
+                    }
+                }
+                else if (property.PropertyType == typeof(DateTime))
+                {
+                    if (property.GetValue(content) is null)
+                    {
+                        property.SetValue(content, "");
+                    }
+                }
+                else if (property.PropertyType == typeof(bool))
+                {
+                    if (property.GetValue(content) is null)
+                    {
+                        property.SetValue(content, false);
+                    }
+                }
+                else if (property.PropertyType == typeof(int))
+                {
+                    if (property.GetValue(content) is null)
+                    {
+                        property.SetValue(content, 0);
+                    }
+                }
+                else if(property.PropertyType == typeof(decimal))
+                {
+                    if (property.GetValue(content) is null)
+                    {
+                        property.SetValue(content, 0);
+                    }
+                }
+                else if(property.PropertyType == typeof(long))
+                {
+                    if (property.GetValue(content) is null)
+                    {
+                        property.SetValue(content, 0);
+                    }
+                }
+            }
+
+            return content;
+        }
+
     }
 }

@@ -54,23 +54,13 @@ namespace Aisoftware.Tracker.Admin.Domain.Drivers.UseCases
 
         public override async Task<Driver> Update(Driver driver)
         {
-            Driver response = await _repository.FindById(driver.Id, Endpoints.DRIVERS);
-
+            Driver response = await _repository.FindById(driver.Id, Endpoints.DRIVERS); 
             driver.DocumentValidAt = driver.DocumentValidAt.Substring(0, 10);
 
-            Driver request = new Driver
-            {
-                Id = driver.Id,
-                Attributes = driver.Attributes ?? response.Attributes,
-                Name = driver.Name ?? response.Name,
-                UniqueId = driver.UniqueId ?? response.UniqueId,
-                Photo = driver.Photo ?? response.Photo,
-                Document = driver.Document ?? response.Document,
-                DocumentValidAt = driver.DocumentValidAt ?? response.DocumentValidAt
-            };
+            var request = this.SetSourceValueIfContentValueNull(driver, response);
 
-            return await _repository.Update(request, $"{Endpoints.DRIVERS}/{driver.Id}");
-
+            return await _repository.Update(request, Endpoints.DRIVERS);
+            
         }
     }
 }
