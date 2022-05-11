@@ -38,13 +38,17 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="base-client" class="col-sm-2 control-label">Definir como Base</label>
+                    <div class="col-sm-3">
+                        <input id="base-client" type="checkbox" class="custom-control-input" name="base-client">
+                    </div>
                     <label for="Group" class="col-sm-2 control-label">Cliente Base</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" name="Group">
+                    <div class="col-sm-5">
+                        <select id="Group" class="form-control" name="Group">
                             <option value="">Selecione um Cliente Base</option>
-                            @foreach (var item in Model.Groups)
+                            @foreach (var item in Model.Groups.Where(x => x.GroupId == 0).ToList())
                             {
-                                <option value="@item.Id" selected="@( item.Id == Model.Group.GroupId )">@item.Name</option>
+                                <option value="@item.Id" selected="@(item.Id == Model.Group.GroupId)">@item.Name</option>
                             }
                         </select>
                     </div>
@@ -86,7 +90,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="Name" class="col-sm-2 control-label">Tipo Cobrança</label>
+                    <label for="TipoCobranca" class="col-sm-2 control-label">Tipo Cobrança</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control" name="TipoCobranca" placeholder="Tipo de Cobrança"
                             value="@Model.Group.TipoCobranca">
@@ -101,11 +105,12 @@
                 <div class="form-group">
                     <label for="ObsFinanceiro" class="col-sm-2 control-label">Obs Financeiro</label>
                     <div class="col-sm-10">
-                        <textarea type="text" class="form-control" name="ObsFinanceiro" rows="3"
-                            placeholder="Obs Financeiro" value="@Model.Group.ObsFinanceiro">
+                        <textarea id="ObsFinanceiro" class="form-control" name="ObsFinanceiro" rows="3"
+                            placeholder="Obs Financeiro">
                         </textarea>
                     </div>
                 </div>
+                <input type="hidden" name="Id" value="@Model.Group.Id" />
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
@@ -118,4 +123,25 @@
         </form>
     </div>
     <!-- /.box -->
+    <script>
+        $(document).ready(function () {
+            setLikeBaseClient();
+            $("#ObsFinanceiro").val('@Model.Group.ObsFinanceiro');
+            cosole.log('@Model.Group.ObsFinanceiro');
+        });
+
+        $("#base-client").click(function() {
+            setLikeBaseClient();
+        });
+
+        function setLikeBaseClient() {
+             var isChecked = $('input:checkbox[name=base-client]').is(':checked');
+            if (isChecked) {
+                $('select[name=Group]').attr('disabled', 'disabled');
+                $("#Group").val(0);
+            } else {
+                $('select[name=Group]').removeAttr('disabled');
+            }
+        }
+    </script>
 </section>

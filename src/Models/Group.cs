@@ -1,4 +1,3 @@
-using System;
 using Newtonsoft.Json;
 
 namespace Aisoftware.Tracker.Admin.Models
@@ -19,7 +18,7 @@ namespace Aisoftware.Tracker.Admin.Models
         private string _phone;
         private string _valorPlano;
         private string _tipoCobranca;
-        private DateTime? _dataVencimento;
+        private string _dataVencimento;
         private string _obsFinanceiro;
 
         [JsonProperty("id")]
@@ -65,7 +64,7 @@ namespace Aisoftware.Tracker.Admin.Models
         public string TipoCobranca { get => _tipoCobranca; set => _tipoCobranca = value; }
         
         [JsonProperty("datavencimento")]
-        public DateTime? DataVencimento { get => _dataVencimento; set => _dataVencimento = value; }
+        public string DataVencimento { get => _dataVencimento; set => _dataVencimento = value; }
         
         [JsonProperty("obsfinanceiro")]
         public string ObsFinanceiro { get => _obsFinanceiro; set => _obsFinanceiro = value; }
