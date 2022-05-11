@@ -152,6 +152,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
             ViewBag.from = from;
             ViewBag.to = to;
 
+            ViewBag.deviceId = deviceId;
+
             return View(response);
         }
 
