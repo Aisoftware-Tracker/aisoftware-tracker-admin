@@ -7,6 +7,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Reports.Models
 
         private const string FA_CAR = "fas fa-car";
         private const string FA_KEY = "fa fa-key";
+        private const string FA_BELL = "fa fa-bell";
 
         public static IDictionary<string, string> Get()
         {
@@ -18,6 +19,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Reports.Models
                 { "deviceStopped", "Dispositivo Parado" },
                 { "ignitionOn", "Ignição Ligada" },
                 { "ignitionOff", "Ignição Desligada" },
+                { "alarm", "Alarme" },
             };
         }
 
@@ -31,6 +33,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Reports.Models
                 { "deviceStopped", FA_CAR },
                 { "ignitionOn", FA_KEY },
                 { "ignitionOff", FA_KEY },
+                { "alarm", FA_BELL },
             };
         }
     }

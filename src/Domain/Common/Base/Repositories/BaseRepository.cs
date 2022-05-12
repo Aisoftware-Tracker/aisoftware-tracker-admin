@@ -221,7 +221,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
             {
                 if (property.PropertyType == typeof(string))
                 {
-                    if (string.IsNullOrEmpty(property.GetValue(content).ToString()))
+                    if (property.GetValue(content) is null)
                     {
                         property.SetValue(content, "");
                     }

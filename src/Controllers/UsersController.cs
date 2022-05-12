@@ -76,12 +76,12 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 var response = await _useCase.Save(user);
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
-                return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
+                return View();
             }
             catch (Exception e)
             {
                 _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
-                return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
+                return View("Error");
             }
 
         }
