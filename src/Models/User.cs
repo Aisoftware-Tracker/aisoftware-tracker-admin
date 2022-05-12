@@ -23,7 +23,7 @@ namespace Aisoftware.Tracker.Admin.Models
         private bool _twelveHourFormat;
         private string _coordinateFormat;
         private bool _disabled;
-        private DateTime? _expirationTime;
+        private string _expirationTime;
         private int _deviceLimit;
         private int _userLimit;
         private bool _deviceReadonly;
@@ -82,7 +82,7 @@ namespace Aisoftware.Tracker.Admin.Models
         public bool Disabled { get => _disabled; set => _disabled = value; }
 
         [JsonProperty("expirationTime")]
-        public DateTime? ExpirationTime { get => _expirationTime; set => _expirationTime = value; }
+        public string ExpirationTime { get => _expirationTime; set => _expirationTime = value; }
 
         [JsonProperty("deviceLimit")]
         public int DeviceLimit { get => _deviceLimit; set => _deviceLimit = value; }

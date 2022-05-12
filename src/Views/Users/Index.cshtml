@@ -30,6 +30,7 @@
                                 <th>Email</th>
                                 <th>Telefone</th>
                                 <th>Somente Leitura</th>
+                                <th>Dispositovo Somente Leitura</th>
                                 <th>Administrador</th>
                                 <th>Desabilitado</th>
                                 <th></th>
@@ -44,6 +45,7 @@
                                     <td>@Html.DisplayFor(modelItem => item.Email)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Phone)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Readonly)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.DeviceReadonly)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Administrator)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Disabled)</td>
                                     <td>
@@ -76,26 +78,18 @@
         var r = confirm("Você tem certeza que deseja excluir este usuário?");
         if (r == true) {
 
-            $.ajax(
-                {
-                    type: "POST",
-                    url: '@Url.Action("Delete", "Users")',
-                    data: {
-                        id: id
-                    },
-                    error: function (result) {
-                        alert("error");
-                    },
-                    success: function (result) {
-                        if (result == true) {
-                            var baseUrl = "/Users";
-                            window.location.reload();
-                        }
-                        else {
-                            alert("Houve um problema inesperado, Tente novamente mais tarde!");
-                        }
-                    }
-                });
+            $.ajax({
+                url: `@ViewBag.ControllerName/Delete/${id}`,
+                type: 'DELETE',
+                success: function (data) {
+                    alert("Usuário excluído com sucesso!");
+                    location.reload();
+                },
+                error: function (data) {
+                    alert("Erro ao excluir usuário!");
+                }
+            });
         }
     }
+
 </script>
