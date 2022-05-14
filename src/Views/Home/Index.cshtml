@@ -1,5 +1,8 @@
 ﻿@model Aisoftware.Tracker.Admin.Models.DashboardViewModel
 @using Aisoftware.Tracker.Admin.Domain.Devices.Models
+@using System
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
     const string ONLINE = "online";
@@ -10,6 +13,7 @@
     int devicesOff = Model.Devices.Where(x => x.Status == OFFLINE).Count();
     int devicesTotal = Model.Devices.Count();
     var list = Model.Devices.Where(x => x.Status == ONLINE).ToArray();
+    bool isDeviceReadonly = Convert.ToBoolean(HttpContextAccessor.HttpContext.Session.GetString("deviceReadonly"));
 }
 
 <!-- Leaflet lib (open street map)-->
@@ -166,8 +170,8 @@
                             {
                                 bool isMotion = Model.Positions.Where(p => p.DeviceId == item.Id && item.Status == "online")?.FirstOrDefault()?.Attributes?.Motion ?? false;
                                 var position = Model.Positions.Where(p => p.DeviceId == item.Id)?.FirstOrDefault();
-                                decimal lat = position.Latitude;
-                                decimal lng = position.Longitude;
+                                decimal? lat = position?.Latitude;
+                                decimal? lng = position?.Longitude;
 
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
@@ -176,9 +180,9 @@
                                         @(item.Status == "online" ? "on" : "off")" title="@item.Status">
                                         </i>
                                         @Html.DisplayFor(modelItem => item.Category)
-                                        <span class="@(position.Attributes.Ignition ? "label label-success" : "label label-danger") pull-right" style="margin-left : 5px">
+                                        <span class="@((position?.Attributes?.Ignition ?? false) ? "label label-success" : "label label-danger") pull-right" style="margin-left : 5px">
                                             <i class="fas fa-key"></i>&nbsp;
-                                            @(position.Attributes.Ignition ? "ignição ligada" : "ignição desligada")
+                                            @((position?.Attributes?.Ignition ?? false) ? "ignição ligada" : "ignição desligada")
                                         </span>
                                         <span class="@(isMotion ? "label label-primary" : "label label-default") pull-right">
                                           <i class="@(isMotion ? "fas fa-route" : "fas fa-ban")"></i> &nbsp; @(isMotion ? "Movimento" : "Parado") 
@@ -187,8 +191,14 @@
                                     <td>@Html.DisplayFor(modelItem => item.LastUpdateStr)</td>
                                     <td>@Html.DisplayFor(modelItem => position.Address)</td>
                                     <td>
-                                        <a href="Devices/Update/@item.Id"
-                                        class="btn btn-block btn-primary">Editar</a>
+                                        @{
+                                            if(!isDeviceReadonly)
+                                            {
+                                                <a href="Devices/Update/@item.Id" class="btn btn-block btn-primary">Editar</a>
+                                            }
+                                        }
+                                       
+
                                         <a href="https://www.google.com/maps/place/@lat,@lng/@@@lat,@lng,17z" target="_blank" class="btn btn-block btn-danger">
                                         <i class="fa fa-google"></i> Ver no Mapa</a>
                                     </td>
