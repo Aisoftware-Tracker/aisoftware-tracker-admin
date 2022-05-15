@@ -40,31 +40,61 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="Disabled" class="col-sm-2 control-label">Desativado</label>
+                    <label for="checkDisabled" class="col-sm-2 control-label">Desativado</label>
                     <div class="col-sm-10">
-                        <input type="checkbox" class="custom-control-input" name="Disabled">
+                        <input id="checkDisabled" type="checkbox" class="custom-control-input" name="checkDisabled">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="Readonly" class="col-sm-2 control-label">Somente Leitura</label>
+                    <label for="checkReadonly" class="col-sm-2 control-label">Somente Leitura</label>
                     <div class="col-sm-10">
-                        <input type="checkbox" class="custom-control-input" name="Readonly">
+                        <input id="checkReadonly" type="checkbox" class="custom-control-input" name="checkReadonly">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="DeviceReadonly" class="col-sm-2 control-label">Dispositivos Somente Leitura</label>
+                    <label for="checkDeviceReadonly" class="col-sm-2 control-label">Dispositivos Somente Leitura</label>
                     <div class="col-sm-10">
-                        <input type="checkbox" class="custom-control-input" name="DeviceReadonly" checked="true">
+                        <input id="checkDeviceReadonly" type="checkbox" class="custom-control-input"
+                            name="checkDeviceReadonly">
                     </div>
                 </div>
             </div>
+            <input type="hidden" id="Readonly" name="Readonly">
+            <input type="hidden" id="DeviceReadonly" name="DeviceReadonly">
+            <input type="hidden" id="Disabled" name="Disabled">
+
             <!-- /.box-body -->
             <div class="box-footer">
                 <button type="submit" class="btn btn-default" formaction="Cancel" formmethod="post">Voltar</button>
-                <button type="submit" class="btn btn-info pull-right" formaction="CreateUser" formmethod="post">Cadastrar</button>
+                <button type="submit" class="btn btn-info pull-right" formaction="CreateUser"
+                    formmethod="post">Cadastrar</button>
             </div>
             <!-- /.box-footer -->
         </form>
     </div>
     <!-- /.box -->
+    <script>
+        $(document).ready(function () {
+            setCheckbox();
+        });
+
+        $("#checkReadonly").click(function () {
+            setCheckbox("Readonly");
+        });
+        $("#checkDeviceReadonly").click(function () {
+            setCheckbox("DeviceReadonly");
+        });
+        $("#checkDisabled").click(function () {
+            setCheckbox("Disabled");
+        });
+
+        function setCheckbox(value) {
+            var isChecked = $(`input:checkbox[name=check${value}]`).is(':checked');
+            if (isChecked) {
+                $(`#${value}`).val(true);
+            } else {
+                $(`#${value}`).val(false);
+            }
+        }
+    </script>
 </section>
