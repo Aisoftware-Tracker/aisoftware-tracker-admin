@@ -23,12 +23,13 @@
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Tipo</th>
-                                <th>Hora do Servidor</th>
                                 <th>Dispositivos</th>
-                                <th>Id do Posicionamento</th>
-                                <th>Id da Georeferencia</th>
-                                <th>Id da Manutenção</th>
+                                <th>Hora do Servidor</th>
+                                <th>Tipo</th>
+                                <th>Endereço</th>
+                                <th>Geoference Name</th>
+                                <th>Maintenance Name</th>
+                                <th>Attributes</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,15 +37,16 @@
                             {
                                     <tr>
                                         <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                        <td>@Html.DisplayFor(modelItem => Model.Devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.ServerTime)</td>
                                         <td>
                                             <i class="@Aisoftware.Tracker.Admin.Domain.Reports.Models.EventType.GetIcon()[item.Type]  @item.Type"></i>
                                             @Html.DisplayFor(modelItem => Aisoftware.Tracker.Admin.Domain.Reports.Models.EventType.Get()[item.Type])
                                         </td>
-                                        <td>@Html.DisplayFor(modelItem => item.ServerTime)</td>
-                                        <td>@Html.DisplayFor(modelItem => Model.Devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.PositionId)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.GeofenceId)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.MaintenanceId)</td>
+                                        <td>@Html.DisplayFor(modelItem => Model.Positions.Where(x => x.Id == item.PositionId).FirstOrDefault().Address)</td>
+                                        <td>@Html.DisplayFor(modelItem => Model.Geoferences.Where(x => x.Id == item.GeofenceId).FirstOrDefault().Name)</td>
+                                        <td>@Html.DisplayFor(modelItem => Model.Maintenances.Where(x => x.Id == item.MaintenanceId).FirstOrDefault().Name)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Attributes)</td>
                                     </tr>
                             }
                             
@@ -53,7 +55,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="box-footer">
-                                <a href="/@ViewBag.ControllerName?report=summary" class="btn btn-default">Voltar</a>
+                                <a href="/@ViewBag.ControllerName?report=events" class="btn btn-default">Voltar</a>
                                 <a href="/@ViewBag.ControllerName/ExportToCsv?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to&typeReport=events" class="btn btn-success pull-right"
                                     style="margin-left: 15px;"><i class="fas fa-file-excel"></i> Exportar em Excel</a>
                             </div>

@@ -3,17 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using Aisoftware.Tracker.Admin.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 using Aisoftware.Tracker.Admin.Common.Util;
 using Microsoft.AspNetCore.Routing;
-using System.Text;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System.Linq;
+using Aisoftware.Tracker.Admin.Domain.Positions.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Geoferences.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Maintenances.UseCases;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
@@ -24,6 +23,10 @@ namespace Aisoftware.Tracker.Admin.Controllers
         private readonly IBaseReportUseCase<ReportEvent> _eventUseCase;
         private readonly IGroupUseCase _groupUseCase;
         private readonly IDeviceUseCase _deviceUseCase;
+        private readonly IPositionUseCase _positionUseCase;
+        private readonly IGeoferenceUseCase _geoferenceUseCase;
+        private readonly IMaintenanceUseCase _maintenanceUseCase;
+
         private readonly ILogger _logger;
         private readonly ILogUtil _logUtil;
         private RouteData _context;
@@ -126,6 +129,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 viewModel.Events = await _eventUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to));
                 viewModel.Devices = await _deviceUseCase.FindAll();
+                viewModel.Positions = await _positionUseCase.FindAll();
+                viewModel.Geoferences = await _geoferenceUseCase.FindAll();
+                viewModel.Maintenances = await _maintenanceUseCase.FindAll();
 
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
