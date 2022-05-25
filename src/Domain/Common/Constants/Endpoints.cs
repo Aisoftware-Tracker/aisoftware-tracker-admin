@@ -14,6 +14,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Constants
         public const string DRIVERS = "drivers";
         public const string ROUTE = "route";
         public const string SUMMARY = "summary";
+        public const string MAINTENANCE = "maintenance";
 
     }
 }

@@ -24,6 +24,10 @@ using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Positions.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Positions.Repositories;
 using Aisoftware.Tracker.Admin.Common.Util;
+using Aisoftware.Tracker.Admin.Domain.Geoferences.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Geoferences.Repositories;
+using Aisoftware.Tracker.Admin.Domain.Maintenances.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Maintenances.Repositories;
 
 namespace Aisoftware.Tracker.Admin
 {
@@ -66,6 +70,11 @@ namespace Aisoftware.Tracker.Admin
             services.AddScoped<IBaseReportRepository<ReportRoute>, BaseReportRepository<ReportRoute>>();
             services.AddScoped<IBaseReportUseCase<ReportEvent>, ReportEventUseCase>();
             services.AddScoped<IBaseReportRepository<ReportEvent>, BaseReportRepository<ReportEvent>>();
+            services.AddScoped<IGeoferenceUseCase, GeoferenceUseCase>();
+            services.AddScoped<IGeoferenceRepository, GeoferenceRepository>();
+            services.AddScoped<IMaintenanceUseCase, MaintenanceUseCase>();
+            services.AddScoped<IMaintenanceRepository, MaintenanceRepository>();
+
 
             services.AddScoped<ISessionUtil, SessionUtil>();
             services.AddScoped<ILogUtil, LogUtil>();

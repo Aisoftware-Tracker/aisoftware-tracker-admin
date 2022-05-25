@@ -8,10 +8,10 @@ namespace Aisoftware.Tracker.Admin.Models
         private int _id;
         private string _type;
         private DateTime? _serverTime;
-        private int _deviceId;
-        private int _positionId;
-        private int _geofenceId;
-        private int _maintenanceId;
+        private int? _deviceId;
+        private int? _positionId;
+        private int? _geofenceId;
+        private int? _maintenanceId;
         private object _attributes;
 
         [JsonProperty("id")]
@@ -24,16 +24,16 @@ namespace Aisoftware.Tracker.Admin.Models
         public DateTime? ServerTime { get => _serverTime; set => _serverTime = value; }
 
         [JsonProperty("deviceId")]
-        public int DeviceId { get => _deviceId; set => _deviceId = value; }
+        public int? DeviceId { get => _deviceId; set => _deviceId = value; }
 
         [JsonProperty("positionId")]
-        public int PositionId { get => _positionId; set => _positionId = value; }
+        public int? PositionId { get => _positionId; set => _positionId = value; }
 
         [JsonProperty("geofenceId")]
-        public int GeofenceId { get => _geofenceId; set => _geofenceId = value; }
+        public int? GeofenceId { get => _geofenceId; set => _geofenceId = value; }
 
         [JsonProperty("maintenanceId")]
-        public int MaintenanceId { get => _maintenanceId; set => _maintenanceId = value; }
+        public int? MaintenanceId { get => _maintenanceId; set => _maintenanceId = value; }
 
         [JsonProperty("attributes")]
         public object Attributes { get => _attributes; set => _attributes = value; }
