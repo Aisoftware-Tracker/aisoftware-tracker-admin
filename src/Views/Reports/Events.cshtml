@@ -29,7 +29,6 @@
                                 <th>Endereço</th>
                                 <th>Geoference Name</th>
                                 <th>Maintenance Name</th>
-                                <th>Attributes</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,7 +45,6 @@
                                         <td>@Html.DisplayFor(modelItem => Model.Positions.Where(x => x.Id == item.PositionId).FirstOrDefault().Address)</td>
                                         <td>@Html.DisplayFor(modelItem => Model.Geoferences.Where(x => x.Id == item.GeofenceId).FirstOrDefault().Name)</td>
                                         <td>@Html.DisplayFor(modelItem => Model.Maintenances.Where(x => x.Id == item.MaintenanceId).FirstOrDefault().Name)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.Attributes)</td>
                                     </tr>
                             }
                             

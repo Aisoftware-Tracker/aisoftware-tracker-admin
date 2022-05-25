@@ -4,6 +4,7 @@ using Aisoftware.Tracker.Admin.Models;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using System.Text;
 using System.Linq;
+using Aisoftware.Tracker.Admin.Domain.Reports.Models;
 
 namespace Aisoftware.Tracker.Admin.Common.Util
 {
@@ -41,16 +42,19 @@ namespace Aisoftware.Tracker.Admin.Common.Util
         {
             var builder = new StringBuilder();
 
-            builder.AppendLine("Id; Dispositivos; Hora do Servidor; Tipo; Endereço; Geoference Name; Maintenance Name; Attributes;");
+            builder.AppendLine("Id; Dispositivos; Hora do Servidor; Tipo; Endereco; Geoference Name; Maintenance Name; Attributes;");
 
             foreach (var item in viewModel.Events)
             {
-                string licensePlate = viewModel.Devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name;
-                string address = viewModel.Positions.Where(x => x.Id == item.PositionId).FirstOrDefault().Address;
-                string geofenceName = viewModel.Geoferences.Where(x => x.Id == item.GeofenceId).FirstOrDefault().Name;
-                string maintenanceName = viewModel.Maintenances.Where(x => x.Id == item.MaintenanceId).FirstOrDefault().Name;
+                string licensePlate = viewModel.Devices.Where(x => x.Id == item.DeviceId)?.FirstOrDefault()?.Name;
+                string type = EventType.Get()[item.Type];
+                string address = viewModel.Positions.Where(x => x.Id == item.PositionId)?.FirstOrDefault()?.Address;
+                string geofenceName = viewModel.Geoferences.Where(x => x.Id == item.GeofenceId)?.FirstOrDefault()?.Name;
+                string maintenanceName = viewModel.Maintenances.Where(x => x.Id == item.MaintenanceId)?.FirstOrDefault()?.Name;
 
-                builder.AppendLine($"{item.Id}; {licensePlate}; {item.ServerTime}; {address}; {geofenceName}; {maintenanceName}; {item.Attributes};");
+                type = type?.Replace("ç", "c")?.Replace("ã", "a");
+
+                builder.AppendLine($"{item.Id}; {licensePlate}; {item.ServerTime}; {type}; {address}; {geofenceName}; {maintenanceName};");
             }
 
             FileContentResult result = new FileContentResult(Encoding.UTF8.GetBytes(builder.ToString()), ContentType.TEXT_CSV)

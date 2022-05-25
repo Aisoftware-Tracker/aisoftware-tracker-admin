@@ -35,6 +35,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
             IBaseReportUseCase<ReportSummary> summaryUseCase,
             IBaseReportUseCase<ReportRoute> routeUseCase,
             IBaseReportUseCase<ReportEvent> eventUseCase,
+            IPositionUseCase positionUseCase,
+            IGeoferenceUseCase geoferenceUseCase,
+            IMaintenanceUseCase maintenanceUseCase,
             IGroupUseCase group,
             IDeviceUseCase device,
             ILogger<GroupsController> logger,
@@ -43,6 +46,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
             _summaryUseCase = summaryUseCase;
             _routeUseCase = routeUseCase;
             _eventUseCase = eventUseCase;
+            _positionUseCase = positionUseCase;
+            _geoferenceUseCase = geoferenceUseCase;
+            _maintenanceUseCase = maintenanceUseCase;
             _logger = logger;
             _logUtil = logUtil;
             _groupUseCase = group;
@@ -88,6 +94,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             _context = this.ControllerContext.RouteData;
             ReportSummaryViewModel viewModel = new ReportSummaryViewModel();
+
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
             ViewBag.deviceId = deviceId;
             ViewBag.groupId = groupId;
@@ -96,8 +103,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
             try
             {
-                viewModel.Summaries = await _summaryUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to));
-                viewModel.Devices = await _deviceUseCase.FindAll();
+                viewModel = await ReportSummaryViewModelBuild(deviceId, groupId, from, to);
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
             catch (Exception e)
@@ -119,6 +125,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             _context = this.ControllerContext.RouteData;
             ReportEventViewModel viewModel = new ReportEventViewModel();
+
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
             ViewBag.deviceId = deviceId;
             ViewBag.groupId = groupId;
@@ -127,11 +134,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
             try
             {
-                viewModel.Events = await _eventUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to));
-                viewModel.Devices = await _deviceUseCase.FindAll();
-                viewModel.Positions = await _positionUseCase.FindAll();
-                viewModel.Geoferences = await _geoferenceUseCase.FindAll();
-                viewModel.Maintenances = await _maintenanceUseCase.FindAll();
+                viewModel = await ReportEventViewModelBuild(deviceId, groupId, from, to);
 
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
@@ -196,9 +199,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
             try
             {
-                viewModel.Routes = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to));
-                viewModel.Devices = await _deviceUseCase.FindAll();
-
+                viewModel = await ReportRouteViewModelBuild(deviceId, groupId, from, to);
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
             }
             catch (Exception e)
@@ -241,11 +242,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
                             Devices = await _deviceUseCase.FindAll()
                         });
                     case Endpoints.EVENTS:
-                        return ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, new ReportEventViewModel
-                        {
-                            Events = await _eventUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
-                            Devices = await _deviceUseCase.FindAll()
-                        });
+                        var eventView = await ReportEventViewModelBuild(deviceId, groupId, from, to);
+                        return ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, eventView);
                     default:
                         return View();
                 }
@@ -304,6 +302,36 @@ namespace Aisoftware.Tracker.Admin.Controllers
             _logger.LogWarning(_logUtil.Forbidden(GetType().FullName,
             _context.Values[ActionName.ACTION].ToString()));
             return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
+        }
+
+        private async Task<ReportEventViewModel> ReportEventViewModelBuild(int? deviceId, int? groupId, DateTime from, DateTime to)
+        {
+            return new ReportEventViewModel
+            {
+                Events = await _eventUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
+                Devices = await _deviceUseCase.FindAll(),
+                Positions = await _positionUseCase.FindAll(),
+                Geoferences = await _geoferenceUseCase.FindAll(),
+                Maintenances = await _maintenanceUseCase.FindAll()
+            };
+        }
+
+        private async Task<ReportSummaryViewModel> ReportSummaryViewModelBuild(int? deviceId, int? groupId, DateTime from, DateTime to)
+        {
+            return new ReportSummaryViewModel
+            {
+                Summaries = await _summaryUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
+                Devices = await _deviceUseCase.FindAll()
+            };
+        }
+
+         private async Task<ReportRouteViewModel> ReportRouteViewModelBuild(int? deviceId, int? groupId, DateTime from, DateTime to)
+        {
+            return new ReportRouteViewModel
+            {
+                Routes = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
+                Devices = await _deviceUseCase.FindAll()
+            };
         }
     }
 }
