@@ -42,19 +42,17 @@ namespace Aisoftware.Tracker.Admin.Common.Util
         {
             var builder = new StringBuilder();
 
-            builder.AppendLine("Id; Dispositivos; Hora do Servidor; Tipo; Endereco; Geoference Name; Maintenance Name; Attributes;");
+            builder.AppendLine("Id; Placa; Hora do Servidor; Tipo; Endereco;");
 
             foreach (var item in viewModel.Events)
             {
                 string licensePlate = viewModel.Devices.Where(x => x.Id == item.DeviceId)?.FirstOrDefault()?.Name;
                 string type = EventType.Get()[item.Type];
                 string address = viewModel.Positions.Where(x => x.Id == item.PositionId)?.FirstOrDefault()?.Address;
-                string geofenceName = viewModel.Geoferences.Where(x => x.Id == item.GeofenceId)?.FirstOrDefault()?.Name;
-                string maintenanceName = viewModel.Maintenances.Where(x => x.Id == item.MaintenanceId)?.FirstOrDefault()?.Name;
 
                 type = type?.Replace("ç", "c")?.Replace("ã", "a");
 
-                builder.AppendLine($"{item.Id}; {licensePlate}; {item.ServerTime}; {type}; {address}; {geofenceName}; {maintenanceName};");
+                builder.AppendLine($"{item.Id}; {licensePlate}; {item.ServerTime}; {type}; {address};");
             }
 
             FileContentResult result = new FileContentResult(Encoding.UTF8.GetBytes(builder.ToString()), ContentType.TEXT_CSV)
