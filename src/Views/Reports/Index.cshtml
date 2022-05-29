@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <label for="deviceId" class="col-sm-2 control-label">Dispositivo</label>
                     <div class="col-sm-10">
-                        <select class="form-control" name="deviceId">
+                        <select id="deviceId" class="form-control" name="deviceId">
                             <option value="">Todos</option>
                             @foreach (var item in Model.Devices)
                             {
@@ -32,7 +32,7 @@
                 <div class="form-group">
                     <label for="groupId" class="col-sm-2 control-label">Cliente Base</label>
                     <div class="col-sm-10">
-                        <select class="form-control" name="groupId">
+                        <select id="groupId" class="form-control" name="groupId">
                             <option value="">Selecione o Cliente</option>
                             @foreach (var item in Model.Groups)
                             {
@@ -69,16 +69,27 @@
 
 <!-- page script -->
 <script>
-    $(function () {
 
-        $("#search").click(function () {
-            console.log($("#search").val())
-            if ($("#search").val() == "" || $("#search").val() == null == "") {
-                alert("Handler for .click() called.");
-            }
+    $(document).ready(function () {
+        groupIsSelected();
+    });
 
+    $("#deviceId").change(function () {
+        groupIsSelected();
+    });
 
-        });
+    function groupIsSelected() {
+        let deviceId = $('select[name=deviceId]');
+        let groupId = $('select[name=groupId]');
+        
+        if (deviceId.val() != '') {
+            groupId.attr('disabled', 'disabled');
+            groupId.val(0);
+        } else {
+            groupId.removeAttr('disabled');
+            groupId.val('');
+        }
+        
     }
 
 </script>
