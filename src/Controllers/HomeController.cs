@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Aisoftware.Tracker.Admin.Domain.Positions.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
@@ -16,16 +17,19 @@ namespace Aisoftware.Tracker.Admin.Controllers
     {
         private readonly IPositionUseCase _positionUseCase;
         private readonly IDeviceUseCase _deviceUseCase;
+        private readonly IGroupUseCase _groupUseCase;
         private readonly ILogger _logger;
         private readonly ILogUtil _logUtil;
         private RouteData _context;
 
         public HomeController(IPositionUseCase positionUseCase,
             IDeviceUseCase deviceUseCase,
+            IGroupUseCase groupUseCase,
             ILogger<HomeController> logger, ILogUtil logUtil)
         {
             _positionUseCase = positionUseCase;
             _deviceUseCase = deviceUseCase;
+            _groupUseCase = groupUseCase;
             _logger = logger;
             _logUtil = logUtil;
         }
@@ -47,7 +51,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 dashboard = new DashboardViewModel
                 {
                     Devices = await _deviceUseCase.FindAll(),
-                    Positions = await _positionUseCase.FindAll()
+                    Positions = await _positionUseCase.FindAll(),
+                    Groups = await _groupUseCase.FindAll()
                 };
 
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
@@ -60,6 +65,5 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 return View(dashboard);
             }
         }
-
     }
 }

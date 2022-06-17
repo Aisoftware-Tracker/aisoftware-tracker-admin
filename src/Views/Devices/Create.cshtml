@@ -49,8 +49,7 @@
                             <option value="">Selecione uma Categoria</option>
                             @foreach (var item in Aisoftware.Tracker.Admin.Domain.Devices.Models.Category.Get())
                             {
-                                <option value=@Html.DisplayFor(modelItem => item.Key)>@Html.DisplayFor(modelItem =>
-                                item.Value)</option>
+                                <option value=@Html.DisplayFor(modelItem => item.Key)>@Html.DisplayFor(modelItem => item.Value)</option>
                             }
                         </select>
                     </div>
