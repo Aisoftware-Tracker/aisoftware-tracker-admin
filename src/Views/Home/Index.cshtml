@@ -158,6 +158,7 @@
                     <table id="data-table" class="table table-bordered table-striped">
                         <thead>
                             <tr>
+                                <th>Cliente</th>
                                 <th>Placa</th>
                                 <th>Status</th>
                                 <th>Última Comunicação</th>
@@ -170,10 +171,12 @@
                             {
                                 bool isMotion = Model.Positions.Where(p => p.DeviceId == item.Id && item.Status == "online")?.FirstOrDefault()?.Attributes?.Motion ?? false;
                                 var position = Model.Positions.Where(p => p.DeviceId == item.Id)?.FirstOrDefault();
+                                var group = Model.Groups.Where(g => g.Id == item.GroupId)?.FirstOrDefault()?.Name;
                                 decimal? lat = position?.Latitude;
                                 decimal? lng = position?.Longitude;
 
                                 <tr>
+                                    <td>@Html.DisplayFor(modelItem => group)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
                                     <td>
                                         <i class="@Category.GetIcons()[item.Category ?? "null"] 
