@@ -12,11 +12,13 @@ namespace Aisoftware.Tracker.Admin.Common.Util
     {
         private const string CSV = "csv";
         private const string XLSX = "xlsx";
+
         public static FileContentResult ExportToCsv(int? deviceId, int? groupId, DateTime from, DateTime to,
              ReportRouteViewModel viewModel)
         {
             var builder = new StringBuilder();
-            builder.AppendLine("Id; Placa; Protocolo; Horario do Dispositivo; Horario Corrigido; Horario do Servidor; Vencimento; Valido; Latitude; Longitude; Altitude; Velociadade; Endereco; Irregularidade; Ignicao; Status; Distancia; Distancia Total /Km; Movimentação; Horas");
+            
+            builder.AppendLine("Placa; Protocolo; Horario do Dispositivo; Horario Corrigido; Horario do Servidor; Vencimento; Valido; Latitude; Longitude; Altitude; Velociadade; Endereco; Irregularidade; Ignicao; Status; Distancia; Distancia Total /Km; Movimentação; Horas");
 
             foreach (var item in viewModel.Routes)
             {
@@ -24,9 +26,9 @@ namespace Aisoftware.Tracker.Admin.Common.Util
                 string valid = item.Valid ? "Sim" : "Nao";
                 string ignition = item.Attributes.Ignition ? "Ligado" : "Desligado";
                 string motion = item.Attributes.Motion ? "Em Movimento" : "Parado";
-                string placa = viewModel.Devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name;
+                string licensePlate = viewModel.Devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name;
 
-                builder.AppendLine($"{item.Id}; {placa}; {item.Protocol}; {item.DeviceTimeStr}; {item.FixTimeStr}; {item.ServerTimeStr}; {outdated}; {valid}; {item.LatitudeStr}; {item.LongitudeStr}; {item.Altitude}; {item.Speed}; {item.Address}; {item.Accuracy}; {ignition}; {item.Attributes.Status}; {item.Attributes.Distance}; {item.Attributes.TotalDistance}; {motion}; {item.Attributes.Hours}");
+                builder.AppendLine($"{licensePlate}; {item.Protocol}; {item.DeviceTimeStr}; {item.FixTimeStr}; {item.ServerTimeStr}; {outdated}; {valid}; {item.LatitudeStr}; {item.LongitudeStr}; {item.Altitude}; {item.Speed}; {item.Address}; {item.Accuracy}; {ignition}; {item.Attributes.Status}; {item.Attributes.Distance}; {item.Attributes.TotalDistance}; {motion}; {item.Attributes.Hours}");
             }
 
             FileContentResult result = new FileContentResult(Encoding.UTF8.GetBytes(builder.ToString()), ContentType.TEXT_CSV)
@@ -42,19 +44,17 @@ namespace Aisoftware.Tracker.Admin.Common.Util
         {
             var builder = new StringBuilder();
 
-            builder.AppendLine("Id; Dispositivos; Hora do Servidor; Tipo; Endereco; Geoference Name; Maintenance Name; Attributes;");
+            builder.AppendLine("Placa; Hora do Servidor; Tipo; Endereco;");
 
             foreach (var item in viewModel.Events)
             {
                 string licensePlate = viewModel.Devices.Where(x => x.Id == item.DeviceId)?.FirstOrDefault()?.Name;
                 string type = EventType.Get()[item.Type];
                 string address = viewModel.Positions.Where(x => x.Id == item.PositionId)?.FirstOrDefault()?.Address;
-                string geofenceName = viewModel.Geoferences.Where(x => x.Id == item.GeofenceId)?.FirstOrDefault()?.Name;
-                string maintenanceName = viewModel.Maintenances.Where(x => x.Id == item.MaintenanceId)?.FirstOrDefault()?.Name;
 
                 type = type?.Replace("ç", "c")?.Replace("ã", "a");
 
-                builder.AppendLine($"{item.Id}; {licensePlate}; {item.ServerTime}; {type}; {address}; {geofenceName}; {maintenanceName};");
+                builder.AppendLine($"{licensePlate}; {item.ServerTime}; {type}; {address};");
             }
 
             FileContentResult result = new FileContentResult(Encoding.UTF8.GetBytes(builder.ToString()), ContentType.TEXT_CSV)

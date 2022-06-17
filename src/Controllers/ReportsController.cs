@@ -311,8 +311,6 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 Events = await _eventUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
                 Devices = await _deviceUseCase.FindAll(),
                 Positions = await _positionUseCase.FindAll(),
-                Geoferences = await _geoferenceUseCase.FindAll(),
-                Maintenances = await _maintenanceUseCase.FindAll()
             };
         }
 
