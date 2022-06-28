@@ -26,17 +26,13 @@ namespace Aisoftware.Tracker.Admin.Common.Util
                 string valid = item.Valid ? "Sim" : "Nao";
                 string ignition = item.Attributes.Ignition ? "Ligado" : "Desligado";
                 string motion = item.Attributes.Motion ? "Em Movimento" : "Parado";
-                string licensePlate = viewModel.Devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name;
+                string licensePlate = viewModel.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
 
-                builder.AppendLine($"{licensePlate}; {item.Protocol}; {item.DeviceTimeStr}; {item.FixTimeStr}; {item.ServerTimeStr}; {outdated}; {valid}; {item.LatitudeStr}; {item.LongitudeStr}; {item.Altitude}; {item.Speed}; {item.Address}; {item.Accuracy}; {ignition}; {item.Attributes.Status}; {item.Attributes.Distance}; {item.Attributes.TotalDistance}; {motion}; {item.Attributes.Hours}");
+                builder.AppendLine($"{licensePlate}; {item.Protocol}; {item.DeviceTimeStr}; {item.FixTimeStr}; {item.ServerTimeStr}; {outdated}; {valid}; {item.LatitudeStr}; {item.LongitudeStr}; {item.Altitude}; {item.Speed}; {StringUtil.RemoveAccent(item.Address)}; {item.Accuracy}; {ignition}; {item.Attributes.Status}; {item.Attributes.Distance}; {item.Attributes.TotalDistance}; {motion}; {item.Attributes.Hours}");
             }
 
-            FileContentResult result = new FileContentResult(Encoding.UTF8.GetBytes(builder.ToString()), ContentType.TEXT_CSV)
-            {
-                FileDownloadName = $"ReportRoute_{DateTime.Now.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_HH_MM)}.{CSV}"
-            };
+            return FileContentResultBuild(builder, "RelatorioRotas");
 
-            return result;
         }
 
         public static FileContentResult ExportToCsv(int? deviceId, int? groupId, DateTime from, DateTime to,
@@ -48,21 +44,17 @@ namespace Aisoftware.Tracker.Admin.Common.Util
 
             foreach (var item in viewModel.Events)
             {
-                string licensePlate = viewModel.Devices.Where(x => x.Id == item.DeviceId)?.FirstOrDefault()?.Name;
+                string licensePlate = viewModel.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
                 string type = EventType.Get()[item.Type];
-                string address = viewModel.Positions.Where(x => x.Id == item.PositionId)?.FirstOrDefault()?.Address;
+                string address = viewModel.Positions?.Where(x => x.Id == item?.PositionId)?.FirstOrDefault()?.Address;
 
-                type = type?.Replace("ç", "c")?.Replace("ã", "a");
+                type = StringUtil.RemoveAccent(type);
 
-                builder.AppendLine($"{licensePlate}; {item.ServerTime}; {type}; {address};");
+                builder.AppendLine($"{licensePlate}; {item.ServerTimeStr}; {type}; {StringUtil.RemoveAccent(address)};");
             }
 
-            FileContentResult result = new FileContentResult(Encoding.UTF8.GetBytes(builder.ToString()), ContentType.TEXT_CSV)
-            {
-                FileDownloadName = $"ReportEvents_{DateTime.Now.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_HH_MM)}.{CSV}"
-            };
+            return FileContentResultBuild(builder, "RelatorioEventos");
 
-            return result;
         }
 
         public static FileContentResult ExportToCsv(int? deviceId, int? groupId, DateTime from, DateTime to,
@@ -73,17 +65,21 @@ namespace Aisoftware.Tracker.Admin.Common.Util
 
             foreach (var item in viewModel.Summaries)
             {
-                string licensePlate = viewModel.Devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name;
+                string licensePlate = viewModel.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
 
                 builder.AppendLine($"{licensePlate}; {item.DeviceName}; {item.Distance}; {item.AverageSpeed}; {item.MaxSpeed}; {item.SpentFuel}; {item.StartOdometer}; {item.EndOdometer}; {item.EngineHours}");
             }
 
-            FileContentResult result = new FileContentResult(Encoding.UTF8.GetBytes(builder.ToString()), ContentType.TEXT_CSV)
-            {
-                FileDownloadName = $"ReportSummary_{DateTime.Now.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_HH_MM)}.{CSV}"
-            };
+            return FileContentResultBuild(builder, "RelatorioResumo");
 
-            return result;
+        }
+
+        private static FileContentResult FileContentResultBuild(StringBuilder builder, string reportName)
+        {    
+            return new FileContentResult(Encoding.UTF8.GetBytes(builder.ToString()), ContentType.TEXT_CSV)
+            {
+                FileDownloadName = $"{reportName}_{DateTime.Now.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_HH_MM)}.{CSV}"
+            };
         }
     }
 
