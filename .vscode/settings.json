@@ -1,4 +1,7 @@
 {
     "appService.preDeployTask": "publish-release",
-    "appService.deploySubpath": "src/bin/Release/netcoreapp3.1/publish"
+    "appService.deploySubpath": "src/bin/Release/netcoreapp3.1/publish",
+    "emmet.includeLanguages": {
+        "aspnetcorerazor": "html"
+    }
 }

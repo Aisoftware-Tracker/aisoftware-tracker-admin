@@ -34,7 +34,7 @@
                         <tbody>
                             @foreach (var item in Model.Summaries)
                             {
-                                string placa = Model.Devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name;
+                                string placa = Model.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
 
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => placa)</td>

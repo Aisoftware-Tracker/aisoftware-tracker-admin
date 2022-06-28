@@ -27,25 +27,34 @@
                                 <th>Hora do Servidor</th>
                                 <th>Tipo</th>
                                 <th>Endereço</th>
-                                <th>Geoference Name</th>
-                                <th>Maintenance Name</th>
+                                <th>Geolocalizacão</th>
+                                <th>Responável Manutenção</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model.Events)
                             {
-                                    <tr>
-                                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
-                                        <td>@Html.DisplayFor(modelItem => Model.Devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.ServerTime)</td>
-                                        <td>
-                                            <i class="@Aisoftware.Tracker.Admin.Domain.Reports.Models.EventType.GetIcon()[item.Type]  @item.Type"></i>
-                                            @Html.DisplayFor(modelItem => Aisoftware.Tracker.Admin.Domain.Reports.Models.EventType.Get()[item.Type])
-                                        </td>
-                                        <td>@Html.DisplayFor(modelItem => Model.Positions.Where(x => x.Id == item.PositionId).FirstOrDefault().Address)</td>
-                                        <td>@Html.DisplayFor(modelItem => Model.Geoferences.Where(x => x.Id == item.GeofenceId).FirstOrDefault().Name)</td>
-                                        <td>@Html.DisplayFor(modelItem => Model.Maintenances.Where(x => x.Id == item.MaintenanceId).FirstOrDefault().Name)</td>
-                                    </tr>
+                                var id = item.Id;
+                                var deviceName = Model.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
+                                var serverTime = item.ServerTime;
+                                var icon = item.Type;
+                                var eventType = Aisoftware.Tracker.Admin.Domain.Reports.Models.EventType.Get()[item.Type];
+                                var positionAddress = Model.Positions?.Where(x => x.Id == item?.PositionId)?.FirstOrDefault()?.Address;
+                                var geoferenceName = Model.Geoferences?.Where(x => x.Id == item?.GeofenceId)?.FirstOrDefault()?.Name;
+                                var maintenanceName =  Model.Maintenances?.Where(x => x.Id == item?.MaintenanceId)?.FirstOrDefault().Name;
+
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => id)</td>
+                                    <td>@Html.DisplayFor(modelItem => deviceName)</td>
+                                    <td>@Html.DisplayFor(modelItem => serverTime)</td>
+                                    <td>
+                                        <i class="@eventType  @icon"></i>
+                                        @Html.DisplayFor(modelItem => eventType)
+                                    </td>
+                                    <td>@Html.DisplayFor(modelItem => positionAddress)</td>
+                                    <td>@Html.DisplayFor(modelItem => geoferenceName)</td>
+                                    <td>@Html.DisplayFor(modelItem => maintenanceName)</td>
+                                </tr>
                             }
                             
                         </tbody>
