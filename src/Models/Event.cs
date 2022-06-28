@@ -1,5 +1,6 @@
 using System;
 using Newtonsoft.Json;
+using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 
 namespace Aisoftware.Tracker.Admin.Models
 {
@@ -37,5 +38,7 @@ namespace Aisoftware.Tracker.Admin.Models
 
         [JsonProperty("attributes")]
         public object Attributes { get => _attributes; set => _attributes = value; }
+
+         public string ServerTimeStr { get => _serverTime?.ToString(FormatString.FORMAT_DATE_TIME_BR); }
     }
 }

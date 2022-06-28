@@ -36,7 +36,7 @@
                             {
                                 var id = item.Id;
                                 var deviceName = Model.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
-                                var serverTime = item.ServerTime;
+                                var serverTime = item.ServerTimeStr;
                                 var icon = item.Type;
                                 var eventType = Aisoftware.Tracker.Admin.Domain.Reports.Models.EventType.Get()[item.Type];
                                 var positionAddress = Model.Positions?.Where(x => x.Id == item?.PositionId)?.FirstOrDefault()?.Address;
