@@ -48,7 +48,14 @@
                         <tbody>
                             @foreach (var item in Model.Routes)
                             {
-                                string placa = Model.Devices.Where(x => x.Id == item.DeviceId).FirstOrDefault().Name;
+                                string placa = Model.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
+
+                                var ignition = item.Attributes.Ignition;
+                                var status = item.Attributes.Status;
+                                var distance = item.Attributes.Distance;
+                                var totalDistance = item.Attributes.TotalDistance;
+                                var motion = item.Attributes.Motion;
+                                var hours = item.Attributes.Hours;
 
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => item.Id)</td>
@@ -65,12 +72,12 @@
                                     <td>@Html.DisplayFor(modelItem => item.Speed)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Address)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Accuracy)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Attributes.Ignition)</td>
+                                    <td>@Html.DisplayFor(modelItem => ignition)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Attributes.Status)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Attributes.Distance)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Attributes.TotalDistance)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Attributes.Motion)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Attributes.Hours)</td>
+                                    <td>@Html.DisplayFor(modelItem => distance)</td>
+                                    <td>@Html.DisplayFor(modelItem => totalDistance)</td>
+                                    <td>@Html.DisplayFor(modelItem => motion)</td>
+                                    <td>@Html.DisplayFor(modelItem => hours)</td>
                                 </tr>
                             }
                     </table>
