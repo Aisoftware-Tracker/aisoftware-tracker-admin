@@ -9,9 +9,11 @@ using Aisoftware.Tracker.Admin.Common.Util;
 using Aisoftware.Tracker.Admin.Domain.Drivers.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
+    [Authorize]
     public class DriversController : Controller
     {
         private readonly IDriverUseCase _useCase;
@@ -28,6 +30,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public async Task<ActionResult> Index()
         {
+
             IEnumerable<Driver> response = new List<Driver>();
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
@@ -128,7 +131,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
                 return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
             }
-            
+
             return View(response);
         }
 

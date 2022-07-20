@@ -12,9 +12,11 @@ using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Reports.UseCases;
 using Aisoftware.Tracker.Admin.Common.Util;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
+    [Authorize]
     public class MapsController : Controller
     {
         private readonly IPositionUseCase _positionUseCase;

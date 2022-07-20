@@ -9,9 +9,11 @@ using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Microsoft.AspNetCore.Routing;
 using Aisoftware.Tracker.Admin.Common.Util;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
+    [Authorize]
     public class GroupsController : Controller
     {
         private readonly IGroupUseCase _useCase;

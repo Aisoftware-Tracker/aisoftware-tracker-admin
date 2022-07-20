@@ -10,11 +10,13 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Configurations
         private readonly string _baseUrl;
         private readonly string _baseDomain;
         private readonly string _version;
+        private readonly string _secret;
 
         public string ConnectionString { get => _connectionString; }
         public string BaseUrl { get => _baseUrl; }
         public string BaseDomain { get => _baseDomain; }
         public string Version { get => _version; }
+        public string Secret { get => _secret; }
 
         public AppConfiguration()
         {
@@ -27,6 +29,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Configurations
             _connectionString = root.GetSection("ConnectionStrings").GetSection("DataConnection").Value;
             _version = root.GetSection("Version").Value;
             _baseDomain = root.GetSection("Domains").GetSection("BaseDomain").Value;
+            _secret = root.GetSection("Token").GetSection("Secret").Value;
 
         }
     }
