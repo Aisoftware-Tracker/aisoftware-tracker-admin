@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Aisoftware.Tracker.Admin.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Aisoftware.Tracker.Admin.Common.Util;
 using Aisoftware.Tracker.Admin.Domain.Drivers.UseCases;
@@ -13,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = Roles.ALL)]
     public class DriversController : Controller
     {
         private readonly IDriverUseCase _useCase;
@@ -48,24 +47,16 @@ namespace Aisoftware.Tracker.Admin.Controllers
             return View(response);
         }
 
+        [Authorize(Roles = Roles.ADMIN)]
         public ActionResult Create()
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ActionResult> CreateDriver(Driver request)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
@@ -87,13 +78,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ActionResult> Delete(int id)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
 
             try
@@ -109,13 +96,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
             }
         }
 
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ActionResult> Update(int id)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
@@ -136,13 +119,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ActionResult> UpdateDriver(Driver request)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
@@ -172,12 +151,5 @@ namespace Aisoftware.Tracker.Admin.Controllers
             return RedirectToAction(ActionName.INDEX, ViewBag.ControllerName);
         }
 
-        private ActionResult Forbidden()
-        {
-            _context = this.ControllerContext.RouteData;
-            _logger.LogWarning(_logUtil.Forbidden(GetType().FullName,
-            _context.Values[ActionName.ACTION].ToString()));
-            return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
-        }
     }
 }

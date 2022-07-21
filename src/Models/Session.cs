@@ -54,7 +54,7 @@ namespace Aisoftware.Tracker.Admin.Models
         public string Token { get => _token; set => _token = value; }
         public string Photo { get => _photo; set => _photo = value; }
         public object Attributes { get => _attributes; set => _attributes = value; }
-        public string Role { get; set; }
+        public string Role { get => _deviceReadonly ? "readonly" : "admin"; }
 
     }
 }

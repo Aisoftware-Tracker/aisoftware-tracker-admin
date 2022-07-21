@@ -29,7 +29,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Name),
-                    //new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(ClaimTypes.Role, user.DeviceReadonly ? "readonly" : "admin"),
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim("JSESSIONID", cookieValue)
                 }),

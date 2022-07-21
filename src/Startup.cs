@@ -150,6 +150,11 @@ namespace Aisoftware.Tracker.Admin
                     response.Redirect("/Account/Unauthorized");
                 }
 
+                if (response.StatusCode == (int)HttpStatusCode.Forbidden)   
+                {
+                    response.Redirect("/Account/Forbidden");
+                }
+
             });
 
             app.UseStaticFiles();

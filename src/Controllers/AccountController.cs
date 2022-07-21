@@ -95,6 +95,11 @@ namespace Aisoftware.Tracker.Admin.Controllers
             return View();
         }
 
+        public ActionResult Forbidden()
+        {
+            return View();
+        }
+
         private void SetSessions(Session session)
         {
             _cookieValue = _useCase.GetCookieValue();
