@@ -32,6 +32,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.Services;
+using System.Net;
 
 namespace Aisoftware.Tracker.Admin
 {
@@ -139,6 +140,17 @@ namespace Aisoftware.Tracker.Admin
                     }
                     await next();
                 });
+            
+            app.UseStatusCodePages(async context => {
+                var request = context.HttpContext.Request;
+                var response = context.HttpContext.Response;
+
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized)   
+                {
+                    response.Redirect("/Account/Unauthorized");
+                }
+
+            });
 
             app.UseStaticFiles();
             app.UseRouting();

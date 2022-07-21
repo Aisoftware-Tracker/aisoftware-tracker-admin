@@ -90,6 +90,11 @@ namespace Aisoftware.Tracker.Admin.Controllers
             return RedirectToAction(ActionName.LOGIN, ControllerName.ACCOUNT);
         }
 
+        public ActionResult Unauthorized()
+        {
+            return View();
+        }
+
         private void SetSessions(Session session)
         {
             _cookieValue = _useCase.GetCookieValue();
