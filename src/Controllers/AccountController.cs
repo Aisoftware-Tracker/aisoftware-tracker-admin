@@ -90,7 +90,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
             return RedirectToAction(ActionName.LOGIN, ControllerName.ACCOUNT);
         }
 
-        public ActionResult Unauthorized()
+        public ActionResult Unauthorizeds()
         {
             return View();
         }

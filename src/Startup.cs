@@ -141,20 +141,22 @@ namespace Aisoftware.Tracker.Admin
                     await next();
                 });
             
-            app.UseStatusCodePages(async context => {
+            app.UseStatusCodePages(context =>
+            {
                 var request = context.HttpContext.Request;
                 var response = context.HttpContext.Response;
 
-                if (response.StatusCode == (int)HttpStatusCode.Unauthorized)   
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
                 {
-                    response.Redirect("/Account/Unauthorized");
+                    response.Redirect("/Account/Unauthorizeds");
                 }
 
-                if (response.StatusCode == (int)HttpStatusCode.Forbidden)   
+                if (response.StatusCode == (int)HttpStatusCode.Forbidden)
                 {
                     response.Redirect("/Account/Forbidden");
                 }
 
+                return System.Threading.Tasks.Task.CompletedTask;
             });
 
             app.UseStaticFiles();
