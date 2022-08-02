@@ -148,7 +148,7 @@ namespace Aisoftware.Tracker.Admin
 
                 if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
                 {
-                    response.Redirect("/Account/Unauthorizeds");
+                    response.Redirect("/Account/Unauthenticated");
                 }
 
                 if (response.StatusCode == (int)HttpStatusCode.Forbidden)

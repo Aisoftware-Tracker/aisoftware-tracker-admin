@@ -31,10 +31,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Login()
-        {
-            return View();
-        }
+        public IActionResult Login() => View();
 
         [AllowAnonymous]
         public async Task<ActionResult> Validate(Login login)
@@ -90,16 +87,10 @@ namespace Aisoftware.Tracker.Admin.Controllers
             return RedirectToAction(ActionName.LOGIN, ControllerName.ACCOUNT);
         }
 
-        public ActionResult Unauthorizeds()
-        {
-            return View();
-        }
-
-        public ActionResult Forbidden()
-        {
-            return View();
-        }
-
+        public ActionResult Unauthenticated() => View();
+        
+        public ActionResult Forbidden() => View();
+        
         private void SetSessions(Session session)
         {
             _cookieValue = _useCase.GetCookieValue();
