@@ -48,6 +48,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 string cookieValue = _useCase.GetCookieValue();
 
                 var token = _token.GenerateToken(response, cookieValue);
+                 var refreshToken = _token.GenerateRefreshToken();
+                 _token.SaveRefreshToken(response.Email, refreshToken);
 
                 if (token is not null)
                     HttpContext.Session.SetString("Token", token);
