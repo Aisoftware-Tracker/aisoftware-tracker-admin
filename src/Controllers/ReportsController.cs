@@ -13,9 +13,11 @@ using Microsoft.Extensions.Logging;
 using Aisoftware.Tracker.Admin.Domain.Positions.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Geoferences.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Maintenances.UseCases;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
+    [Authorize]
     public class ReportsController : Controller
     {
         private readonly IBaseReportUseCase<ReportSummary> _summaryUseCase;

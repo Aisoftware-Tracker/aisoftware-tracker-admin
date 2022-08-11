@@ -28,6 +28,11 @@ using Aisoftware.Tracker.Admin.Domain.Geoferences.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Geoferences.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Maintenances.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Maintenances.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using Aisoftware.Tracker.Admin.Domain.Common.Base.Services;
+using System.Net;
 
 namespace Aisoftware.Tracker.Admin
 {
@@ -43,10 +48,34 @@ namespace Aisoftware.Tracker.Admin
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession();
             services.AddControllersWithViews();
+
+            services.AddTransient<ITokenService, TokenService>();
+
+            IAppConfiguration appConfig = new AppConfiguration();
+
+            var key = Encoding.ASCII.GetBytes(appConfig.Secret);
+
+            services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(bearer =>
+            {
+                bearer.RequireHttpsMetadata = false; //TODO verifica na hora que configurar o https
+                bearer.SaveToken = true;
+                bearer.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
             services.AddMvc();
             services.AddMemoryCache();
-            services.AddSession();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             #region Dependency Injection
@@ -75,11 +104,10 @@ namespace Aisoftware.Tracker.Admin
             services.AddScoped<IMaintenanceUseCase, MaintenanceUseCase>();
             services.AddScoped<IMaintenanceRepository, MaintenanceRepository>();
 
-
             services.AddScoped<ISessionUtil, SessionUtil>();
             services.AddScoped<ILogUtil, LogUtil>();
 
-            services.AddScoped<IAppConfiguration, AppConfiguration>();
+            services.AddSingleton<IAppConfiguration, AppConfiguration>();
             #endregion
 
             #endregion
@@ -101,11 +129,39 @@ namespace Aisoftware.Tracker.Admin
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
             app.UseSession();
 
-            app.UseRouting();
+            app.Use(async (context, next) =>
+                {
+                    var token = context.Session.GetString("Token");
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        context.Request.Headers.Add("Authorization", "Bearer " + token);
+                    }
+                    await next();
+                });
+            
+            app.UseStatusCodePages(context =>
+            {
+                var request = context.HttpContext.Request;
+                var response = context.HttpContext.Response;
 
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
+                {
+                    response.Redirect("/Account/Unauthenticated");
+                }
+
+                if (response.StatusCode == (int)HttpStatusCode.Forbidden)
+                {
+                    response.Redirect("/Account/Forbidden");
+                }
+
+                return System.Threading.Tasks.Task.CompletedTask;
+            });
+
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

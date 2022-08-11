@@ -3,15 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using Aisoftware.Tracker.Admin.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Microsoft.AspNetCore.Routing;
 using Aisoftware.Tracker.Admin.Common.Util;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
+    [Authorize(Roles = Roles.ALL)]
     public class GroupsController : Controller
     {
         private readonly IGroupUseCase _useCase;
@@ -47,13 +48,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
             return View(response);
         }
 
+        [Authorize(Roles = Roles.ADMIN)]
         public ActionResult Create()
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             GroupViewModel viewModel = new GroupViewModel
             {
                 Groups = _useCase.FindAll().Result
@@ -63,13 +60,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ActionResult> CreateGroup(Group request)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
@@ -90,13 +83,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ActionResult> Delete(int id)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
 
             try
@@ -114,11 +103,6 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public async Task<ActionResult> Update(int id)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
@@ -142,11 +126,6 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateGroup(Group request)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
@@ -176,7 +155,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         private ActionResult Forbidden()
         {
             _context = this.ControllerContext.RouteData;
-            _logger.LogWarning(_logUtil.Forbidden(GetType().FullName, 
+            _logger.LogWarning(_logUtil.Forbidden(GetType().FullName,
             _context.Values[ActionName.ACTION].ToString()));
             return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
         }

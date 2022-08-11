@@ -38,7 +38,8 @@ namespace Aisoftware.Tracker.Admin.Controllers
         {
             _context = this.ControllerContext.RouteData;
 
-            if (HttpContext.Session.GetString(CookieName.JSESSIONID) == null)
+            var token = HttpContext.Session.GetString("Token");
+            if (string.IsNullOrEmpty(token))
             {
                 _logger.LogInformation(_logUtil.Info(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), "Session expired"));
                 return RedirectToAction(ActionName.LOGIN, ControllerName.ACCOUNT);

@@ -8,29 +8,32 @@ using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Routing;
 using Aisoftware.Tracker.Admin.Common.Util;
+using Aisoftware.Tracker.Admin.Domain.Common.Base.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
     public class AccountController : Controller
     {
         private readonly ISessionUseCase _useCase;
+        private readonly ITokenService _token;
         private string _cookieValue;
         private readonly ILogger _logger;
         private readonly ILogUtil _logUtil;
         private RouteData _context;
 
-        public AccountController(ISessionUseCase useCase, ILogger<AccountController> logger, ILogUtil logUtil)
+        public AccountController(ITokenService token, ISessionUseCase useCase, ILogger<AccountController> logger, ILogUtil logUtil)
         {
+            _token = token;
             _useCase = useCase;
             _logger = logger;
             _logUtil = logUtil;
         }
 
-        public IActionResult Login()
-        {
-            return View();
-        }
+        [AllowAnonymous]
+        public IActionResult Login() => View();
 
+        [AllowAnonymous]
         public async Task<ActionResult> Validate(Login login)
         {
             _context = this.ControllerContext.RouteData;
@@ -38,6 +41,17 @@ namespace Aisoftware.Tracker.Admin.Controllers
             try
             {
                 var response = await _useCase.Create(login, _cookieValue);
+
+                if(response is null)
+                    return NotFound(new { message = "Login ou senha inválido" });
+                
+                string cookieValue = _useCase.GetCookieValue();
+
+                var token = _token.GenerateToken(response, cookieValue);
+
+                if (token is not null)
+                    HttpContext.Session.SetString("Token", token);
+
 
                 this.SetSessions(response);
                 string message = "Login Realizado com Sucesso!";
@@ -58,6 +72,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         }
 
+        [Authorize]
         public ActionResult Logout()
         {
             _context = this.ControllerContext.RouteData;
@@ -72,6 +87,10 @@ namespace Aisoftware.Tracker.Admin.Controllers
             return RedirectToAction(ActionName.LOGIN, ControllerName.ACCOUNT);
         }
 
+        public ActionResult Unauthenticated() => View();
+        
+        public ActionResult Forbidden() => View();
+        
         private void SetSessions(Session session)
         {
             _cookieValue = _useCase.GetCookieValue();

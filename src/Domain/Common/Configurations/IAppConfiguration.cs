@@ -5,5 +5,6 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Configurations
         string ConnectionString { get; } 
         string BaseUrl { get; } 
         string BaseDomain { get; } 
+        string Secret { get; } 
     }
 }

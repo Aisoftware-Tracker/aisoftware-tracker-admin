@@ -9,9 +9,11 @@ using Aisoftware.Tracker.Admin.Domain.Common.Constants;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Routing;
 using Aisoftware.Tracker.Admin.Common.Util;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
+    [Authorize(Roles = Roles.ADMIN)]
     public class UsersController : Controller
     {
         private readonly IUserUseCase _useCase;
@@ -28,11 +30,6 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public async Task<ActionResult> Index()
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             IEnumerable<User> users = new List<User>();
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
@@ -53,22 +50,12 @@ namespace Aisoftware.Tracker.Admin.Controllers
 
         public ActionResult Create()
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             return View();
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateUser(User user)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
@@ -90,11 +77,6 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpDelete]
         public async Task<ActionResult> Delete(int id)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
 
             try
@@ -142,11 +124,6 @@ namespace Aisoftware.Tracker.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateUser(User request)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 

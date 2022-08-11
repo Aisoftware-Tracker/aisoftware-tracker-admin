@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Aisoftware.Tracker.Admin.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Common.Constants;
@@ -11,9 +10,11 @@ using Microsoft.AspNetCore.Routing;
 using Aisoftware.Tracker.Admin.Common.Util;
 using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
+    [Authorize(Roles = Roles.ALL)]
     public class DevicesController : Controller
     {
         private readonly IDeviceUseCase _useCase;
@@ -51,13 +52,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
             return View(response);
         }
 
+        [Authorize(Roles = Roles.ADMIN)]
         public ActionResult Create()
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             DeviceViewModel viewModel = new DeviceViewModel
             {
                 Groups = _groupUseCase.FindAll().Result
@@ -67,13 +64,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ActionResult> CreateDevice(Device request)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName =_context.Values[ActionName.CONTROLLER];
 
@@ -95,13 +88,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ActionResult> Delete(int id)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
 
             try
@@ -117,13 +106,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
             }
         }
 
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ActionResult> Update(int id)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName =_context.Values[ActionName.CONTROLLER];
 
@@ -147,13 +132,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.ADMIN)]
         public async Task<ActionResult> UpdateDevice(Device request)
         {
-            if (Convert.ToBoolean(HttpContext.Session.GetString(SessionKey.USER_DEVICE_READ_ONLY)))
-            {
-                return Forbidden();
-            }
-
             _context = this.ControllerContext.RouteData;
             ViewBag.ControllerName =_context.Values[ActionName.CONTROLLER];
 
