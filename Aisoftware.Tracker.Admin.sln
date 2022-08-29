@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aisoftware.Tracker.Admin", "src\Aisoftware.Tracker.Admin.csproj", "{D83C43E7-5323-47CF-B878-BA292D22A6F0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5A3225AD-6B96-432C-AEEB-5BFF492ED88A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aisoftware.Tracker.Admin", "src\Aisoftware.Tracker.Admin\Aisoftware.Tracker.Admin.csproj", "{D83C43E7-5323-47CF-B878-BA292D22A6F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aisoftware.Tracker.Borders", "src\Aisoftware.Tracker.Borders\Aisoftware.Tracker.Borders.csproj", "{CEC8839D-502B-4334-9FB2-09E5F60FC6B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,9 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D83C43E7-5323-47CF-B878-BA292D22A6F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -30,5 +31,27 @@ Global
 		{D83C43E7-5323-47CF-B878-BA292D22A6F0}.Release|x64.Build.0 = Release|Any CPU
 		{D83C43E7-5323-47CF-B878-BA292D22A6F0}.Release|x86.ActiveCfg = Release|Any CPU
 		{D83C43E7-5323-47CF-B878-BA292D22A6F0}.Release|x86.Build.0 = Release|Any CPU
+		{CEC8839D-502B-4334-9FB2-09E5F60FC6B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEC8839D-502B-4334-9FB2-09E5F60FC6B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEC8839D-502B-4334-9FB2-09E5F60FC6B0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CEC8839D-502B-4334-9FB2-09E5F60FC6B0}.Debug|x64.Build.0 = Debug|Any CPU
+		{CEC8839D-502B-4334-9FB2-09E5F60FC6B0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CEC8839D-502B-4334-9FB2-09E5F60FC6B0}.Debug|x86.Build.0 = Debug|Any CPU
+		{CEC8839D-502B-4334-9FB2-09E5F60FC6B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEC8839D-502B-4334-9FB2-09E5F60FC6B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEC8839D-502B-4334-9FB2-09E5F60FC6B0}.Release|x64.ActiveCfg = Release|Any CPU
+		{CEC8839D-502B-4334-9FB2-09E5F60FC6B0}.Release|x64.Build.0 = Release|Any CPU
+		{CEC8839D-502B-4334-9FB2-09E5F60FC6B0}.Release|x86.ActiveCfg = Release|Any CPU
+		{CEC8839D-502B-4334-9FB2-09E5F60FC6B0}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D83C43E7-5323-47CF-B878-BA292D22A6F0} = {5A3225AD-6B96-432C-AEEB-5BFF492ED88A}
+		{CEC8839D-502B-4334-9FB2-09E5F60FC6B0} = {5A3225AD-6B96-432C-AEEB-5BFF492ED88A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CCF0D8AE-13F6-4FBD-BEB3-C13AFE34C392}
 	EndGlobalSection
 EndGlobal
