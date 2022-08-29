@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 using Aisoftware.Tracker.Borders.Constants;
 using Microsoft.AspNetCore.Routing;
-using Aisoftware.Tracker.Borders.Utils;
+using Aisoftware.Tracker.Borders.Services;
 using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;

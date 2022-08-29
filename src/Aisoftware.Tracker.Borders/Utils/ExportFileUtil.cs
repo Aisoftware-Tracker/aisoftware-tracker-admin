@@ -6,7 +6,7 @@ using System.Text;
 using System.Linq;
 using Aisoftware.Tracker.Borders.ViewModels;
 
-namespace Aisoftware.Tracker.Borders.Utils
+namespace Aisoftware.Tracker.Borders.Services
 {
     public static class ExportFileUtil
     {
@@ -26,7 +26,7 @@ namespace Aisoftware.Tracker.Borders.Utils
                 string valid = item.Valid ? "Sim" : "Nao";
                 string ignition = item.Attributes.Ignition ? "Ligado" : "Desligado";
                 string motion = item.Attributes.Motion ? "Em Movimento" : "Parado";
-                string licensePlate = viewModel.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
+                string? licensePlate = viewModel.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
 
                 builder.AppendLine($"{licensePlate}; {item.Protocol}; {item.DeviceTimeStr}; {item.FixTimeStr}; {item.ServerTimeStr}; {outdated}; {valid}; {item.LatitudeStr}; {item.LongitudeStr}; {item.Altitude}; {item.Speed}; {StringUtil.RemoveAccent(item.Address)}; {item.Accuracy}; {ignition}; {item.Attributes.Status}; {item.Attributes.Distance}; {item.Attributes.TotalDistance}; {motion}; {item.Attributes.Hours}");
             }
@@ -44,9 +44,9 @@ namespace Aisoftware.Tracker.Borders.Utils
 
             foreach (var item in viewModel.Events)
             {
-                string licensePlate = viewModel.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
-                string type = EventType.Get()[item.Type];
-                string address = viewModel.Positions?.Where(x => x.Id == item?.PositionId)?.FirstOrDefault()?.Address;
+                string? licensePlate = viewModel.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
+                string? type = EventType.Get()[item.Type];
+                string? address = viewModel.Positions?.Where(x => x.Id == item?.PositionId)?.FirstOrDefault()?.Address;
 
                 type = StringUtil.RemoveAccent(type);
 
@@ -65,7 +65,7 @@ namespace Aisoftware.Tracker.Borders.Utils
 
             foreach (var item in viewModel.Summaries)
             {
-                string licensePlate = viewModel.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
+                string? licensePlate = viewModel.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
 
                 builder.AppendLine($"{licensePlate}; {item.DeviceName}; {item.Distance}; {item.AverageSpeed}; {item.MaxSpeed}; {item.SpentFuel}; {item.StartOdometer}; {item.EndOdometer}; {item.EngineHours}");
             }

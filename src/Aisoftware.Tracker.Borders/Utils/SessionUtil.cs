@@ -9,7 +9,7 @@ using Aisoftware.Tracker.Borders.Models;
 using Aisoftware.Tracker.Borders.Constants;
 using Microsoft.AspNetCore.Http;
 
-namespace Aisoftware.Tracker.Borders.Utils
+namespace Aisoftware.Tracker.Borders.Services
 {
     public class SessionUtil : ISessionUtil
     {

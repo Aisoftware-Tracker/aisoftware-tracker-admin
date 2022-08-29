@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Routing;
 using System.Net.Http.Headers;
 using Aisoftware.Tracker.Borders.Constants;
 
-namespace Aisoftware.Tracker.Borders.Utils
+namespace Aisoftware.Tracker.Borders.Services
 {
     public interface ISessionUtil
     {

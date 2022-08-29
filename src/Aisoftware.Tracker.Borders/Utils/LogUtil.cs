@@ -1,6 +1,6 @@
 using Aisoftware.Tracker.Borders.Exceptions;
 
-namespace Aisoftware.Tracker.Borders.Utils
+namespace Aisoftware.Tracker.Borders.Services
 {
     public class LogUtil : ILogUtil
     {

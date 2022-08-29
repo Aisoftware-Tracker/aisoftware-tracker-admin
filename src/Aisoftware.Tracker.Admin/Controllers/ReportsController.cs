@@ -7,7 +7,7 @@ using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 using Aisoftware.Tracker.Borders.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
-using Aisoftware.Tracker.Borders.Utils;
+using Aisoftware.Tracker.Borders.Services;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Aisoftware.Tracker.Admin.Domain.Positions.UseCases;

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 using Microsoft.AspNetCore.Routing;
-using Aisoftware.Tracker.Borders.Utils;
+using Aisoftware.Tracker.Borders.Services;
 using System;
 using Aisoftware.Tracker.Borders.ViewModels;
 

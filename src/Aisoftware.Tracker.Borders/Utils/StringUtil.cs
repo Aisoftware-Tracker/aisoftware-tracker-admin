@@ -1,11 +1,11 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace Aisoftware.Tracker.Borders.Utils
+namespace Aisoftware.Tracker.Borders.Services
 {
     public static class StringUtil
     {
-        public static string RemoveAccent(string value)
+        public static string? RemoveAccent(string? value)
         {
             if (!string.IsNullOrEmpty(value))
             {    

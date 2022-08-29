@@ -23,7 +23,7 @@ using Aisoftware.Tracker.Borders.Models;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Positions.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Positions.Repositories;
-using Aisoftware.Tracker.Borders.Utils;
+using Aisoftware.Tracker.Borders.Services;
 using Aisoftware.Tracker.Admin.Domain.Geoferences.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Geoferences.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Maintenances.UseCases;
@@ -33,7 +33,6 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.Services;
 using System.Net;
-using Aisoftware.Tracker.Borders.Services;
 
 namespace Aisoftware.Tracker.Admin
 {

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Reports.UseCases;
-using Aisoftware.Tracker.Borders.Utils;
+using Aisoftware.Tracker.Borders.Services;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Authorization;
 using Aisoftware.Tracker.Borders.ViewModels;
