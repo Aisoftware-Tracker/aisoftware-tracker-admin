@@ -47,7 +47,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
             return View(response);
         }
 
-        [Authorize(Roles = Roles.ADMIN)]
+        
         public ActionResult Create()
         {
             GroupViewModel viewModel = new GroupViewModel
@@ -59,7 +59,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = Roles.ADMIN)]
+        
         public async Task<ActionResult> CreateGroup(Group request)
         {
             _context = this.ControllerContext.RouteData;
@@ -82,7 +82,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = Roles.ADMIN)]
+        
         public async Task<ActionResult> Delete(int id)
         {
             _context = this.ControllerContext.RouteData;
