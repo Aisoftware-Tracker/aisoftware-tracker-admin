@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
-    [Authorize(Roles = Roles.ALL)]
     public class DriversController : Controller
     {
         private readonly IDriverUseCase _useCase;

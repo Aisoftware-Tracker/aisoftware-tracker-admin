@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
-    [Authorize(Roles = Roles.ADMIN)]
     public class UsersController : Controller
     {
         private readonly IUserUseCase _useCase;

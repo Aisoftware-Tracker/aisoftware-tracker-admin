@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
-    [Authorize(Roles = Roles.ALL)]
     public class GroupsController : Controller
     {
         private readonly IGroupUseCase _useCase;

@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
-    [Authorize]
     public class MapsController : Controller
     {
         private readonly IPositionUseCase _positionUseCase;

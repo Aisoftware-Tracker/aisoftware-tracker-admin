@@ -17,7 +17,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
-    [Authorize]
     public class ReportsController : Controller
     {
         private readonly IBaseReportUseCase<ReportSummary> _summaryUseCase;

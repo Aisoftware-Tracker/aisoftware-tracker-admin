@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
-    [Authorize(Roles = Roles.ALL)]
     public class DevicesController : Controller
     {
         private readonly IDeviceUseCase _useCase;
