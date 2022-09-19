@@ -1,7 +1,5 @@
-namespace Aisoftware.Tracker.Borders.Constants
+namespace Aisoftware.Tracker.Borders.Constants;
+public static class CookieName
 {
-    public static class CookieName
-    {
-        public const string JSESSIONID = "JSESSIONID";
-    }
+    public const string JSESSIONID = "JSESSIONID";
 }

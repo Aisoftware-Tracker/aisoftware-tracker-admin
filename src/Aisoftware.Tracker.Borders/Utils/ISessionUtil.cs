@@ -1,8 +1,5 @@
-namespace Aisoftware.Tracker.Borders.Services
+namespace Aisoftware.Tracker.Borders.Services;
+public interface ISessionUtil
 {
-    public interface ISessionUtil
-    {
-        string GetUserNameAndEmail();
-    }
-
+    string GetUserNameAndEmail();
 }

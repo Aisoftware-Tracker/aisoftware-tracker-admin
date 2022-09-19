@@ -1,29 +1,27 @@
 using Aisoftware.Tracker.Borders.Constants;
 using Microsoft.AspNetCore.Http;
 
-namespace Aisoftware.Tracker.Borders.Services
+namespace Aisoftware.Tracker.Borders.Services;
+public class SessionUtil : ISessionUtil
 {
-    public class SessionUtil : ISessionUtil
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public SessionUtil(IHttpContextAccessor httpContextAccessor)
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        _httpContextAccessor = httpContextAccessor;
+    }
 
-        public SessionUtil(IHttpContextAccessor httpContextAccessor)
+    public string GetUserNameAndEmail()
+    {
+        var userName = string.Empty;
+        var userEmail = string.Empty;
+
+        if (_httpContextAccessor.HttpContext.Session != null)
         {
-            _httpContextAccessor = httpContextAccessor;
+            userName = _httpContextAccessor.HttpContext.Session.GetString(SessionKey.USER_NAME);
+            userEmail = _httpContextAccessor.HttpContext.Session.GetString(SessionKey.USER_EMAIL);
         }
 
-        public string GetUserNameAndEmail()
-        {
-            var userName = string.Empty;
-            var userEmail = string.Empty;
-
-            if (_httpContextAccessor.HttpContext.Session != null)
-            {
-                userName = _httpContextAccessor.HttpContext.Session.GetString(SessionKey.USER_NAME);
-                userEmail = _httpContextAccessor.HttpContext.Session.GetString(SessionKey.USER_EMAIL);
-            }
-
-            return $"{userName} ({userEmail})";
-        }
+        return $"{userName} ({userEmail})";
     }
 }
