@@ -1,7 +1,7 @@
+using Aisoftware.Tracker.Admin.Domain.Sessions.Repositories;
+using Aisoftware.Tracker.Borders.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Aisoftware.Tracker.Borders.Models;
-using Aisoftware.Tracker.Admin.Domain.Sessions.Repositories;
 
 namespace Aisoftware.Tracker.Admin.Domain.Sessions.UseCases
 {
@@ -37,7 +37,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Sessions.UseCases
 
         public string GetCookieValue()
         {
-           return _repository.GetCookie().Value;
+            return _repository.GetCookie().Value;
         }
 
     }

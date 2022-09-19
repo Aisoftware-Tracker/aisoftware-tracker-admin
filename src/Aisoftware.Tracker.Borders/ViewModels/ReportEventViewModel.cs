@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Aisoftware.Tracker.Borders.Models;
 
 namespace Aisoftware.Tracker.Borders.ViewModels

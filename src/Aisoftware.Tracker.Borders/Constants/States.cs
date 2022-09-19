@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Aisoftware.Tracker.Borders.Constants
 {
     public static class States

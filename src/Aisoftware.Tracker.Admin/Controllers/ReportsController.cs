@@ -1,20 +1,20 @@
-using System;
-using Microsoft.AspNetCore.Mvc;
-using Aisoftware.Tracker.Borders.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
-using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
-using Aisoftware.Tracker.Borders.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Geoferences.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Maintenances.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Positions.UseCases;
+using Aisoftware.Tracker.Borders.Constants;
+using Aisoftware.Tracker.Borders.Models;
 using Aisoftware.Tracker.Borders.Services;
+using Aisoftware.Tracker.Borders.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
-using Aisoftware.Tracker.Admin.Domain.Positions.UseCases;
-using Aisoftware.Tracker.Admin.Domain.Geoferences.UseCases;
-using Aisoftware.Tracker.Admin.Domain.Maintenances.UseCases;
-using Microsoft.AspNetCore.Authorization;
-using Aisoftware.Tracker.Borders.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
@@ -326,7 +326,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
             };
         }
 
-         private async Task<ReportRouteViewModel> ReportRouteViewModelBuild(int? deviceId, int? groupId, DateTime from, DateTime to)
+        private async Task<ReportRouteViewModel> ReportRouteViewModelBuild(int? deviceId, int? groupId, DateTime from, DateTime to)
         {
             return new ReportRouteViewModel
             {

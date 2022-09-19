@@ -1,6 +1,6 @@
+using Aisoftware.Tracker.Borders.Models;
 using System.Collections.Generic;
 using System.Linq;
-using Aisoftware.Tracker.Borders.Models;
 
 namespace Aisoftware.Tracker.Admin.Domain.Reports.UseCases
 {

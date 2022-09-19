@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Net.Http;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Aisoftware.Tracker.Admin.Domain.Devices.UseCases
 {

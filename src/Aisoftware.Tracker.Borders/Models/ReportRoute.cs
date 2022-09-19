@@ -1,4 +1,3 @@
-using System;
 using Aisoftware.Tracker.Borders.Constants;
 using Newtonsoft.Json;
 

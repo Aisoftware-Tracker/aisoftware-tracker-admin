@@ -1,15 +1,15 @@
-using System;
-using Microsoft.AspNetCore.Mvc;
-using Aisoftware.Tracker.Borders.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Aisoftware.Tracker.Admin.Domain.Users.UseCases;
 using Aisoftware.Tracker.Borders.Constants;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Routing;
+using Aisoftware.Tracker.Borders.Models;
 using Aisoftware.Tracker.Borders.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
@@ -117,7 +117,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
                 _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e));
                 return View("Error");
             }
-            
+
             return View(response);
         }
 

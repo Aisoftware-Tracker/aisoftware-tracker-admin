@@ -1,5 +1,5 @@
-using System.Threading.Tasks;
 using Aisoftware.Tracker.Borders.Models;
+using System.Threading.Tasks;
 
 namespace Aisoftware.Tracker.Admin.Domain.Sessions.UseCases
 {

@@ -1,5 +1,3 @@
-using System;
-
 namespace Aisoftware.Tracker.Borders.Models
 {
     public class Admins

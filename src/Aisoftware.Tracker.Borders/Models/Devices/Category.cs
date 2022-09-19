@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Aisoftware.Tracker.Borders.Models.Devices
 {
     public static class Category

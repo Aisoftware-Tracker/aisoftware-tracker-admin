@@ -1,13 +1,13 @@
+using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
+using Aisoftware.Tracker.Borders.Constants;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Microsoft.AspNetCore.WebUtilities;
 using System.Threading.Tasks;
-using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
-using Aisoftware.Tracker.Borders.Constants;
-using Microsoft.AspNetCore.Http;
 
 namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
 {

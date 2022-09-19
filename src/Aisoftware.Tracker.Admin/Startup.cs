@@ -1,38 +1,38 @@
-using System;
+using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
+using Aisoftware.Tracker.Admin.Domain.Common.Base.Services;
+using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
+using Aisoftware.Tracker.Admin.Domain.Devices.Repositories;
+using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Drivers.Repositories;
+using Aisoftware.Tracker.Admin.Domain.Drivers.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Geoferences.Repositories;
+using Aisoftware.Tracker.Admin.Domain.Geoferences.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Groups.Repositories;
+using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Maintenances.Repositories;
+using Aisoftware.Tracker.Admin.Domain.Maintenances.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Positions.Repositories;
+using Aisoftware.Tracker.Admin.Domain.Positions.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Reports.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Sessions.Repositories;
+using Aisoftware.Tracker.Admin.Domain.Sessions.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Users.Repositories;
+using Aisoftware.Tracker.Admin.Domain.Users.UseCases;
+using Aisoftware.Tracker.Borders.Models;
+using Aisoftware.Tracker.Borders.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Http;
-using Aisoftware.Tracker.Admin.Domain.Sessions.UseCases;
-using Aisoftware.Tracker.Admin.Domain.Sessions.Repositories;
-using Aisoftware.Tracker.Admin.Domain.Users.UseCases;
-using Aisoftware.Tracker.Admin.Domain.Users.Repositories;
-using Aisoftware.Tracker.Admin.Domain.Drivers.UseCases;
-using Aisoftware.Tracker.Admin.Domain.Drivers.Repositories;
-using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
-using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
-using Aisoftware.Tracker.Admin.Domain.Devices.Repositories;
-using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
-using Aisoftware.Tracker.Admin.Domain.Groups.Repositories;
-using Aisoftware.Tracker.Admin.Domain.Reports.UseCases;
 using Microsoft.Extensions.Logging;
-using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
-using Aisoftware.Tracker.Borders.Models;
-using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
-using Aisoftware.Tracker.Admin.Domain.Positions.UseCases;
-using Aisoftware.Tracker.Admin.Domain.Positions.Repositories;
-using Aisoftware.Tracker.Borders.Services;
-using Aisoftware.Tracker.Admin.Domain.Geoferences.UseCases;
-using Aisoftware.Tracker.Admin.Domain.Geoferences.Repositories;
-using Aisoftware.Tracker.Admin.Domain.Maintenances.UseCases;
-using Aisoftware.Tracker.Admin.Domain.Maintenances.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using Aisoftware.Tracker.Admin.Domain.Common.Base.Services;
+using System;
 using System.Net;
+using System.Text;
 
 namespace Aisoftware.Tracker.Admin
 {
@@ -140,7 +140,7 @@ namespace Aisoftware.Tracker.Admin
                     }
                     await next();
                 });
-            
+
             app.UseStatusCodePages(context =>
             {
                 var request = context.HttpContext.Request;

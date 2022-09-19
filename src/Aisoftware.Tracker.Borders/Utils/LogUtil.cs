@@ -21,7 +21,7 @@ namespace Aisoftware.Tracker.Borders.Services
             return GetMessage("INFO", className, ActionName, message);
         }
 
-        public string Error(string className, string ActionName, Exception exception = null, string message = "" )
+        public string Error(string className, string ActionName, Exception? exception = null, string message = "")
         {
             return GetMessage("ERROR", className, ActionName, message, exception);
         }
@@ -31,7 +31,7 @@ namespace Aisoftware.Tracker.Borders.Services
             return GetMessage("FORBIDDEN", className, ActionName, message);
         }
 
-        private string GetMessage(string type, string className, string actionName, string message, Exception exception = null)
+        private string GetMessage(string type, string className, string actionName, string message, Exception? exception = null)
         {
             string exceptionMessage = exception == null ? string.Empty : $"\nEXCEPTION: {ExceptionHelper.InnerException(exception).Message}";
             string userMessage = "USER: ";

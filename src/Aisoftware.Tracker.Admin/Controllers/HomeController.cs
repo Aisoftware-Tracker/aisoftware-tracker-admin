@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Aisoftware.Tracker.Borders.Constants;
-using Aisoftware.Tracker.Admin.Domain.Positions.UseCases;
+﻿using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
 using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
-using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
-using Microsoft.AspNetCore.Routing;
+using Aisoftware.Tracker.Admin.Domain.Positions.UseCases;
+using Aisoftware.Tracker.Borders.Constants;
 using Aisoftware.Tracker.Borders.Services;
-using System;
 using Aisoftware.Tracker.Borders.ViewModels;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {

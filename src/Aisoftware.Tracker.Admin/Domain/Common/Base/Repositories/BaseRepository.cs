@@ -1,3 +1,7 @@
+using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
+using Aisoftware.Tracker.Borders.Constants;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -5,10 +9,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
-using Aisoftware.Tracker.Borders.Constants;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 
 namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
 {
@@ -88,7 +88,7 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
 
         public async Task<T> Save(T input, string endpoint)
         {
-             var content = ReplaceContent(input);
+            var content = ReplaceContent(input);
 
             _uri = new Uri($"{_url}/{endpoint}");
             _handler = new HttpClientHandler();
@@ -254,14 +254,14 @@ namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories
                         property.SetValue(content, 0);
                     }
                 }
-                else if(property.PropertyType == typeof(decimal))
+                else if (property.PropertyType == typeof(decimal))
                 {
                     if (property.GetValue(content) is null)
                     {
                         property.SetValue(content, 0);
                     }
                 }
-                else if(property.PropertyType == typeof(long))
+                else if (property.PropertyType == typeof(long))
                 {
                     if (property.GetValue(content) is null)
                     {

@@ -1,11 +1,11 @@
+using Aisoftware.Tracker.Admin.Domain.Common.Base.Services;
+using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
+using Aisoftware.Tracker.Borders.Models;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using Aisoftware.Tracker.Borders.Models;
-using Aisoftware.Tracker.Admin.Domain.Common.Configurations;
-using Aisoftware.Tracker.Admin.Domain.Common.Base.Services;
 
 namespace Aisoftware.Tracker.Borders.Services
 {
@@ -39,6 +39,6 @@ namespace Aisoftware.Tracker.Borders.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-        
+
     }
 }

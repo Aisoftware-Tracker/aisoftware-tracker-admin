@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Aisoftware.Tracker.Borders.Models;
-using Aisoftware.Tracker.Borders.Constants;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases;
+using Aisoftware.Tracker.Borders.Constants;
+using Aisoftware.Tracker.Borders.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Aisoftware.Tracker.Admin.Domain.Reports.UseCases
 {

@@ -1,7 +1,7 @@
-using Aisoftware.Tracker.Borders.Models;
 using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
-using Aisoftware.Tracker.Admin.Domain.Maintenances.Repositories;
 using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
+using Aisoftware.Tracker.Admin.Domain.Maintenances.Repositories;
+using Aisoftware.Tracker.Borders.Models;
 
 namespace Aisoftware.Tracker.Admin.Domain.Maintenances.UseCases
 {
@@ -13,6 +13,6 @@ namespace Aisoftware.Tracker.Admin.Domain.Maintenances.UseCases
         {
             _repository = repository;
         }
-        
+
     }
 }

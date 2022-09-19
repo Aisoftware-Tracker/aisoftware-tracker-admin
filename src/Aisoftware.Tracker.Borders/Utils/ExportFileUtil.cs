@@ -1,10 +1,8 @@
-using System;
-using Microsoft.AspNetCore.Mvc;
-using Aisoftware.Tracker.Borders.Models.Reports;
 using Aisoftware.Tracker.Borders.Constants;
-using System.Text;
-using System.Linq;
+using Aisoftware.Tracker.Borders.Models.Reports;
 using Aisoftware.Tracker.Borders.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace Aisoftware.Tracker.Borders.Services
 {
@@ -17,7 +15,7 @@ namespace Aisoftware.Tracker.Borders.Services
              ReportRouteViewModel viewModel)
         {
             var builder = new StringBuilder();
-            
+
             builder.AppendLine("Placa; Protocolo; Horario do Dispositivo; Horario Corrigido; Horario do Servidor; Vencimento; Valido; Latitude; Longitude; Altitude; Velociadade; Endereco; Irregularidade; Ignicao; Status; Distancia; Distancia Total /Km; Movimentação; Horas");
 
             foreach (var item in viewModel.Routes)
@@ -75,7 +73,7 @@ namespace Aisoftware.Tracker.Borders.Services
         }
 
         private static FileContentResult FileContentResultBuild(StringBuilder builder, string reportName)
-        {    
+        {
             return new FileContentResult(Encoding.UTF8.GetBytes(builder.ToString()), ContentType.TEXT_CSV)
             {
                 FileDownloadName = $"{reportName}_{DateTime.Now.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_HH_MM)}.{CSV}"

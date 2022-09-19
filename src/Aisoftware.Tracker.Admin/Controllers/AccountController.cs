@@ -1,15 +1,15 @@
-using System;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Aisoftware.Tracker.Borders.Models;
-using Microsoft.AspNetCore.Http;
+using Aisoftware.Tracker.Admin.Domain.Common.Base.Services;
 using Aisoftware.Tracker.Admin.Domain.Sessions.UseCases;
 using Aisoftware.Tracker.Borders.Constants;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Routing;
+using Aisoftware.Tracker.Borders.Models;
 using Aisoftware.Tracker.Borders.Services;
-using Aisoftware.Tracker.Admin.Domain.Common.Base.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
@@ -42,9 +42,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
             {
                 var response = await _useCase.Create(login, _cookieValue);
 
-                if(response is null)
+                if (response is null)
                     return NotFound(new { message = "Login ou senha inválido" });
-                
+
                 string cookieValue = _useCase.GetCookieValue();
 
                 var token = _token.GenerateToken(response, cookieValue);
@@ -88,9 +88,9 @@ namespace Aisoftware.Tracker.Admin.Controllers
         }
 
         public ActionResult Unauthenticated() => View();
-        
+
         public ActionResult Forbidden() => View();
-        
+
         private void SetSessions(Session session)
         {
             _cookieValue = _useCase.GetCookieValue();

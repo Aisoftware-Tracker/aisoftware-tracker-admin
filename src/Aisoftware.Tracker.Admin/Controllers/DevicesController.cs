@@ -1,17 +1,17 @@
-using System;
-using Microsoft.AspNetCore.Mvc;
-using Aisoftware.Tracker.Borders.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Aisoftware.Tracker.Admin.Domain.Devices.UseCases;
-using Aisoftware.Tracker.Borders.Constants;
-using Microsoft.AspNetCore.Routing;
-using Aisoftware.Tracker.Borders.Services;
 using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
-using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+using Aisoftware.Tracker.Borders.Constants;
+using Aisoftware.Tracker.Borders.Models;
+using Aisoftware.Tracker.Borders.Services;
 using Aisoftware.Tracker.Borders.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Aisoftware.Tracker.Admin.Controllers
 {
@@ -37,7 +37,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
             IEnumerable<Device> response = new List<Device>();
 
             _context = this.ControllerContext.RouteData;
-            ViewBag.ControllerName =_context.Values[ActionName.CONTROLLER];
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
             try
             {
@@ -69,7 +69,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         public async Task<ActionResult> CreateDevice(Device request)
         {
             _context = this.ControllerContext.RouteData;
-            ViewBag.ControllerName =_context.Values[ActionName.CONTROLLER];
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
             try
             {
@@ -111,7 +111,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         public async Task<ActionResult> Update(int id)
         {
             _context = this.ControllerContext.RouteData;
-            ViewBag.ControllerName =_context.Values[ActionName.CONTROLLER];
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
             DeviceViewModel response = new DeviceViewModel();
 
@@ -137,12 +137,12 @@ namespace Aisoftware.Tracker.Admin.Controllers
         public async Task<ActionResult> UpdateDevice(Device request)
         {
             _context = this.ControllerContext.RouteData;
-            ViewBag.ControllerName =_context.Values[ActionName.CONTROLLER];
+            ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
 
             try
             {
                 Device response = await _useCase.Update(request);
-                
+
                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
 
             }
@@ -164,7 +164,7 @@ namespace Aisoftware.Tracker.Admin.Controllers
         private ActionResult Forbidden()
         {
             _context = this.ControllerContext.RouteData;
-            _logger.LogWarning(_logUtil.Forbidden(GetType().FullName, 
+            _logger.LogWarning(_logUtil.Forbidden(GetType().FullName,
             _context.Values[ActionName.ACTION].ToString()));
             return RedirectToAction(ActionName.INDEX, ControllerName.HOME);
         }

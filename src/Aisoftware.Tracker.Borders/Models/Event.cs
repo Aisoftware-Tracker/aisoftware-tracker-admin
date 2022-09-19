@@ -1,6 +1,5 @@
-using System;
-using Newtonsoft.Json;
 using Aisoftware.Tracker.Borders.Constants;
+using Newtonsoft.Json;
 
 namespace Aisoftware.Tracker.Borders.Models
 {
@@ -39,6 +38,6 @@ namespace Aisoftware.Tracker.Borders.Models
         [JsonProperty("attributes")]
         public object Attributes { get => _attributes; set => _attributes = value; }
 
-         public string ServerTimeStr { get => _serverTime?.ToString(FormatString.FORMAT_DATE_TIME_BR); }
+        public string ServerTimeStr { get => _serverTime?.ToString(FormatString.FORMAT_DATE_TIME_BR); }
     }
 }
