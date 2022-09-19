@@ -1,12 +1,10 @@
-namespace Aisoftware.Tracker.Borders.Models
+namespace Aisoftware.Tracker.Borders.Models;
+public class Login
 {
-    public class Login
-    {
-        private string _email;
-        private string _password;
+    private string _email;
+    private string _password;
 
-        public string Email { get => _email; set => _email = value; }
-        public string Password { get => _password; set => _password = value; }
+    public string Email { get => _email; set => _email = value; }
+    public string Password { get => _password; set => _password = value; }
 
-    }
 }
