@@ -4,7 +4,7 @@ namespace Aisoftware.Tracker.Borders.ViewModels
 {
     public class ReportEventViewModel
     {
-        public ReportEvent Event { get; set; }
+        public ReportEvent? Event { get; set; }
         #nullable enable
         public IEnumerable<ReportEvent>? Events { get; set; }
         public Device? Device { get; set; }
