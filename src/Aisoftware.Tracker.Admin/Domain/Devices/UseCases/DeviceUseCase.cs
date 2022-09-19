@@ -1,8 +1,8 @@
-using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
-using Aisoftware.Tracker.Admin.Domain.Devices.Repositories;
+using Aisoftware.Tracker.Repositories.Base;
+using Aisoftware.Tracker.Devices.Repositories;
 using Aisoftware.Tracker.Borders.Models;
 
-namespace Aisoftware.Tracker.Admin.Domain.Devices.UseCases
+namespace Aisoftware.Tracker.Devices.UseCases
 {
     public class DeviceUseCase : BaseUseCase<Device>, IDeviceUseCase
     {

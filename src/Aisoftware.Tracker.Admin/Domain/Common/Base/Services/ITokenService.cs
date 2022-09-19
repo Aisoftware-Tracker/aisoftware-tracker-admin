@@ -1,6 +1,6 @@
 using Aisoftware.Tracker.Borders.Models;
 
-namespace Aisoftware.Tracker.Admin.Domain.Common.Base.Services
+namespace Aisoftware.Tracker.Common.Base.Services
 {
     public interface ITokenService
     {

@@ -1,4 +1,4 @@
-namespace Aisoftware.Tracker.Admin.Domain.Common.Configurations
+namespace Aisoftware.Tracker.Common.Configurations
 {
     public interface IAppConfiguration
     {

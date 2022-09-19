@@ -1,4 +1,4 @@
-using Aisoftware.Tracker.Admin.Domain.Drivers.UseCases;
+using Aisoftware.Tracker.Drivers.UseCases;
 using Aisoftware.Tracker.Borders.Constants;
 using Aisoftware.Tracker.Borders.Models;
 using Aisoftware.Tracker.Borders.Services;

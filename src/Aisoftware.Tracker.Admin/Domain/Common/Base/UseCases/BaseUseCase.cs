@@ -1,9 +1,9 @@
-using Aisoftware.Tracker.Admin.Domain.Common.Base.Repositories;
+using Aisoftware.Tracker.Repositories.Base;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Aisoftware.Tracker.Admin.Domain.Devices.UseCases
+namespace Aisoftware.Tracker.Devices.UseCases
 {
     abstract public class BaseUseCase<T> where T : class
     {

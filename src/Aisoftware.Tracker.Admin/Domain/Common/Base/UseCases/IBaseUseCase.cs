@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Aisoftware.Tracker.Admin.Domain.Common.Base.UseCases
+namespace Aisoftware.Tracker.Common.Base.UseCases
 {
     public interface IBaseUseCase<T>
     {

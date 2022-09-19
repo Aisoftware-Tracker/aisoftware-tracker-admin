@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
-namespace Aisoftware.Tracker.Admin.Domain.Common.Configurations
+namespace Aisoftware.Tracker.Common.Configurations
 {
     public class AppConfiguration : IAppConfiguration
     {

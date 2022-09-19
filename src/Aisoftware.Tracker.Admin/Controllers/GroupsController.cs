@@ -1,4 +1,4 @@
-using Aisoftware.Tracker.Admin.Domain.Groups.UseCases;
+using Aisoftware.Tracker.Groups.UseCases;
 using Aisoftware.Tracker.Borders.Constants;
 using Aisoftware.Tracker.Borders.Models;
 using Aisoftware.Tracker.Borders.Services;
