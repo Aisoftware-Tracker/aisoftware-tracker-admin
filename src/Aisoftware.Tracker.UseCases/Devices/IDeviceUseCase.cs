@@ -1,4 +1,4 @@
-using Aisoftware.Tracker.Common.Base.UseCases;
+using Aisoftware.Tracker.UseCases.Base;
 using Aisoftware.Tracker.Borders.Models;
 
 namespace Aisoftware.Tracker.UseCases.Devices.UseCases;

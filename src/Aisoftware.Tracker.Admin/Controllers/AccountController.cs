@@ -1,5 +1,5 @@
-using Aisoftware.Tracker.Common.Base.Services;
-using Aisoftware.Tracker.Sessions.UseCases;
+using Aisoftware.Tracker.Admin.Common.Base.Services;
+using Aisoftware.Tracker.UseCases.Sessions.UseCases;
 using Aisoftware.Tracker.Borders.Constants;
 using Aisoftware.Tracker.Borders.Models;
 using Aisoftware.Tracker.Borders.Services;

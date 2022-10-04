@@ -1,4 +1,4 @@
-using Aisoftware.Tracker.Sessions.Repositories;
+using Aisoftware.Tracker.Repositories.Sessions.Repositories;
 using Aisoftware.Tracker.Borders.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;

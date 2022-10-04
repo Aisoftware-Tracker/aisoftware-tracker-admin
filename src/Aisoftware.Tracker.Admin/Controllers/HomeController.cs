@@ -1,6 +1,6 @@
-﻿using Aisoftware.Tracker.Devices.UseCases;
-using Aisoftware.Tracker.Groups.UseCases;
-using Aisoftware.Tracker.Positions.UseCases;
+﻿using Aisoftware.Tracker.UseCases.Devices.UseCases;
+using Aisoftware.Tracker.UseCases.Groups.UseCases;
+using Aisoftware.Tracker.UseCases.Positions.UseCases;
 using Aisoftware.Tracker.Borders.Constants;
 using Aisoftware.Tracker.Borders.Services;
 using Aisoftware.Tracker.Borders.ViewModels;

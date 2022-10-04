@@ -1,9 +1,9 @@
-using Aisoftware.Tracker.Common.Base.UseCases;
-using Aisoftware.Tracker.Devices.UseCases;
-using Aisoftware.Tracker.Geoferences.UseCases;
-using Aisoftware.Tracker.Groups.UseCases;
-using Aisoftware.Tracker.Maintenances.UseCases;
-using Aisoftware.Tracker.Positions.UseCases;
+using Aisoftware.Tracker.UseCases.Base;
+using Aisoftware.Tracker.UseCases.Devices.UseCases;
+using Aisoftware.Tracker.UseCases.Geoferences.UseCases;
+using Aisoftware.Tracker.UseCases.Groups.UseCases;
+using Aisoftware.Tracker.UseCases.Maintenances.UseCases;
+using Aisoftware.Tracker.UseCases.Positions.UseCases;
 using Aisoftware.Tracker.Borders.Constants;
 using Aisoftware.Tracker.Borders.Models;
 using Aisoftware.Tracker.Borders.Services;

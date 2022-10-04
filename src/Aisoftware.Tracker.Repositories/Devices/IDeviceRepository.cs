@@ -1,7 +1,7 @@
 using Aisoftware.Tracker.Repositories.Base;
 using Aisoftware.Tracker.Borders.Models;
 
-namespace Aisoftware.Tracker.Devices.Repositories
+namespace Aisoftware.Tracker.Repositories.Devices.Repositories
 {
     public interface IDeviceRepository : IBaseRepository<Device>
     {

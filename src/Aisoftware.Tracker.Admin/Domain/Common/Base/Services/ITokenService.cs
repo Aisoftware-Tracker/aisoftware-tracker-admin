@@ -1,9 +1,8 @@
 using Aisoftware.Tracker.Borders.Models;
 
-namespace Aisoftware.Tracker.Common.Base.Services
+namespace Aisoftware.Tracker.Admin.Common.Base.Services;
+
+public interface ITokenService
 {
-    public interface ITokenService
-    {
-        string GenerateToken(Session user, string cookieValue);
-    }
+    string GenerateToken(Session user, string cookieValue);
 }

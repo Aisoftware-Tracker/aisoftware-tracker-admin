@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Aisoftware.Tracker.UseCases.Base;
 
 namespace Aisoftware.Tracker.UseCases.Drivers.UseCases;
 public class DriverUseCase : BaseUseCase<Driver>, IDriverUseCase

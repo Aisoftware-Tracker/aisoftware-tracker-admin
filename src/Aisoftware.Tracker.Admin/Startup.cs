@@ -1,26 +1,6 @@
-using Aisoftware.Tracker.Repositories.Base;
-using Aisoftware.Tracker.Common.Base.Services;
-using Aisoftware.Tracker.Common.Base.UseCases;
-using Aisoftware.Tracker.Common.Configurations;
-using Aisoftware.Tracker.Devices.Repositories;
-using Aisoftware.Tracker.Devices.UseCases;
-using Aisoftware.Tracker.Drivers.Repositories;
-using Aisoftware.Tracker.Drivers.UseCases;
-using Aisoftware.Tracker.Geoferences.Repositories;
-using Aisoftware.Tracker.Geoferences.UseCases;
-using Aisoftware.Tracker.Groups.Repositories;
-using Aisoftware.Tracker.Groups.UseCases;
-using Aisoftware.Tracker.Maintenances.Repositories;
-using Aisoftware.Tracker.Maintenances.UseCases;
-using Aisoftware.Tracker.Positions.Repositories;
-using Aisoftware.Tracker.Positions.UseCases;
-using Aisoftware.Tracker.Reports.UseCases;
-using Aisoftware.Tracker.Sessions.Repositories;
-using Aisoftware.Tracker.Sessions.UseCases;
-using Aisoftware.Tracker.Users.Repositories;
-using Aisoftware.Tracker.Users.UseCases;
-using Aisoftware.Tracker.Borders.Models;
-using Aisoftware.Tracker.Borders.Services;
+using System;
+using System.Net;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,11 +10,32 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Net;
-using System.Text;
+using Aisoftware.Tracker.Admin.Common.Base.Services;
+using Aisoftware.Tracker.UseCases.Base;
+using Aisoftware.Tracker.UseCases.Devices.UseCases;
+using Aisoftware.Tracker.UseCases.Drivers.UseCases;
+using Aisoftware.Tracker.UseCases.Geoferences.UseCases;
+using Aisoftware.Tracker.UseCases.Groups.UseCases;
+using Aisoftware.Tracker.UseCases.Maintenances.UseCases;
+using Aisoftware.Tracker.UseCases.Positions.UseCases;
+using Aisoftware.Tracker.UseCases.Reports.UseCases;
+using Aisoftware.Tracker.UseCases.Sessions.UseCases;
+using Aisoftware.Tracker.UseCases.Users.UseCases;
+using Aisoftware.Tracker.Repositories.Base;
+using Aisoftware.Tracker.Repositories.Common.Configurations;
+using Aisoftware.Tracker.Repositories.Devices.Repositories;
+using Aisoftware.Tracker.Repositories.Drivers.Repositories;
+using Aisoftware.Tracker.Repositories.Geoferences.Repositories;
+using Aisoftware.Tracker.Repositories.Groups.Repositories;
+using Aisoftware.Tracker.Repositories.Maintenances.Repositories;
+using Aisoftware.Tracker.Repositories.Positions.Repositories;
+using Aisoftware.Tracker.Repositories.Sessions.Repositories;
+using Aisoftware.Tracker.Repositories.Users.Repositories;
+using Aisoftware.Tracker.Borders.Models;
+using Aisoftware.Tracker.Borders.Services;
 
 namespace Aisoftware.Tracker.Admin;
+
 public class Startup
 {
     public Startup(IConfiguration configuration)

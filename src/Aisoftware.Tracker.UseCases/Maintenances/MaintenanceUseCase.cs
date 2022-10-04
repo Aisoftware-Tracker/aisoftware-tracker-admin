@@ -2,8 +2,9 @@ using Aisoftware.Tracker.Repositories.Base;
 using Aisoftware.Tracker.UseCases.Devices.UseCases;
 using Aisoftware.Tracker.Repositories.Maintenances.Repositories;
 using Aisoftware.Tracker.Borders.Models;
+using Aisoftware.Tracker.UseCases.Base;
 
-namespace Aisoftware.Tracker.Maintenances.UseCases
+namespace Aisoftware.Tracker.UseCases.Maintenances.UseCases
 {
     public class MaintenanceUseCase : BaseUseCase<Maintenance>, IMaintenanceUseCase
     {

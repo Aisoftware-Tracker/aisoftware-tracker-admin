@@ -3,11 +3,11 @@ using Aisoftware.Tracker.Repositories.Common.Configurations;
 using Aisoftware.Tracker.Borders.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace Aisoftware.Tracker.Repositories.Devices.Repositories
+namespace Aisoftware.Tracker.Repositories.Groups.Repositories
 {
-    public class DeviceRepository : BaseRepository<Device>, IDeviceRepository
+    public class GroupRepository : BaseRepository<Group>, IGroupRepository
     {
-        public DeviceRepository(IAppConfiguration config, IHttpContextAccessor httpContextAccessor)
+        public GroupRepository(IAppConfiguration config, IHttpContextAccessor httpContextAccessor)
         : base(config, httpContextAccessor)
         {
 

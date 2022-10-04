@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Aisoftware.Tracker.Borders\Aisoftware.Tracker.Borders.csproj" />
+    <ProjectReference Include="..\Aisoftware.Tracker.Repositories\Aisoftware.Tracker.Repositories.csproj" />
+  </ItemGroup>
+
 </Project>

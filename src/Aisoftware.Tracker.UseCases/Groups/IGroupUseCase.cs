@@ -1,5 +1,5 @@
-using Aisoftware.Tracker.UseCases.Base.UseCases;
-using Aisoftware.Tracker.UseCases.Borders.Models;
+using Aisoftware.Tracker.UseCases.Base;
+using Aisoftware.Tracker.Borders.Models;
 
 namespace Aisoftware.Tracker.UseCases.Groups.UseCases
 {

@@ -6,4 +6,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="6.0" />
+      <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aisoftware.Tracker.Borders\Aisoftware.Tracker.Borders.csproj" />
+  </ItemGroup>
+
 </Project>

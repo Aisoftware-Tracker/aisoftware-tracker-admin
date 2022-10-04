@@ -2,6 +2,7 @@ using Aisoftware.Tracker.Repositories.Base;
 using Aisoftware.Tracker.UseCases.Devices.UseCases;
 using Aisoftware.Tracker.Repositories.Positions.Repositories;
 using Aisoftware.Tracker.Borders.Models;
+using Aisoftware.Tracker.UseCases.Base;
 
 namespace Aisoftware.Tracker.UseCases.Positions.UseCases;
 public class PositionUseCase : BaseUseCase<Position>, IPositionUseCase

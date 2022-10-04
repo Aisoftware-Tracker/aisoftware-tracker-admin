@@ -1,11 +1,12 @@
 using Aisoftware.Tracker.Repositories.Base;
-using Aisoftware.Tracker.Devices.UseCases;
-using Aisoftware.Tracker.Users.Repositories;
+using Aisoftware.Tracker.UseCases.Devices.UseCases;
+using Aisoftware.Tracker.Repositories.Users.Repositories;
 using Aisoftware.Tracker.Borders.Constants;
 using Aisoftware.Tracker.Borders.Models;
 using System.Threading.Tasks;
+using Aisoftware.Tracker.UseCases.Base;
 
-namespace Aisoftware.Tracker.Users.UseCases
+namespace Aisoftware.Tracker.UseCases.Users.UseCases
 {
     public class UserUseCase : BaseUseCase<User>, IUserUseCase
     {

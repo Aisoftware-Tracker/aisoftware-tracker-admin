@@ -1,5 +1,5 @@
 using Aisoftware.Tracker.Repositories.Base;
-using Aisoftware.Tracker.UseCases.Base.UseCases;
+using Aisoftware.Tracker.UseCases.Base;
 using Aisoftware.Tracker.Borders.Constants;
 using Aisoftware.Tracker.Borders.Models;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-using Aisoftware.Tracker.Common.Configurations;
+using Aisoftware.Tracker.Repositories.Common.Configurations;
 using Aisoftware.Tracker.Borders.Constants;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;

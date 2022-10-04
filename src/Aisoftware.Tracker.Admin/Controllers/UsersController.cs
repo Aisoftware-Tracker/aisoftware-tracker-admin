@@ -1,4 +1,4 @@
-using Aisoftware.Tracker.Users.UseCases;
+using Aisoftware.Tracker.UseCases.Users.UseCases;
 using Aisoftware.Tracker.Borders.Constants;
 using Aisoftware.Tracker.Borders.Models;
 using Aisoftware.Tracker.Borders.Services;
