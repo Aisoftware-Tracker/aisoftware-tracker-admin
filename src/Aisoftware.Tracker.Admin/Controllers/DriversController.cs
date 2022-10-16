@@ -53,7 +53,7 @@ public class DriversController : Controller
     }
 
     [HttpPost]
-    [Authorize(Roles = Roles.ADMIN)]
+    [Authorize(Roles = Roles.MASTER)]
     public async Task<ActionResult> CreateDriver(Driver request)
     {
         _context = this.ControllerContext.RouteData;
@@ -77,7 +77,7 @@ public class DriversController : Controller
     }
 
     [HttpDelete]
-    [Authorize(Roles = Roles.ADMIN)]
+    [Authorize(Roles = Roles.MASTER)]
     public async Task<ActionResult> Delete(int id)
     {
         _context = this.ControllerContext.RouteData;
@@ -95,7 +95,7 @@ public class DriversController : Controller
         }
     }
 
-    [Authorize(Roles = Roles.ADMIN)]
+    [Authorize(Roles = Roles.MASTER)]
     public async Task<ActionResult> Update(int id)
     {
         _context = this.ControllerContext.RouteData;
@@ -118,7 +118,7 @@ public class DriversController : Controller
     }
 
     [HttpPost]
-    [Authorize(Roles = Roles.ADMIN)]
+    [Authorize(Roles = Roles.MASTER)]
     public async Task<ActionResult> UpdateDriver(Driver request)
     {
         _context = this.ControllerContext.RouteData;

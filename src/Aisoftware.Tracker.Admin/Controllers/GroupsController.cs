@@ -60,7 +60,7 @@ public class GroupsController : Controller
     }
 
     [HttpPost]
-    [Authorize(Roles = Roles.ADMIN)]
+    [Authorize(Roles = Roles.MASTER)]
     public async Task<ActionResult> CreateGroup(Group request)
     {
         _context = this.ControllerContext.RouteData;
@@ -83,7 +83,7 @@ public class GroupsController : Controller
     }
 
     [HttpDelete]
-    [Authorize(Roles = Roles.ADMIN)]
+    [Authorize(Roles = Roles.MASTER)]
     public async Task<ActionResult> Delete(int id)
     {
         _context = this.ControllerContext.RouteData;
@@ -124,6 +124,7 @@ public class GroupsController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = Roles.MASTER)]
     public async Task<ActionResult> UpdateGroup(Group request)
     {
         _context = this.ControllerContext.RouteData;

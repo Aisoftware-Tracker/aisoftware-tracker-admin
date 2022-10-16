@@ -53,6 +53,7 @@ public class UsersController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = Roles.MASTER)]
     public async Task<ActionResult> CreateUser(User user)
     {
         _context = this.ControllerContext.RouteData;
@@ -74,6 +75,7 @@ public class UsersController : Controller
     }
 
     [HttpDelete]
+    [Authorize(Roles = Roles.MASTER)]
     public async Task<ActionResult> Delete(int id)
     {
         _context = this.ControllerContext.RouteData;
@@ -121,6 +123,7 @@ public class UsersController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = Roles.MASTER)]
     public async Task<ActionResult> UpdateUser(User request)
     {
         _context = this.ControllerContext.RouteData;

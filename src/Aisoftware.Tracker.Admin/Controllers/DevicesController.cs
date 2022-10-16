@@ -64,7 +64,7 @@ public class DevicesController : Controller
     }
 
     [HttpPost]
-    [Authorize(Roles = Roles.ADMIN)]
+    [Authorize(Roles = Roles.MASTER)]
     public async Task<ActionResult> CreateDevice(Device request)
     {
         _context = this.ControllerContext.RouteData;
@@ -88,7 +88,7 @@ public class DevicesController : Controller
     }
 
     [HttpDelete]
-    [Authorize(Roles = Roles.ADMIN)]
+    [Authorize(Roles = Roles.MASTER)]
     public async Task<ActionResult> Delete(int id)
     {
         _context = this.ControllerContext.RouteData;
@@ -106,7 +106,7 @@ public class DevicesController : Controller
         }
     }
 
-    [Authorize(Roles = Roles.ADMIN)]
+    [Authorize(Roles = Roles.MASTER)]
     public async Task<ActionResult> Update(int id)
     {
         _context = this.ControllerContext.RouteData;
@@ -132,7 +132,7 @@ public class DevicesController : Controller
     }
 
     [HttpPost]
-    [Authorize(Roles = Roles.ADMIN)]
+    [Authorize(Roles = Roles.MASTER)]
     public async Task<ActionResult> UpdateDevice(Device request)
     {
         _context = this.ControllerContext.RouteData;
