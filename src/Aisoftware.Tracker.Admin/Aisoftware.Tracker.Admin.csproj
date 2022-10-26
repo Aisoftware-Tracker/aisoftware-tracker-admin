@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="6.0" />
+      <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0-dev-00065" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Aisoftware.Tracker.Borders\Aisoftware.Tracker.Borders.csproj" />
+      <ProjectReference Include="..\Aisoftware.Tracker.UseCases\Aisoftware.Tracker.UseCases.csproj" />
+    </ItemGroup>
+
+</Project>

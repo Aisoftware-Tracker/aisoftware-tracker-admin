@@ -1,0 +1,116 @@
+@model Aisoftware.Tracker.Borders.ViewModels.DeviceViewModel
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Dispositivos/Veículos
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content container-fluid">
+    <!-- Horizontal Form -->
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">Cadastrar Dispositivos</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form class="form-horizontal">
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="Group" class="col-sm-2 control-label">Cliente</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" name="Group" required>
+                            <option value="">Selecione o Cliente</option>
+                            @foreach (var item in Model.Groups)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <label for="Name" class="col-sm-2 control-label">Placa</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="Name" placeholder="AAA0000" maxlength="7"
+                            style="text-transform:uppercase">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="UniqueId" class="col-sm-2 control-label">IMEI</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="UniqueId" placeholder="000000000000000" maxlength="15">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Category" class="col-sm-2 control-label">Categoria</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" name="Category">
+                            <option value="">Selecione uma Categoria</option>
+                            @foreach (var item in Aisoftware.Tracker.Borders.Models.Devices.Category.Get())
+                            {
+                                <option value=@Html.DisplayFor(modelItem => item.Key)>@Html.DisplayFor(modelItem => item.Value)</option>
+                            }
+                        </select>
+                    </div>
+                    <label for="Contact" class="col-sm-2 control-label">Equipamento</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="Contact" placeholder="Obs">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="DateInstall" class="col-sm-2 control-label">Data de Instalação</label>
+                    <div class="col-sm-4">
+                        <input type="datetime-local" class="form-control" name="DateInstall">
+                    </div>
+                    <label for="Icc" class="col-sm-2 control-label">ICCID</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="Icc" placeholder="00000000000000000000" maxlength="20">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Phone" class="col-sm-2 control-label">Linha Celular</label>
+                    <div class="col-sm-4">
+                        <input type="number" class="form-control" name="Phone" maxlength="11" placeholder="31987654321">
+                    </div>
+                    <label for="Operator" class="col-sm-2 control-label">Operadora</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="Operator" placeholder="VIVO"
+                            style="text-transform:uppercase">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Vendor" class="col-sm-2 control-label">Fornecedor</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="Vendor" placeholder="GETRAK">
+                    </div>
+                    <label for="Hardware" class="col-sm-2 control-label">Modelo Rastreador</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="Hardware" placeholder="GT00"
+                            style="text-transform:uppercase">
+                    </div>
+                </div>
+                @* <div class="form-group">
+                    <label for="Photo" class="col-sm-2 control-label">Imagem</label>
+                    <div class="col-sm-10">
+                    <div class="custom-file">
+                    <input type="file" class="form-control" id="Photo">
+                    <label class="custom-file-label" for="Photo">Escolha o arquivo</label>
+                    </div>
+                    </div>
+                    </div> *@
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <button type="submit" class="btn btn-default" formaction="Cancel" formmethod="post">Voltar</button>
+                <button type="submit" class="btn btn-info pull-right" formaction="CreateDevice"
+                    formmethod="post">Cadastrar</button>
+            </div>
+            <!-- /.box-footer -->
+        </form>
+    </div>
+    <!-- /.box -->
+</section>
