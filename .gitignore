@@ -546,7 +546,11 @@ obj/
 .history
 .ionide
 
+### MacOS ###
+.DS_Store
+
 ### VisualStudio ###
+.vscode
 
 # User-specific files
 
