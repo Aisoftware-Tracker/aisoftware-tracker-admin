@@ -149,14 +149,113 @@ public class ReportsController : Controller
         return View(viewModel);
     }
 
+    private static IDictionary<DateTime, DateTime> GetThisMonth(DateTime date)
+    {
+        DateTime firstDayMonth = new DateTime(date.Year, date.Month, 1);
+		DateTime lastDayMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
+		DateTime lastDayMonthAndHours = lastDayMonth.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+        var t = new Dictionary<DateTime, DateTime>();
+		t.Add(firstDayMonth, lastDayMonthAndHours);
+		
+		return t;
+        
+    }
+
+    private static IDictionary<DateTime, DateTime> GetToday(DateTime date)
+    {
+        DateTime firstHour = date;
+		DateTime lastHour = firstHour.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+        var t = new Dictionary<DateTime, DateTime>();
+		t.Add(firstHour, lastHour);
+		
+		return t;
+    }
+
+    private static IDictionary<DateTime, DateTime> GetYesterday(DateTime date)
+    {
+        DateTime firstHour = date.AddDays(-1);
+		DateTime lastHour = firstHour.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+        var t = new Dictionary<DateTime, DateTime>();
+		t.Add(firstHour, lastHour);
+		
+		return t;
+    }
+
+    private static Dictionary<DateTime, DateTime> GetLastMonth(DateTime date)
+    {
+        var lastMonth = date.AddMonths(-1).Month;
+        var firstDayMonth = new DateTime(date.Year, lastMonth, 1);
+		var lastDayMonth = new DateTime(date.Year, lastMonth, DateTime.DaysInMonth(date.Year, lastMonth));
+		var lastDayMonthAndHours = lastDayMonth.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+        var t = new Dictionary<DateTime, DateTime>();
+		t.Add(firstDayMonth, lastDayMonthAndHours);
+		
+		return t;
+    }
+
+    private static IDictionary<DateTime, DateTime> GetThisWeek(DateTime date)
+    {
+        var firstDayWeek = date.AddDays(-(int) date.DayOfWeek);
+		var lastDayWeek = firstDayWeek.AddDays((int) DayOfWeek.Saturday);
+        var lastDayWeekAndHours = lastDayWeek.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+        var t = new Dictionary<DateTime, DateTime>();
+		t.Add(firstDayWeek, lastDayWeekAndHours);
+		
+		return t;
+    }
+
+    private static IDictionary<DateTime, DateTime> GetLastWeek(DateTime date)
+    {
+        var firstDayWeek = date.AddDays(-((int) date.DayOfWeek + 7));
+		var lastDayWeek = firstDayWeek.AddDays((int) DayOfWeek.Saturday);
+        var lastDayWeekAndHours = lastDayWeek.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+        var t = new Dictionary<DateTime, DateTime>();
+		t.Add(firstDayWeek, lastDayWeekAndHours);
+		
+		return t;
+    }
+
     [HttpGet]
     public async Task<ActionResult> Route(
             [FromQuery] int? deviceId,
             [FromQuery] int? groupId,
             [FromQuery] DateTime from,
-            [FromQuery] DateTime to
+            [FromQuery] DateTime to,
+            [FromQuery] int? period
     )
     {
+        var date = DateTime.Today;
+
+        var fromToToday = GetToday(date);
+        var fromToYesterday = GetYesterday(date);
+        var fromToThisMonth = GetThisMonth(date);
+        var fromToLastMonth = GetLastMonth(date);
+        var fromToThisWeek = GetThisWeek(date);
+        var fromToLastWeek = GetLastWeek(date);
+
+		var periodMap = new Dictionary<int, IDictionary<DateTime, DateTime>>
+        {
+            { 0, fromToToday },
+            { 1, fromToYesterday },
+            { 2, fromToThisWeek },
+            { 3, fromToLastWeek },
+            { 4, fromToThisMonth },
+            { 5, fromToLastMonth },
+
+        };
+
+        foreach (var item in periodMap[(int) period])
+		{
+			Console.WriteLine(item.Key);
+			Console.WriteLine(item.Value);
+		}
+
         var response = await GetReportRoute(deviceId, groupId, from, to);
         ViewBag.deviceId = deviceId;
         ViewBag.groupId = groupId;
