@@ -38,7 +38,8 @@
                                 var deviceName = Model.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
                                 var serverTime = item.ServerTimeStr;
                                 var icon = item.Type;
-                                var eventType = Aisoftware.Tracker.Borders.Models.Reports.EventType.Get()[item.Type];
+                                var dictionary = Aisoftware.Tracker.Borders.Models.Reports.EventType.Get();
+                                var eventType = Aisoftware.Tracker.Borders.Models.Reports.EventType.GetValueOrDefault(dictionary, item.Type, "Não Identificado");
                                 var positionAddress = Model.Positions?.Where(x => x.Id == item?.PositionId)?.FirstOrDefault()?.Address;
                                 var geoferenceName = Model.Geoferences?.Where(x => x.Id == item?.GeofenceId)?.FirstOrDefault()?.Name;
                                 var maintenanceName =  Model.Maintenances?.Where(x => x.Id == item?.MaintenanceId)?.FirstOrDefault().Name;

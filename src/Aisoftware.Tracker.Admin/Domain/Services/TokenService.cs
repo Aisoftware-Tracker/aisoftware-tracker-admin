@@ -1,4 +1,4 @@
-using Aisoftware.Tracker.Admin.Common.Base.Services;
+using Aisoftware.Tracker.Admin.Domain.Services;
 using Aisoftware.Tracker.Repositories.Common.Configurations;
 using Aisoftware.Tracker.Borders.Models;
 using Microsoft.IdentityModel.Tokens;
