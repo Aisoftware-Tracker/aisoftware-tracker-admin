@@ -8,6 +8,8 @@ using Aisoftware.Tracker.Borders.Constants;
 using Aisoftware.Tracker.Borders.Models;
 using Aisoftware.Tracker.Borders.Services;
 using Aisoftware.Tracker.Borders.ViewModels;
+using Aisoftware.Tracker.Borders.Utils;
+using Aisoftware.Tracker.Borders.Models.Date;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -91,9 +93,12 @@ public class ReportsController : Controller
             [FromQuery] int? deviceId,
             [FromQuery] int? groupId,
             [FromQuery] DateTime from,
-            [FromQuery] DateTime to
+            [FromQuery] DateTime to,
+            [FromQuery] int? period
     )
     {
+        GetFromTo(period, ref from, ref to);
+
         _context = this.ControllerContext.RouteData;
         ReportSummaryViewModel viewModel = new ReportSummaryViewModel();
 
@@ -122,9 +127,12 @@ public class ReportsController : Controller
             [FromQuery] int? deviceId,
             [FromQuery] int? groupId,
             [FromQuery] DateTime from,
-            [FromQuery] DateTime to
+            [FromQuery] DateTime to,
+            [FromQuery] int? period
     )
     {
+        GetFromTo(period, ref from, ref to);
+
         _context = this.ControllerContext.RouteData;
         ReportEventViewModel viewModel = new ReportEventViewModel();
 
@@ -149,78 +157,6 @@ public class ReportsController : Controller
         return View(viewModel);
     }
 
-    private static IDictionary<DateTime, DateTime> GetThisMonth(DateTime date)
-    {
-        DateTime firstDayMonth = new DateTime(date.Year, date.Month, 1);
-		DateTime lastDayMonth = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
-		DateTime lastDayMonthAndHours = lastDayMonth.AddHours(23).AddMinutes(59).AddSeconds(59);
-
-        var t = new Dictionary<DateTime, DateTime>();
-		t.Add(firstDayMonth, lastDayMonthAndHours);
-		
-		return t;
-        
-    }
-
-    private static IDictionary<DateTime, DateTime> GetToday(DateTime date)
-    {
-        DateTime firstHour = date;
-		DateTime lastHour = firstHour.AddHours(23).AddMinutes(59).AddSeconds(59);
-
-        var t = new Dictionary<DateTime, DateTime>();
-		t.Add(firstHour, lastHour);
-		
-		return t;
-    }
-
-    private static IDictionary<DateTime, DateTime> GetYesterday(DateTime date)
-    {
-        DateTime firstHour = date.AddDays(-1);
-		DateTime lastHour = firstHour.AddHours(23).AddMinutes(59).AddSeconds(59);
-
-        var t = new Dictionary<DateTime, DateTime>();
-		t.Add(firstHour, lastHour);
-		
-		return t;
-    }
-
-    private static Dictionary<DateTime, DateTime> GetLastMonth(DateTime date)
-    {
-        var lastMonth = date.AddMonths(-1).Month;
-        var firstDayMonth = new DateTime(date.Year, lastMonth, 1);
-		var lastDayMonth = new DateTime(date.Year, lastMonth, DateTime.DaysInMonth(date.Year, lastMonth));
-		var lastDayMonthAndHours = lastDayMonth.AddHours(23).AddMinutes(59).AddSeconds(59);
-
-        var t = new Dictionary<DateTime, DateTime>();
-		t.Add(firstDayMonth, lastDayMonthAndHours);
-		
-		return t;
-    }
-
-    private static IDictionary<DateTime, DateTime> GetThisWeek(DateTime date)
-    {
-        var firstDayWeek = date.AddDays(-(int) date.DayOfWeek);
-		var lastDayWeek = firstDayWeek.AddDays((int) DayOfWeek.Saturday);
-        var lastDayWeekAndHours = lastDayWeek.AddHours(23).AddMinutes(59).AddSeconds(59);
-
-        var t = new Dictionary<DateTime, DateTime>();
-		t.Add(firstDayWeek, lastDayWeekAndHours);
-		
-		return t;
-    }
-
-    private static IDictionary<DateTime, DateTime> GetLastWeek(DateTime date)
-    {
-        var firstDayWeek = date.AddDays(-((int) date.DayOfWeek + 7));
-		var lastDayWeek = firstDayWeek.AddDays((int) DayOfWeek.Saturday);
-        var lastDayWeekAndHours = lastDayWeek.AddHours(23).AddMinutes(59).AddSeconds(59);
-
-        var t = new Dictionary<DateTime, DateTime>();
-		t.Add(firstDayWeek, lastDayWeekAndHours);
-		
-		return t;
-    }
-
     [HttpGet]
     public async Task<ActionResult> Route(
             [FromQuery] int? deviceId,
@@ -230,32 +166,8 @@ public class ReportsController : Controller
             [FromQuery] int? period
     )
     {
-        var date = DateTime.Today;
-
-        var fromToToday = GetToday(date);
-        var fromToYesterday = GetYesterday(date);
-        var fromToThisMonth = GetThisMonth(date);
-        var fromToLastMonth = GetLastMonth(date);
-        var fromToThisWeek = GetThisWeek(date);
-        var fromToLastWeek = GetLastWeek(date);
-
-		var periodMap = new Dictionary<int, IDictionary<DateTime, DateTime>>
-        {
-            { 0, fromToToday },
-            { 1, fromToYesterday },
-            { 2, fromToThisWeek },
-            { 3, fromToLastWeek },
-            { 4, fromToThisMonth },
-            { 5, fromToLastMonth },
-
-        };
-
-        foreach (var item in periodMap[(int) period])
-		{
-			Console.WriteLine(item.Key);
-			Console.WriteLine(item.Value);
-		}
-
+        GetFromTo(period, ref from, ref to);
+        
         var response = await GetReportRoute(deviceId, groupId, from, to);
         ViewBag.deviceId = deviceId;
         ViewBag.groupId = groupId;
@@ -263,6 +175,9 @@ public class ReportsController : Controller
         ViewBag.to = to;
 
         ViewBag.deviceId = deviceId;
+
+        System.Console.WriteLine(from);
+        System.Console.WriteLine(to);
 
         return View(response);
     }
@@ -331,20 +246,20 @@ public class ReportsController : Controller
             switch (typeReport)
             {
                 case Endpoints.SUMMARY:
-                    return ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, new ReportSummaryViewModel
+                    return await ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, new ReportSummaryViewModel
                     {
                         Summaries = await _summaryUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
                         Devices = await _deviceUseCase.FindAll()
                     });
                 case Endpoints.ROUTE:
-                    return ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, new ReportRouteViewModel
+                    return await ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, new ReportRouteViewModel
                     {
                         Routes = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
                         Devices = await _deviceUseCase.FindAll()
                     });
                 case Endpoints.EVENTS:
                     var eventView = await ReportEventViewModelBuild(deviceId, groupId, from, to);
-                    return ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, eventView);
+                    return await ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, eventView);
                 default:
                     return View();
             }
@@ -431,6 +346,42 @@ public class ReportsController : Controller
             Routes = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
             Devices = await _deviceUseCase.FindAll()
         };
+    }
+
+    Action<string> greet = name =>
+    {
+        string greeting = $"Hello {name}!";
+        Console.WriteLine(greeting);
+    };
+
+    private FromTo BuildFromTo()
+    {
+        var date = DateTime.Today;
+
+        return new FromTo
+        {
+            Today = CalcDate.GetToday(date),
+            Yesterday = CalcDate.GetYesterday(date),
+            ThisMonth = CalcDate.GetThisMonth(date),
+            LastMonth = CalcDate.GetLastMonth(date),
+            ThisWeek = CalcDate.GetThisWeek(date),
+            LastWeek = CalcDate.GetLastWeek(date)
+        };
+    }
+
+    private void GetFromTo(int? period, ref DateTime from, ref DateTime to)
+    {
+        if(period != 0) 
+        {
+            var formTo = BuildFromTo();
+            var periodMap = Period.GetMap(formTo);
+        
+            foreach (var item in periodMap[(int) period])
+            {
+                from = item.Key;
+                to = item.Value;
+            }
+        }
     }
 
 }

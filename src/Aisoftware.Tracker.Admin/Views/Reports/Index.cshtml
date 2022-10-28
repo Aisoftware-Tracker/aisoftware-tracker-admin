@@ -44,25 +44,29 @@
 
                 <div class="form-group">
                     <label for="period" class="col-sm-2 control-label">Período</label>
-                    <select id="period" class="form-control" name="period">
-                        <option value="0">Hoje</option>
-                        <option value="1">Ontem</option>
-                        <option value="2">Esta Semana</option>
-                        <option value="3">Semana Passada</option>
-                        <option value="4">Este Mês</option>
-                        <option value="5">Mês Anterior</option>
-                    </select>
+                    <div class="col-sm-10">
+                        <select id="period" class="form-control" name="period">
+                            <option value="" selected>Selecione o Período</option>
+                            <option value="0">Personalizado</option>
+                            <option value="1">Hoje</option>
+                            <option value="2">Ontem</option>
+                            <option value="3">Esta Semana</option>
+                            <option value="4">Semana Passada</option>
+                            <option value="5">Este Mês</option>
+                            <option value="6">Mês Anterior</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="form-group">
+                <div id="custom-date" class="form-group">
                     <label for="from" class="col-sm-2 control-label">De</label>
                     <div class="col-sm-4">
-                        <input type="datetime-local" class="form-control" name="from" placeholder="Data">
+                        <input id="from" type="datetime-local" class="form-control" name="from" placeholder="Data">
                     </div>
 
                     <label for="to" class="col-sm-2 control-label">Até</label>
                     <div class="col-sm-4">
-                        <input type="datetime-local" class="form-control" name="to" placeholder="Data">
+                        <input id="to" type="datetime-local" class="form-control" name="to" placeholder="Data">
                     </div>
                 </div>
 
@@ -81,9 +85,13 @@
 
 <!-- page script -->
 <script>
+    const empty = '';
+    const disabled = 'disabled';
+    const hidden = 'hidden';
 
     $(document).ready(function () {
         groupIsSelected();
+        customeDate();
     });
 
     $("#deviceId").change(function () {
@@ -91,17 +99,37 @@
     });
 
     function groupIsSelected() {
-        let deviceId = $('select[name=deviceId]');
-        let groupId = $('select[name=groupId]');
+        const deviceId = $('select[name=deviceId]');
+        const groupId = $('select[name=groupId]');
         
-        if (deviceId.val() != '') {
-            groupId.attr('disabled', 'disabled');
+        if (deviceId.val() != empty) {
+            groupId.attr(disabled, disabled);
             groupId.val(0);
         } else {
-            groupId.removeAttr('disabled');
-            groupId.val('');
+            groupId.removeAttr(disabled);
+            groupId.val(empty);
         }
         
     }
+
+    $("#period").change(function () {
+        customeDate();
+    });
+
+    function customeDate() {
+        const period = $('select[name=period]');
+        const customeDate = $('#custom-date');
+        const from = $('#from');
+        const to = $('#to');
+
+        if (period.val() != 0 || period.val() == empty) {
+            customeDate.attr(hidden, hidden);
+            from.val(empty);
+            to.val(empty);
+        } else {
+            customeDate.removeAttr(hidden);
+        }
+    }
+
 
 </script>
