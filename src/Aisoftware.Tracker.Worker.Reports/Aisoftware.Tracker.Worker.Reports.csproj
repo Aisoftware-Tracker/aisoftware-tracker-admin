@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-Aisoftware.Tracker.Worker.Reports-2b19c2f6-4bce-42d2-bfeb-2b8a7c1cb196</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aisoftware.Tracker.Borders\Aisoftware.Tracker.Borders.csproj" />
+    <ProjectReference Include="..\Aisoftware.Tracker.UseCases\Aisoftware.Tracker.UseCases.csproj" />
+    <ProjectReference Include="..\Aisoftware.Tracker.Worker.DAO\Aisoftware.Tracker.Worker.DAO.csproj" />
+  </ItemGroup>
+</Project>

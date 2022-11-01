@@ -1,0 +1,11 @@
+﻿{
+  "profiles": {
+    "Aisoftware.Tracker.Worker.Reports": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
