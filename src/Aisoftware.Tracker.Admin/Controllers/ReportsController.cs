@@ -385,8 +385,8 @@ public class ReportsController : Controller
                 from = item.Key;
                 to = item.Value;
 
-                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, "GetFromTo",
-        $"de: {queryParams["from"]} até: {queryParams["to"]} - formatado"));
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, "GetFromTo",
+                $"de: {from} até: {to}"));
 
             }
         }
