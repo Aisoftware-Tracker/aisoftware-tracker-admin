@@ -246,18 +246,21 @@ public class ReportsController : Controller
             switch (typeReport)
             {
                 case Endpoints.SUMMARY:
+                    _logger.LogInformation(_logUtil.Info(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), $"de: {from} - até: {to}, tipo:{typeReport}, grupo: {deviceId}, device: {groupId}" ));
                     return await ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, new ReportSummaryViewModel
                     {
                         Summaries = await _summaryUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
                         Devices = await _deviceUseCase.FindAll()
                     });
                 case Endpoints.ROUTE:
+                    _logger.LogInformation(_logUtil.Info(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), $"de: {from} - até: {to}, tipo:{typeReport}, grupo: {deviceId}, device: {groupId}" ));
                     return await ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, new ReportRouteViewModel
                     {
                         Routes = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
                         Devices = await _deviceUseCase.FindAll()
                     });
                 case Endpoints.EVENTS:
+                    _logger.LogInformation(_logUtil.Info(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), $"de: {from} - até: {to}, tipo:{typeReport}, grupo: {deviceId}, device: {groupId}" ));
                     var eventView = await ReportEventViewModelBuild(deviceId, groupId, from, to);
                     return await ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, eventView);
                 default:
