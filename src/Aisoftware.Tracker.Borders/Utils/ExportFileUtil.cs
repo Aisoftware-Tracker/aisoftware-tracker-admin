@@ -30,6 +30,8 @@ public static class ExportFileUtil
             builder.AppendLine($"{licensePlate}; {item.Protocol}; {item.DeviceTimeStr}; {item.FixTimeStr}; {item.ServerTimeStr}; {outdated}; {valid}; {item.LatitudeStr}; {item.LongitudeStr}; {item.Altitude}; {item.Speed}; {StringUtil.RemoveAccent(item.Address)}; {item.Accuracy}; {ignition}; {item.Attributes.Status}; {item.Attributes.Distance}; {item.Attributes.TotalDistance}; {motion}; {item.Attributes.Hours}");
         }
 
+        System.Console.WriteLine(builder);
+
         return await FileContentResultBuild(builder, "RelatorioRotas");
 
     }
