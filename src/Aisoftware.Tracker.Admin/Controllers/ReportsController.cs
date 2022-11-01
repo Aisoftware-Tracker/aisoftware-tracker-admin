@@ -239,6 +239,10 @@ public class ReportsController : Controller
     {
         _context = this.ControllerContext.RouteData;
 
+        System.Console.WriteLine(".....ExportToCsv......");
+        System.Console.WriteLine(from);
+        System.Console.WriteLine(to);
+
         try
         {
             _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), typeReport));
@@ -296,6 +300,9 @@ public class ReportsController : Controller
         if (deviceId != null) { queryParams.Add("deviceId", deviceId.ToString()); }
         if (groupId != null) { queryParams.Add("groupId", groupId.ToString()); }
 
+        _logger.LogInformation(_logUtil.Succes(GetType().FullName, "GetQueryParameters",
+        $"de: {queryParams["from"]} até: {queryParams["to"]} - formatado"));
+
         return queryParams;
     }
 
@@ -351,12 +358,6 @@ public class ReportsController : Controller
         };
     }
 
-    Action<string> greet = name =>
-    {
-        string greeting = $"Hello {name}!";
-        Console.WriteLine(greeting);
-    };
-
     private FromTo BuildFromTo()
     {
         var date = DateTime.Today;
@@ -383,6 +384,10 @@ public class ReportsController : Controller
             {
                 from = item.Key;
                 to = item.Value;
+
+                 _logger.LogInformation(_logUtil.Succes(GetType().FullName, "GetFromTo",
+        $"de: {queryParams["from"]} até: {queryParams["to"]} - formatado"));
+
             }
         }
     }
