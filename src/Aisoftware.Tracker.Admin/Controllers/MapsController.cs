@@ -107,6 +107,8 @@ public class MapsController : Controller
 
     private string BuildLatLong(IEnumerable<ReportRoute> routes)
     {
+        _logger.LogInformation(_logUtil.Info(GetType().FullName, "BuildLatLong", "entrou"));
+
         List<decimal[]> latLongs = new ExternalMapsTool().GetRoutes(routes);
 
         string positions = "[";
