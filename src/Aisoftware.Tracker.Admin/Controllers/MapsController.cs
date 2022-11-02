@@ -114,6 +114,7 @@ public class MapsController : Controller
         foreach (var item in latLongs)
         {
             positions += $"[{item[0]},{item[1]}],";
+            _logger.LogInformation(_logUtil.Info(GetType().FullName, "BuildLatLong", positions));
         }
 
         positions += "]";
