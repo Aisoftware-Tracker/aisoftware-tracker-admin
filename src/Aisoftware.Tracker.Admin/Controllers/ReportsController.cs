@@ -239,6 +239,10 @@ public class ReportsController : Controller
     {
         _context = this.ControllerContext.RouteData;
 
+        System.Console.WriteLine(".....ExportToCsv......");
+        System.Console.WriteLine(from);
+        System.Console.WriteLine(to);
+
         try
         {
             _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), typeReport));
@@ -246,18 +250,21 @@ public class ReportsController : Controller
             switch (typeReport)
             {
                 case Endpoints.SUMMARY:
+                    _logger.LogInformation(_logUtil.Info(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), $"de: {from} - até: {to}, tipo:{typeReport}, grupo: {groupId}, device: {deviceId}" ));
                     return await ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, new ReportSummaryViewModel
                     {
                         Summaries = await _summaryUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
                         Devices = await _deviceUseCase.FindAll()
                     });
                 case Endpoints.ROUTE:
+                    _logger.LogInformation(_logUtil.Info(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), $"de: {from} - até: {to}, tipo:{typeReport}, grupo: {groupId}, device: {deviceId}" ));
                     return await ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, new ReportRouteViewModel
                     {
                         Routes = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
                         Devices = await _deviceUseCase.FindAll()
                     });
                 case Endpoints.EVENTS:
+                    _logger.LogInformation(_logUtil.Info(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), $"de: {from} - até: {to}, tipo:{typeReport}, grupo: {groupId}, device: {deviceId}" ));
                     var eventView = await ReportEventViewModelBuild(deviceId, groupId, from, to);
                     return await ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, eventView);
                 default:
@@ -292,6 +299,9 @@ public class ReportsController : Controller
 
         if (deviceId != null) { queryParams.Add("deviceId", deviceId.ToString()); }
         if (groupId != null) { queryParams.Add("groupId", groupId.ToString()); }
+
+        _logger.LogInformation(_logUtil.Succes(GetType().FullName, "GetQueryParameters",
+        $"de: {queryParams["from"]} até: {queryParams["to"]} - formatado"));
 
         return queryParams;
     }
@@ -348,12 +358,6 @@ public class ReportsController : Controller
         };
     }
 
-    Action<string> greet = name =>
-    {
-        string greeting = $"Hello {name}!";
-        Console.WriteLine(greeting);
-    };
-
     private FromTo BuildFromTo()
     {
         var date = DateTime.Today;
@@ -380,6 +384,10 @@ public class ReportsController : Controller
             {
                 from = item.Key;
                 to = item.Value;
+
+                _logger.LogInformation(_logUtil.Succes(GetType().FullName, "GetFromTo",
+                $"de: {from} até: {to}"));
+
             }
         }
     }
