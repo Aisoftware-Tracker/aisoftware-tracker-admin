@@ -3,7 +3,6 @@ using Aisoftware.Tracker.Borders.Models.Reports;
 using Aisoftware.Tracker.Borders.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Aisoftware.Tracker.Borders.Services;
 
@@ -12,7 +11,7 @@ public static class ExportFileUtil
     private const string CSV = "csv";
     private const string XLSX = "xlsx";
 
-    public async static Task<FileContentResult> ExportToCsv(int? deviceId, int? groupId, DateTime from, DateTime to,
+    public static FileContentResult ExportToCsv(int? deviceId, int? groupId, DateTime from, DateTime to,
             ReportRouteViewModel viewModel)
     {
         var builder = new StringBuilder();
@@ -30,11 +29,11 @@ public static class ExportFileUtil
             builder.AppendLine($"{licensePlate}; {item.Protocol}; {item.DeviceTimeStr}; {item.FixTimeStr}; {item.ServerTimeStr}; {outdated}; {valid}; {item.LatitudeStr}; {item.LongitudeStr}; {item.Altitude}; {item.Speed}; {StringUtil.RemoveAccent(item.Address)}; {item.Accuracy}; {ignition}; {item.Attributes.Status}; {item.Attributes.Distance}; {item.Attributes.TotalDistance}; {motion}; {item.Attributes.Hours}");
         }
 
-        return await FileContentResultBuild(builder, "RelatorioRotas");
+        return FileContentResultBuild(builder, "RelatorioRotas");
 
     }
 
-    public async static Task<FileContentResult> ExportToCsv(int? deviceId, int? groupId, DateTime from, DateTime to,
+    public static FileContentResult ExportToCsv(int? deviceId, int? groupId, DateTime from, DateTime to,
             ReportEventViewModel viewModel)
     {
         var builder = new StringBuilder();
@@ -53,11 +52,11 @@ public static class ExportFileUtil
             builder.AppendLine($"{licensePlate}; {item.ServerTimeStr}; {type}; {StringUtil.RemoveAccent(address)};");
         }
 
-        return await FileContentResultBuild(builder, "RelatorioEventos");
+        return FileContentResultBuild(builder, "RelatorioEventos");
 
     }
 
-    public async static Task<FileContentResult> ExportToCsv(int? deviceId, int? groupId, DateTime from, DateTime to,
+    public static FileContentResult ExportToCsv(int? deviceId, int? groupId, DateTime from, DateTime to,
             ReportSummaryViewModel viewModel)
     {
         var builder = new StringBuilder();
@@ -70,11 +69,10 @@ public static class ExportFileUtil
             builder.AppendLine($"{licensePlate}; {item.DeviceName}; {item.Distance}; {item.AverageSpeed}; {item.MaxSpeed}; {item.SpentFuel}; {item.StartOdometer}; {item.EndOdometer}; {item.EngineHours}");
         }
 
-        return await FileContentResultBuild(builder, "RelatorioResumo");
-
+        return FileContentResultBuild(builder, "RelatorioResumo");
     }
 
-    private async static Task<FileContentResult> FileContentResultBuild(StringBuilder builder, string reportName)
+    private static FileContentResult FileContentResultBuild(StringBuilder builder, string reportName)
     {
         return new FileContentResult(Encoding.UTF8.GetBytes(builder.ToString()), ContentType.TEXT_CSV)
         {
