@@ -93,7 +93,7 @@ public class MapsController : Controller
 
         try
         {
-            response = await _routeUseCase.FindAll(queryParams);
+            response = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to));
 
             _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()));
         }
@@ -103,6 +103,31 @@ public class MapsController : Controller
         }
 
         return response;
+    }
+
+    private IDictionary<string, string> GetQueryParameters(
+            [FromQuery] int? deviceId,
+            [FromQuery] int? groupId,
+            [FromQuery] DateTime from,
+            [FromQuery] DateTime to
+    )
+    {
+        string strFrom = from.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_T_HH_MM_SS_Z);
+        string strTo = to.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_T_HH_MM_SS_Z);
+
+        IDictionary<string, string> queryParams = new Dictionary<string, string>
+        {
+            { "from", strFrom },
+            { "to", strTo }
+        };
+
+        if (deviceId != null) { queryParams.Add("deviceId", deviceId.ToString()); }
+        if (groupId != null) { queryParams.Add("groupId", groupId.ToString()); }
+
+        _logger.LogInformation(_logUtil.Succes(GetType().FullName, "GetQueryParameters",
+        $"de: {queryParams["from"]} até: {queryParams["to"]} - formatado"));
+
+        return queryParams;
     }
 
     private string BuildLatLong(IEnumerable<ReportRoute> routes)
