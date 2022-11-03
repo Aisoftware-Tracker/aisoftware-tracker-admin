@@ -89,7 +89,7 @@ public class ReportsController : Controller
 
 
     [HttpGet]
-    public async Task<ActionResult> Summary(
+    public async Task<IActionResult> Summary(
             [FromQuery] int? deviceId,
             [FromQuery] int? groupId,
             [FromQuery] DateTime from,
@@ -123,7 +123,7 @@ public class ReportsController : Controller
     }
 
     [HttpGet]
-    public async Task<ActionResult> Events(
+    public async Task<IActionResult> Events(
             [FromQuery] int? deviceId,
             [FromQuery] int? groupId,
             [FromQuery] DateTime from,
@@ -141,6 +141,7 @@ public class ReportsController : Controller
         ViewBag.groupId = groupId;
         ViewBag.from = from;
         ViewBag.to = to;
+        ViewBag.deviceId = deviceId;
 
         try
         {
@@ -158,7 +159,7 @@ public class ReportsController : Controller
     }
 
     [HttpGet]
-    public async Task<ActionResult> Route(
+    public async Task<IActionResult> Route(
             [FromQuery] int? deviceId,
             [FromQuery] int? groupId,
             [FromQuery] DateTime from,
@@ -169,15 +170,15 @@ public class ReportsController : Controller
         GetFromTo(period, ref from, ref to);
         
         var response = await GetReportRoute(deviceId, groupId, from, to);
+        _context = this.ControllerContext.RouteData;
+        ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
         ViewBag.deviceId = deviceId;
         ViewBag.groupId = groupId;
         ViewBag.from = from;
         ViewBag.to = to;
-
         ViewBag.deviceId = deviceId;
 
-        System.Console.WriteLine(from);
-        System.Console.WriteLine(to);
+        ViewBag.deviceId = deviceId;
 
         return View(response);
     }
@@ -190,6 +191,14 @@ public class ReportsController : Controller
             [FromQuery] DateTime to
     )
     {
+        _context = this.ControllerContext.RouteData;
+        ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
+        ViewBag.deviceId = deviceId;
+        ViewBag.groupId = groupId;
+        ViewBag.from = from;
+        ViewBag.to = to;
+        ViewBag.deviceId = deviceId;
+
         _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()), messageParams(deviceId, groupId, from, to));
         return RedirectToAction(ActionName.INDEX, ControllerName.MAPS, new { deviceId, groupId, from, to });
     }
@@ -210,6 +219,11 @@ public class ReportsController : Controller
     {
         _context = this.ControllerContext.RouteData;
         ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
+        ViewBag.deviceId = deviceId;
+        ViewBag.groupId = groupId;
+        ViewBag.from = from;
+        ViewBag.to = to;
+        ViewBag.deviceId = deviceId;
 
         ReportRouteViewModel viewModel = new ReportRouteViewModel();
 
@@ -228,16 +242,22 @@ public class ReportsController : Controller
     }
 
     ///TODO Criar classe generica 
-    [HttpGet]
+    [HttpPost]
     public async Task<IActionResult> ExportToCsv(
-        [FromQuery] int? deviceId,
-        [FromQuery] int? groupId,
-        [FromQuery] DateTime from,
-        [FromQuery] DateTime to,
-        [FromQuery] string typeReport
+        int? deviceId,
+        int? groupId,
+        DateTime from,
+        DateTime to,
+        string typeReport
     )
     {
         _context = this.ControllerContext.RouteData;
+        ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
+        ViewBag.deviceId = deviceId;
+        ViewBag.groupId = groupId;
+        ViewBag.from = from;
+        ViewBag.to = to;
+        ViewBag.deviceId = deviceId;
 
         System.Console.WriteLine(".....ExportToCsv......");
         System.Console.WriteLine(from);
@@ -251,22 +271,18 @@ public class ReportsController : Controller
             {
                 case Endpoints.SUMMARY:
                     _logger.LogInformation(_logUtil.Info(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), $"de: {from} - até: {to}, tipo:{typeReport}, grupo: {groupId}, device: {deviceId}" ));
-                    return ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, new ReportSummaryViewModel
-                    {
-                        Summaries = await _summaryUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
-                        Devices = await _deviceUseCase.FindAll()
-                    });
+                   
+                   var summary = await ReportSummaryViewModelBuild(deviceId, groupId, from, to);
+                   return await ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, summary);
                 case Endpoints.ROUTE:
                     _logger.LogInformation(_logUtil.Info(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), $"de: {from} - até: {to}, tipo:{typeReport}, grupo: {groupId}, device: {deviceId}" ));
-                    return ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, new ReportRouteViewModel
-                    {
-                        Routes = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
-                        Devices = await _deviceUseCase.FindAll()
-                    });
+                    
+                    var route = await GetReportRoute(deviceId, groupId, from, to);
+                    return await ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, route);
                 case Endpoints.EVENTS:
                     _logger.LogInformation(_logUtil.Info(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), $"de: {from} - até: {to}, tipo:{typeReport}, grupo: {groupId}, device: {deviceId}" ));
                     var eventView = await ReportEventViewModelBuild(deviceId, groupId, from, to);
-                    return ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, eventView);
+                    return await ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, eventView);
                 default:
                     return View();
             }
@@ -274,7 +290,8 @@ public class ReportsController : Controller
         catch (Exception e)
         {
             string message = messageParams(deviceId, groupId, from, to);
-            _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e, message));
+            System.Console.WriteLine(e);
+            // _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e, message));
         }
 
         return null;
@@ -288,6 +305,14 @@ public class ReportsController : Controller
             [FromQuery] DateTime to
     )
     {
+        _context = this.ControllerContext.RouteData;
+        ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
+        ViewBag.deviceId = deviceId;
+        ViewBag.groupId = groupId;
+        ViewBag.from = from;
+        ViewBag.to = to;
+        ViewBag.deviceId = deviceId;
+
         string strFrom = from.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_T_HH_MM_SS_Z);
         string strTo = to.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_T_HH_MM_SS_Z);
 
