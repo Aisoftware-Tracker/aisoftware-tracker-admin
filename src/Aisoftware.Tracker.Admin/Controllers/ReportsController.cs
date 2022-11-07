@@ -241,8 +241,20 @@ public class ReportsController : Controller
         return viewModel;
     }
 
-    ///TODO Criar classe generica 
     [HttpPost]
+    public async Task<IActionResult> ExportToCsv(IEnumerable<ReportRouteDTO> login)
+    {
+        var t = login;
+
+        _context = this.ControllerContext.RouteData;
+        ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
+
+        return null;
+
+    }
+
+    ///TODO Criar classe generica 
+    [HttpGet]
     public async Task<IActionResult> ExportToCsv(
         int? deviceId,
         int? groupId,
@@ -277,7 +289,7 @@ public class ReportsController : Controller
                 case Endpoints.ROUTE:
                     _logger.LogInformation(_logUtil.Info(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), $"de: {from} - até: {to}, tipo:{typeReport}, grupo: {groupId}, device: {deviceId}" ));
                     
-                    var route = await GetReportRoute(deviceId, groupId, from, to);
+                    var route = await ReportRouteViewModelBuild2(deviceId, groupId, from, to);
                     return await ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, route);
                 case Endpoints.EVENTS:
                     _logger.LogInformation(_logUtil.Info(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), $"de: {from} - até: {to}, tipo:{typeReport}, grupo: {groupId}, device: {deviceId}" ));
@@ -381,6 +393,16 @@ public class ReportsController : Controller
             Routes = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to)),
             Devices = await _deviceUseCase.FindAll()
         };
+    }
+
+    private async Task<ReportRouteViewModel> ReportRouteViewModelBuild2(int? deviceId, int? groupId, DateTime from, DateTime to)
+    {
+        var dto = new ReportRouteViewModel
+        {
+            Routes = await _routeUseCase.FindAll(GetQueryParameters(deviceId, groupId, from, to))
+        };
+
+        return dto;
     }
 
     private FromTo BuildFromTo()

@@ -84,7 +84,7 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="box-footer">
-                                <a href="" class="btn btn-block btn-danger" onclick="ExportToCsv()">Teste</a>
+                                <input id="btn-teste" type="button" value="Teste" class="btn btn-block btn-danger" onclick="Validate()">
 
                                 @* <a href="/@ViewBag.ControllerName?report=route" class="btn btn-default">Voltar</a>
 
@@ -95,7 +95,7 @@
                                 {
                                     <a href="/Maps?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to"
                                     class="btn btn-primary pull-right"><i class="fa fa-map"></i> Ver Rota no Mapa</a>
-                                } *@
+                                }  *@
 
 
 
@@ -122,30 +122,63 @@
     function ExportToCsv() {
 
         var obj = $('#data-table').dataTable();
-        console.log(obj);
+        @* console.log(obj); *@
 
         var csv = obj.fnGetData();
-        console.log(csv);
+        @* console.log(csv); *@
+
+        let route = {
+            id: 1,
+            valid: true,
+            speed: 12.3,
+            address: "teste de string"
+        }
+
+        console.log(route);
 
         $.ajax({
             url: '@ViewBag.ControllerName/ExportToCsv',
             type: 'POST',
-            data: {
-                deviceId: 123,
-                groupId: 456,
-                from: null,
-                to: null,
-                typeReport: 'teste'
-            },
+            data: { typeReport: "teste" },
             success: function (data) {
                 alert("Dispositivo excluído com sucesso!");
-                location.reload();
             },
             error: function (data) {
                 alert("Erro ao excluir dispositivo!");
             }
         });
     }
+
+     function Validate() {
+
+        const obj = $('#data-table').dataTable();
+        console.log(obj);
+
+        const csv = obj.fnGetData();
+        console.log(csv);
+
+
+            $.ajax(
+                {
+                    type: "POST",
+                    url: '@Url.Action("ExportToCsv", "Reports")',
+                    data: obj,
+                    error: function (result) {
+                        console.log(result);
+                        alert("Temos um problema, Tente novamente!");
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        if (result.status == true) {
+                            window.location.href = '@Url.Action("Index", "Home")';
+                        }
+                        else {
+                            alert(result.message);
+                        }
+                    }
+
+                });
+        }
 
     function Delete(report) {
         $.ajax(
