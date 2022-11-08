@@ -159,7 +159,10 @@ public static class ExportFileUtil
             string? licensePlate = item[1];
             string serverTime = item[2];
             var dictionary = EventType.Get();
-            string? type = EventType.GetValueOrDefault(dictionary, item[3], "Nao Identificado");
+
+            string keyValue = getKeyName(dictionary.Keys, item[3]);
+
+            string? type = EventType.GetValueOrDefault(dictionary, keyValue, "Nao Identificado");
             string? address = StringUtil.RemoveAccent(item[4]);
             type = StringUtil.RemoveAccent(type);
 
@@ -167,6 +170,19 @@ public static class ExportFileUtil
         }
 
         return await FileContentResultBuild(builder, "RelatorioEventos");
+    }
+
+    private static string getKeyName(IEnumerable<string> keys, string item)
+    {
+        foreach(var key in keys)
+        {
+            if(item.Contains(key))
+            {
+                return key;
+            }
+        }
+
+        return String.Empty;
     }
 
     private async static Task<FileContentResult> FileContentResultBuild(StringBuilder builder, string reportName)
