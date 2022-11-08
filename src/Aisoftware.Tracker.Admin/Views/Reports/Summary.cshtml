@@ -26,9 +26,11 @@
                                 <th>Placa</th>
                                 <th>Velocidade Máxima</th>
                                 <th>Velocidade Média</th>
-                                <th>Distancia</th>
+                                <th>Distância</th>
                                 <th>Combistível</th>
-                                <th>Horas</th>
+                                <th>Tempo de Motor</th>
+                                <th>Odômetro Inicial</th>
+                                <th>Odômetro Final</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,13 +39,15 @@
                                 string placa = Model.Devices?.Where(x => x.Id == item?.DeviceId)?.FirstOrDefault()?.Name;
 
                                 <tr>
-                                    <td>@Html.DisplayFor(modelItem => placa)</td>
                                     <td>@Html.DisplayFor(modelItem => item.DeviceName)</td>
+                                    <td>@Html.DisplayFor(modelItem => placa)</td>
                                     <td>@Html.DisplayFor(modelItem => item.MaxSpeed)</td>
                                     <td>@Html.DisplayFor(modelItem => item.AverageSpeed)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Distance)</td>
                                     <td>@Html.DisplayFor(modelItem => item.SpentFuel)</td>
                                     <td>@Html.DisplayFor(modelItem => item.EngineHours)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.StartOdometer)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.EndOdometer)</td>
                                 </tr>
                             }
                     </table>
@@ -51,9 +55,8 @@
                         <div class="col-xs-12">
                             <div class="box-footer">
                                 <a href="/@ViewBag.ControllerName?report=summary" class="btn btn-default">Voltar</a>
-
-                                <a href="/@ViewBag.ControllerName/ExportToCsv?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to&typeReport=summary" class="btn btn-success pull-right"
-                                    style="margin-left: 15px;"><i class="fas fa-file-excel"></i> Exportar em Excel</a>
+                                <a href="" class="btn btn-success pull-right" style="margin-left: 15px;" onclick="ExportToCsv()">
+                                    <i class="fas fa-file-excel"></i> Exportar em Excel</a>
                             </div>
                         </div>
                     </div>
@@ -71,9 +74,38 @@
 <script src="/components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="/components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script src="/dist/js/dataTablesConfig.js"></script>
+<script src="/dist/js/pages/routes.js"></script>
 
 <!-- page script -->
 <script>
+     function ExportToCsv() {
+        const obj = $('#data-table').dataTable();
+        const csv = obj.fnGetData();
+        const typeReportName = "summary";
+        const reportName = "RelatorioResumo";
+
+        $.ajax(
+        {
+            type: "POST",
+            url: '@Url.Action("ExportToCsv", "Reports")',
+            data: {
+                jsonReports: JSON.stringify(csv),
+                typeReport: typeReportName
+            },
+            success: function (data) {
+                const fileName = generateFileName(reportName);
+                downloadFile(fileName, data)
+                alert('relatório baixado com sucesso!')
+            },
+            error: function (ex) {
+                const href = '/@ViewBag.ControllerName/ExportToCsv?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to&typeReport=' + typeReportName
+                const fileName = generateFileName(reportName);
+                downloadFileHref(fileName, href);
+                console.log(ex);
+            }
+        });
+    }
+
     function Delete(id) {
         var txt;
         var r = confirm("Você tem certeza que deseja excluir este usuário?");

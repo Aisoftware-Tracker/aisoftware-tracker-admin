@@ -84,21 +84,15 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="box-footer">
-                                <input id="btn-teste" type="button" value="Teste" class="btn btn-block btn-danger" onclick="Validate()">
+                                <a href="/@ViewBag.ControllerName?report=route" class="btn btn-default">Voltar</a>
 
-                                @* <a href="/@ViewBag.ControllerName?report=route" class="btn btn-default">Voltar</a>
-
-                                <a href="/@ViewBag.ControllerName/ExportToCsv?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to&typeReport=route"
-                                    class="btn btn-success pull-right" style="margin-left: 15px;"><i
-                                        class="fas fa-file-excel"></i> Exportar em Excel</a>
+                                <a href="" class="btn btn-success pull-right" style="margin-left: 15px;" onclick="ExportToCsv()">
+                                    <i class="fas fa-file-excel"></i> Exportar em Excel</a>
                                 @if (!(ViewBag?.deviceId == null || ViewBag.deviceId == 0))
                                 {
                                     <a href="/Maps?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to"
                                     class="btn btn-primary pull-right"><i class="fa fa-map"></i> Ver Rota no Mapa</a>
-                                }  *@
-
-
-
+                                } 
                             </div>
                         </div>
                     </div>
@@ -116,69 +110,38 @@
 <script src="/components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="/components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script src="/dist/js/dataTablesConfig.js"></script>
+<script src="/dist/js/pages/routes.js"></script>
 
 <!-- page script -->
 <script>
-    function ExportToCsv() {
+     function ExportToCsv() {
+        const obj = $('#data-table').dataTable();
+        const csv = obj.fnGetData();
+        const typeReportName = "route";
+        const reportName = "RelatorioRotas";
 
-        var obj = $('#data-table').dataTable();
-        @* console.log(obj); *@
-
-        var csv = obj.fnGetData();
-        @* console.log(csv); *@
-
-        let route = {
-            id: 1,
-            valid: true,
-            speed: 12.3,
-            address: "teste de string"
-        }
-
-        console.log(route);
-
-        $.ajax({
-            url: '@ViewBag.ControllerName/ExportToCsv',
-            type: 'POST',
-            data: { typeReport: "teste" },
-            success: function (data) {
-                alert("Dispositivo excluído com sucesso!");
+        $.ajax(
+        {
+            type: "POST",
+            url: '@Url.Action("ExportToCsv", "Reports")',
+            data: {
+                jsonReports: JSON.stringify(csv),
+                typeReport: typeReportName
             },
-            error: function (data) {
-                alert("Erro ao excluir dispositivo!");
+            success: function (data) {
+                const fileName = generateFileName(reportName);
+                downloadFile(fileName, data);
+                console.log(data);
+                alert('relatório baixado com sucesso!')
+            },
+            error: function (ex) {
+                const href = '/@ViewBag.ControllerName/ExportToCsv?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to&typeReport=' + typeReportName
+                const fileName = generateFileName(reportName);
+                downloadFileHref(fileName, href);
+                console.log(ex);
             }
         });
     }
-
-     function Validate() {
-
-        const obj = $('#data-table').dataTable();
-        console.log(obj);
-
-        const csv = obj.fnGetData();
-        console.log(csv);
-
-
-            $.ajax(
-                {
-                    type: "POST",
-                    url: '@Url.Action("ExportToCsv", "Reports")',
-                    data: obj,
-                    error: function (result) {
-                        console.log(result);
-                        alert("Temos um problema, Tente novamente!");
-                    },
-                    success: function (result) {
-                        console.log(result);
-                        if (result.status == true) {
-                            window.location.href = '@Url.Action("Index", "Home")';
-                        }
-                        else {
-                            alert(result.message);
-                        }
-                    }
-
-                });
-        }
 
     function Delete(report) {
         $.ajax(

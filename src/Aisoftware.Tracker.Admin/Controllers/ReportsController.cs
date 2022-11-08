@@ -17,8 +17,10 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace Aisoftware.Tracker.Admin.Controllers;
+
 [Authorize]
 public class ReportsController : Controller
 {
@@ -141,7 +143,6 @@ public class ReportsController : Controller
         ViewBag.groupId = groupId;
         ViewBag.from = from;
         ViewBag.to = to;
-        ViewBag.deviceId = deviceId;
 
         try
         {
@@ -176,9 +177,6 @@ public class ReportsController : Controller
         ViewBag.groupId = groupId;
         ViewBag.from = from;
         ViewBag.to = to;
-        ViewBag.deviceId = deviceId;
-
-        ViewBag.deviceId = deviceId;
 
         return View(response);
     }
@@ -197,7 +195,6 @@ public class ReportsController : Controller
         ViewBag.groupId = groupId;
         ViewBag.from = from;
         ViewBag.to = to;
-        ViewBag.deviceId = deviceId;
 
         _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString()), messageParams(deviceId, groupId, from, to));
         return RedirectToAction(ActionName.INDEX, ControllerName.MAPS, new { deviceId, groupId, from, to });
@@ -223,7 +220,6 @@ public class ReportsController : Controller
         ViewBag.groupId = groupId;
         ViewBag.from = from;
         ViewBag.to = to;
-        ViewBag.deviceId = deviceId;
 
         ReportRouteViewModel viewModel = new ReportRouteViewModel();
 
@@ -242,15 +238,25 @@ public class ReportsController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> ExportToCsv(IEnumerable<ReportRouteDTO> login)
+    public async Task<FileContentResult> ExportToCsv(string jsonReports, string typeReport)
     {
-        var t = login;
+        List<List<string>>? reports = JsonSerializer.Deserialize<List<List<string>>>(jsonReports);
 
         _context = this.ControllerContext.RouteData;
         ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
-
+        
+        try
+        {
+            _logger.LogInformation(_logUtil.Succes(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), typeReport));
+            return await ExportFileUtil.ExportToCsv(reports, typeReport);
+        }
+        catch (Exception e)
+        {
+            string message = $"Erro ao gerar o relatorio: {typeReport}, data: {DateTime.Now}";
+            _logger.LogError(_logUtil.Error(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), e, message));
+        }
+        
         return null;
-
     }
 
     ///TODO Criar classe generica 
@@ -269,11 +275,6 @@ public class ReportsController : Controller
         ViewBag.groupId = groupId;
         ViewBag.from = from;
         ViewBag.to = to;
-        ViewBag.deviceId = deviceId;
-
-        System.Console.WriteLine(".....ExportToCsv......");
-        System.Console.WriteLine(from);
-        System.Console.WriteLine(to);
 
         try
         {
@@ -289,7 +290,7 @@ public class ReportsController : Controller
                 case Endpoints.ROUTE:
                     _logger.LogInformation(_logUtil.Info(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), $"de: {from} - até: {to}, tipo:{typeReport}, grupo: {groupId}, device: {deviceId}" ));
                     
-                    var route = await ReportRouteViewModelBuild2(deviceId, groupId, from, to);
+                    var route = await GetReportRoute(deviceId, groupId, from, to);
                     return await ExportFileUtil.ExportToCsv(deviceId, groupId, from, to, route);
                 case Endpoints.EVENTS:
                     _logger.LogInformation(_logUtil.Info(GetType().FullName, _context.Values[ActionName.ACTION].ToString(), $"de: {from} - até: {to}, tipo:{typeReport}, grupo: {groupId}, device: {deviceId}" ));
@@ -323,7 +324,6 @@ public class ReportsController : Controller
         ViewBag.groupId = groupId;
         ViewBag.from = from;
         ViewBag.to = to;
-        ViewBag.deviceId = deviceId;
 
         string strFrom = from.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_T_HH_MM_SS_Z);
         string strTo = to.ToString(FormatString.FORMAT_DATE_YYYY_MM_DD_T_HH_MM_SS_Z);
