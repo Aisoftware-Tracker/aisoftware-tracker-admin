@@ -135,13 +135,13 @@
                 alert('relatório baixado com sucesso!')
             },
             error: function (ex) {
-                const href = '/@ViewBag.ControllerName/ExportToCsv?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to&typeReport=' + typeReportName
+                const data = exportCsvRoutes(csv);
                 const fileName = generateFileName(reportName);
-                downloadFileHref(fileName, href);
+                downloadFile(fileName, data);
                 console.log(ex);
             }
         });
-    }
+    } 
 
     function Delete(report) {
         $.ajax(
@@ -157,7 +157,7 @@
                 success: function (result) {
                     if (result == true) {
                         var baseUrl = "/@ViewBag.ControllerName";
-                        window.location.reload();
+                        @* window.location.reload(); *@
                     }
                     else {
                         alert("Houve um problema inesperado, Tente novamente mais tarde!");
