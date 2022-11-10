@@ -240,7 +240,7 @@ public class ReportsController : Controller
     [HttpPost]
     public async Task<FileContentResult> ExportToCsv(string jsonReports, string typeReport)
     {
-        List<List<string>>? reports = JsonSerializer.Deserialize<List<List<string>>>(jsonReports);
+        List<List<string>> reports = JsonSerializer.Deserialize<List<List<string>>>(jsonReports);
 
         _context = this.ControllerContext.RouteData;
         ViewBag.ControllerName = _context.Values[ActionName.CONTROLLER];
