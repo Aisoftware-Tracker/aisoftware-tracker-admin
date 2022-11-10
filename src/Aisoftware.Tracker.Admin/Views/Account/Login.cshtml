@@ -88,14 +88,16 @@
 
         function Validate() {
 
+            const login = {
+                email: $('#email').val(),
+                password: $('#password').val()
+            }
+
             $.ajax(
                 {
                     type: "POST",
                     url: '@Url.Action("Validate", "Account")',
-                    data: {
-                        email: $('#email').val(),
-                        password: $('#password').val()
-                    },
+                    data: login,
                     error: function (result) {
                         console.log(result);
                         alert("Temos um problema, Tente novamente!");
