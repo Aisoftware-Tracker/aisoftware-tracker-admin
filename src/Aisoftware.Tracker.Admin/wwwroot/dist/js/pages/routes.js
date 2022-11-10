@@ -1,7 +1,3 @@
-const empty = "";
-const blanck = " ";
-const br = "\r\n";
-
 function generateFileName(reportName) {
     const now = new Date(); 
     const day = addZero(now.getDate());
@@ -12,7 +8,7 @@ function generateFileName(reportName) {
 }
 
 function addZero(date) {
-    date.toLocaleString().length < 2 ? `0${date}` : `${date}`
+    return date.toString().length < 2 ? `0${date}` : `${date}`;
 }
 
 function downloadFile(fileName, csv) {
@@ -34,16 +30,16 @@ function download(fileName, href) {
 }
 
 function exportCsvEvents(reports) {
-    let csvContent = empty;
+    let csvContent = "";
     const headers = ["Id", "Placa", "Hora do Servidor", "Tipo", "Endereco"];
 
     let rows = reports;
     rows.unshift(headers);
 
     rows.forEach(function(rowArray) {
-        rowArray[3] = removeAccent(rowArray[3].replace( /(<([^>]+)>)/ig, empty).trim());
+        rowArray[3] = removeAccent(rowArray[3].replace( /(<([^>]+)>)/ig, "").trim());
         let row = rowArray.join(";");
-        csvContent += row + br;
+        csvContent += row + "\r\n";
     });
 
     return csvContent;
@@ -53,7 +49,7 @@ function exportCsvRoutes(reports) {
     const uncheck = "<input class=\"check-box\" disabled=\"disabled\" type=\"checkbox\">";
     const check = "<input checked=\"checked\" class=\"check-box\" disabled=\"disabled\" type=\"checkbox\">";
     
-    let csvContent = empty;
+    let csvContent = "";
 
     const headers = ["Id", "Placa", "Protocolo", "Horario do Dispositivo", "Horario Corrigido", "Horario do Servidor", "Vencimento", "Valido", "Latitude", "Longitude", "Altitude", "Velociadade", "Endereco", "Irregularidade", "Ignicao", "Status", "Distancia", "Distancia Total /Km", "Movimentacao", "Horas"];
 
@@ -71,14 +67,14 @@ function exportCsvRoutes(reports) {
         }
 
         let row = rowArray.join(";");
-        csvContent += row + br;
+        csvContent += row + "\r\n";
     });
 
     return csvContent;
 }
 
 function exportCsvSummary(reports) {
-    let csvContent = empty;
+    let csvContent = "";
     const headers = ["Nome do Dispositivo", "Placa", "Velocidade Maxima", "Velocidade Media", "Distancia", "Combistivel", "Tempo de Motor", "Odometro Inicial", "Odometro Final"];
 
     let rows = reports;
@@ -86,14 +82,14 @@ function exportCsvSummary(reports) {
 
     rows.forEach(function(rowArray) {
         let row = rowArray.join(";");
-        csvContent += row + br;
+        csvContent += row + "\r\n";
     });
 
     return csvContent;
 }
 
 function isNullOrEmpty(value) {
-    return (value === null) || (value === "undefined") || (value === empty || value === blanck);
+    return (value === null) || (value === "undefined") || (value === "" || value === " ");
 }
 
 function removeAccent(value)
@@ -113,5 +109,5 @@ function removeAccent(value)
                     ?.replace("ô", "o")
                     ?.replace("à", "a");
     }
-    return empty;
+    return "";
 }

@@ -53,12 +53,12 @@ namespace Aisoftware.Tracker.UseCases.Base
         ///TODO Remover metodo duplicado
         private int GetIdValue(T content)
         {
-            var id = 0;
+            int id = 0;
             var type = content.GetType();
             var property = type.GetProperty("Id");
             if (!(property is null))
             {
-                id = (int)property.GetValue(content);
+                id = Convert.ToInt32(property?.GetValue(content));
             }
             return id;
         }
