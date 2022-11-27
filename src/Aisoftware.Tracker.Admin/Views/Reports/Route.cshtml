@@ -90,8 +90,7 @@
                                     <i class="fas fa-file-excel"></i> Exportar em Excel</a>
                                 @if (!(ViewBag?.deviceId == null || ViewBag.deviceId == 0))
                                 {
-                                    <a href="/Maps?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to"
-                                    class="btn btn-primary pull-right"><i class="fa fa-map"></i> Ver Rota no Mapa</a>
+                                    <a href="" class="btn btn-primary pull-right" onclick="drawingOnTheMap()"><i class="fa fa-map"></i> Ver Rota no Mapa</a>
                                 } 
                             </div>
                         </div>
@@ -139,6 +138,42 @@
                 const fileName = generateFileName(reportName);
                 downloadFile(fileName, data);
                 console.log(ex);
+            }
+        });
+    }
+
+    function getLatLong(reports) {
+        let positions = [];
+
+        reports.forEach(function(item) {
+            const latitude = item[8].replace(",", ".");
+            const longitude = item[9].replace(",", ".");
+            const latLong = [latitude, longitude];
+            positions.push(latLong);
+        });
+
+        return positions;
+    }
+
+    function drawingOnTheMap() {
+        const obj = $('#data-table').dataTable();
+        const csv = obj.fnGetData();
+
+        const positions = getLatLong(csv)
+
+        $.ajax(
+        {
+            type: "POST",
+            url: '@Url.Action("Post", "Maps")',
+            data: {
+                latLong: JSON.stringify(positions)
+            },
+            success: function (data) {
+                console.log(data);
+                alert('relatório baixado com sucesso!')
+            },
+            error: function (ex) {
+                console.error(ex);
             }
         });
     } 
