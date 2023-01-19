@@ -149,4 +149,28 @@ public class MapsController : Controller
         return positions;
     }
 
+    [HttpPost]
+    public IActionResult Post([FromBody]TestModel model)
+    {
+        System.Console.WriteLine("-----------console-----------");
+
+        foreach(var item in model.ListLatLong) {
+            System.Console.WriteLine(item.Lat);
+            System.Console.WriteLine(item.Long);
+        }
+
+        return Ok();
+    }
+
+}
+
+public class TestModel {
+    public List<Item> ListLatLong { get; set; }
+    // public string Long { get; set; }
+    // public List<Item> Items { get; set; }
+}
+
+public class Item {
+    public string Lat { get; set; }
+    public string Long { get; set; }
 }

@@ -86,13 +86,18 @@
                             <div class="box-footer">
                                 <a href="/@ViewBag.ControllerName?report=route" class="btn btn-default">Voltar</a>
 
-                                <a href="" class="btn btn-success pull-right" style="margin-left: 15px;" onclick="ExportToCsv()">
+                                <a href="" class="btn btn-success pull-right" style="margin-left: 15px;"
+                                    onclick="ExportToCsv()">
                                     <i class="fas fa-file-excel"></i> Exportar em Excel</a>
                                 @if (!(ViewBag?.deviceId == null || ViewBag.deviceId == 0))
                                 {
-                                    <a href="/Maps?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to"
-                                    class="btn btn-primary pull-right"><i class="fa fa-map"></i> Ver Rota no Mapa</a>
-                                } 
+                                    <a href="" class="btn btn-success pull-right" style="margin-left: 15px;"
+                                    onclick="Post()">
+                                    <i class="fas fa-map"></i> Maps</a>
+
+                                    @* <a href="/Maps?deviceId=@ViewBag.deviceId&groupId=@ViewBag.groupId&from=@ViewBag.from&to=@ViewBag.to"
+                                    class="btn btn-primary pull-right"><i class="fa fa-map"></i> Ver Rota no Mapa</a> *@
+                                }
                             </div>
                         </div>
                     </div>
@@ -114,34 +119,75 @@
 
 <!-- page script -->
 <script>
-     function ExportToCsv() {
+    function ExportToCsv() {
         const obj = $('#data-table').dataTable();
         const csv = obj.fnGetData();
         const typeReportName = "route";
         const reportName = "RelatorioRotas";
 
         $.ajax(
-        {
+            {
+                type: "POST",
+                url: '@Url.Action("ExportToCsv", "Reports")',
+                data: {
+                    jsonReports: JSON.stringify(csv),
+                    typeReport: typeReportName
+                },
+                success: function (data) {
+                    const fileName = generateFileName(reportName);
+                    downloadFile(fileName, data);
+                    console.log(data);
+                    alert('relatório baixado com sucesso!')
+                },
+                error: function (ex) {
+                    const data = exportCsvRoutes(csv);
+                    const fileName = generateFileName(reportName);
+                    downloadFile(fileName, data);
+                    console.log(ex);
+                }
+            });
+    }
+
+    function Post() {
+        const obj = $('#data-table').dataTable();
+        const csv = obj.fnGetData();
+        let lat;
+        let long;
+        let list = [];
+
+        for(let item of csv) {
+            lat = item[8];
+            long = item[9];
+            
+            list.push({
+                "Lat" : lat,
+                "Long" : long
+            });
+        }
+
+        const data = {
+            ListLatLong : list
+        }
+
+        for(let item of data.ListLatLong) {
+            console.log(item.Lat);
+            console.log(item.Long);
+        }
+
+        $.ajax({
             type: "POST",
-            url: '@Url.Action("ExportToCsv", "Reports")',
-            data: {
-                jsonReports: JSON.stringify(csv),
-                typeReport: typeReportName
-            },
+            url: '@Url.Action("Post", "Maps")',
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
             success: function (data) {
-                const fileName = generateFileName(reportName);
-                downloadFile(fileName, data);
                 console.log(data);
-                alert('relatório baixado com sucesso!')
             },
-            error: function (ex) {
-                const data = exportCsvRoutes(csv);
-                const fileName = generateFileName(reportName);
-                downloadFile(fileName, data);
-                console.log(ex);
+            failure: function (errMsg) {
+                console.log(errMsg);
             }
         });
-    } 
+    }
 
     function Delete(report) {
         $.ajax(
@@ -155,9 +201,9 @@
                     alert("error");
                 },
                 success: function (result) {
-                    if (result == true) {
+                    if (!!result) {
                         var baseUrl = "/@ViewBag.ControllerName";
-                        @* window.location.reload(); *@
+    @* window.location.reload(); *@
                     }
                     else {
                         alert("Houve um problema inesperado, Tente novamente mais tarde!");
